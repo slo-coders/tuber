@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - '12'
+install:
+  - npm ci
+script:
+  - npm run prettier
+  - npm run lint
+  - npm run test
+###FOR WHEN WE HAVE THE DATABASE SETUP###
+# services:
+#   - postgresql
+# before_script:
+#   - psql -c 'create database 'tuber';' -U postgres

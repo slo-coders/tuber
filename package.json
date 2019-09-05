@@ -14,7 +14,8 @@
     "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
     "start": "node server/index.js",
     "test": "NODE_ENV='test' jest \"./test/*.spec.js\"",
-    "lint": "node_modules/.bin/eslint client server"
+    "lint": "node_modules/.bin/eslint client server",
+    "prettier": "prettier --write --single-quote \"client/**/*.js\" \"server/**/*.js\" "
   },
   "contributors": [
     "Hugo Campos",
@@ -23,18 +24,46 @@
     "Thomas Smith",
     "Stephanie Stampher"
   ],
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "jest": {
+    "verbose": true,
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
   "license": "ISC",
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": 12
+          }
+        }
+      ]
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
+    "enzyme": "^3.10.0",
+    "enzyme-to-json": "^3.4.0",
     "eslint": "^6.3.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-redux": "^3.0.1",
     "jest": "^24.9.0",
     "nodemon": "^1.19.2",
+    "prettier": "^1.18.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.1",
@@ -42,6 +71,7 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "supertest": "^4.0.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7"
   },
