@@ -2,11 +2,11 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  mode: isDev ?'development' : 'production',
+  mode: isDev ? 'development' : 'production',
   entry: [
     path.join(__dirname, 'client', 'index.js') //react-dom's render of <App>
-  ], 
-  output: { 
+  ],
+  output: {
     path: __dirname,
     filename: './public/bundle.js'
   },
@@ -22,4 +22,4 @@ module.exports = {
       }
     ]
   }
-}
+};
