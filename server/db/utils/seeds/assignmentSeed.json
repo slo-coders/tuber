@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Simplifying Polynomials",
+    "description": "I am in desperate need of help. How does one simplify polynomials?",
+    "dueDateRequired": true,
+    "dueAt": "2019-10-01 00:00:00+00:00",
+    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
+  },
+  {
+    "title": "Factoring Polynomial",
+    "description": "Coffee is on me. How does one factor polynomials?",
+    "dueDateRequired": true,
+    "dueAt": "2019-10-02 00:00:00+00:00",
+    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
+  },
+  {
+    "title": "Complex Fractions",
+    "description": "Lost 2/3rds of my brain cells trying to learn this myself. anyone availble to help?",
+    "dueDateRequired": false,
+    "dueAt": "2019-10-03 00:00:00+00:00",
+    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
+  }
+]

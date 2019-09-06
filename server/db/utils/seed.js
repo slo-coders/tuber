@@ -28,7 +28,7 @@ const users = Array(num).fill({})
     }
   });
 
-// Sync to DB then Seed Dummy Data 
+// Sync to DB then Seed Dummy Data
 const seed = async () => {
   try {
     if(process.env.NODE_ENV !== 'production') {
@@ -37,6 +37,7 @@ const seed = async () => {
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
       console.log('Seeded DB.');
+      await Promise.all()
     }
     else{
       throw 'Error: Trying to seed in production environment.';
