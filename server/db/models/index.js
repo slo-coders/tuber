@@ -7,5 +7,5 @@ const User = require('./User');
 //UserMeeting.belonsTo(Meeting);
 
 module.exports = {
-  User
+  User,
 };

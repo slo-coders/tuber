@@ -1,13 +1,10 @@
 import React from 'react';
 
-class App extends React.Component{
-  componentDidMount() {
-  }
+class App extends React.Component {
+  componentDidMount() {}
 
-  render(){
-    return(
-      "'HELLO!' -APP COMPONENT"
-    );
+  render() {
+    return "'HELLO!' -APP COMPONENT";
   }
 }
 
