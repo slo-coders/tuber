@@ -43,7 +43,7 @@ describe('PUT and DELETE courses', () => {
     expect(response.body.courseName).toEqual('Stretch PreCalc II');
     expect(response.body.courseCode).toEqual('200');
   });
-  it('DELETE a product from the products list', async () => {
+  it('DELETE a course from the course list', async () => {
     const response = await request(app).delete(`/api/courses/${course.id}`);
     const noResponse = await request(app).get(`/api/courses/${course.id}`);
     expect(noResponse.body.id).toBe(undefined);
