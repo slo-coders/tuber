@@ -21,11 +21,16 @@ const Assignment = db.define('assignment',
     }
 });
 
+// Class Methods
+Assignment.updateInfo = async function (id, updatesObj) {
+  const assignment = await this.findByPk(id);
+  const updatedAssignment = {...assignment, ...updatesObj};
+  return await Assignment.update(updatedAssignment, {fields: ['title', 'description', 'dueDateRequired', 'dueAt', 'htmlURL']});
+};
+Assignment.remove = async function (id) {
+  const assignment = await this.findByPk(id);
+  await assignment.destroy();
+};
 
-//ASSOCIATIONS
-/*
-Course.hasMany(Topic);
-Topic.hasMany(Course);
-*/
 
 module.exports = Assignment;

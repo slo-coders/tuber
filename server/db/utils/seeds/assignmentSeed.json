@@ -4,20 +4,55 @@
     "description": "I am in desperate need of help. How does one simplify polynomials?",
     "dueDateRequired": true,
     "dueAt": "2019-10-01 00:00:00+00:00",
-    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
+    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf",
   },
   {
     "title": "Factoring Polynomial",
     "description": "Coffee is on me. How does one factor polynomials?",
     "dueDateRequired": true,
     "dueAt": "2019-10-02 00:00:00+00:00",
-    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
+    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf",
   },
   {
     "title": "Complex Fractions",
     "description": "Lost 2/3rds of my brain cells trying to learn this myself. anyone availble to help?",
     "dueDateRequired": false,
     "dueAt": "2019-10-03 00:00:00+00:00",
-    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
+    "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf",
+  },
+  {
+    "title": "Limits",
+    "description": "Take to the limit! Really, idk what I'm doing.",
+    "dueDateRequired": false,
+    "dueAt": "2019-10-04 00:00:00+00:00",
+    "htmlURL": "http://tutorial.math.lamar.edu/Classes/CalcI/TheLimit.aspx"
+  },
+  {
+    "title": "Differentiation",
+    "description": "What's the difference?",
+    "dueDateRequired": true,
+    "dueAt": "2019-10-05 00:00:00+00:00",
+    "htmlURL": "http://tutorial.math.lamar.edu/Classes/CalcI/Differentials.aspx"
+  },
+  {
+    "title": "Continuity",
+    "description": "I am continously struggling to answer this type of question. A little help would be appreciated.",
+    "dueDateRequired": false,
+    "dueAt": "2019-10-06 00:00:00+00:00",
+    "htmlURL": "http://tutorial.math.lamar.edu/Classes/CalcI/Continuity.aspx"
+  },
+  {
+    "title": "Orthogonal Functions",
+    "description": "I don't know how to even pronounce this one. HELP",
+    "dueDateRequired": false,
+    "dueAt": "2019-10-07 00:00:00+00:00",
+    "htmlURL": "http://mathworld.wolfram.com/OrthogonalFunctions.html"
+  },
+  {
+    "title": "Legendre Polynomial",
+    "description": "It's going to be LEGEND . . . wait for it . . . DARY!",
+    "dueDateRequired": true,
+    "dueAt": "2019-10-09 00:00:00+00:00",
+    "htmlURL": "http://mathworld.wolfram.com/LegendrePolynomial.html"
   }
 ]

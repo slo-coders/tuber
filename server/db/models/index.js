@@ -7,6 +7,8 @@ const Course = require('./Course');
 //UserMeeting.belongsTo(User);
 //Meeting.hasMany(UserMeeting);
 //UserMeeting.belonsTo(Meeting);
+Course.hasOne(Assignment);
+
 
 module.exports = {
   User,

@@ -44,11 +44,8 @@ const seed = async () => {
       let src = path.join(__dirname, 'seeds', 'assignmentSeed.json');
       let data = fs.readFileSync(src, 'utf8');
       let assignments = JSON.parse(data);
-      //BROKEN
-      console.log(Assignment);
-      //await Promise.all(assignments.map(assignment => Assignment.create(assignment)));
-
-
+      await Promise.all(assignments.map(assignment => Assignment.create(assignment)));
+      // Course seeding
       await Promise.all(courses.map(course => Course.create({ ...course })));
       console.log('Seeded DB.');
     }
