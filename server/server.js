@@ -36,6 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 // app.use('/api', routes);
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
+app.use('/api/courses', require('./routes/courses'));
+
 // db.sync();
 
 module.exports = app;
