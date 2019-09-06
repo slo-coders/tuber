@@ -9,6 +9,7 @@
   "scripts": {
     "postinstall": "webpack",
     "seed": "node server/db/utils/seed.js",
+    "seed:test": "NODE_ENV='test' node server/db/utils/seed.js",
     "build-watch": "webpack -w --mode=development",
     "start-watch": "nodemon server/index.js --ignore public --ignore client",
     "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
