@@ -21,6 +21,7 @@ const Assignment = db.define('assignment',
     }
 });
 
+
 //ASSOCIATIONS
 /*
 Course.hasMany(Topic);

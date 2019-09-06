@@ -37,13 +37,14 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
-      console.log('Seeded DB.');
       //Assignment seeding
       let src = path.join(__dirname, 'seeds', 'assignmentSeed.json');
       let data = fs.readFileSync(src, 'utf8');
       let assignments = JSON.parse(data);
       //BROKEN
+      console.log(Assignment);
       //await Promise.all(assignments.map(assignment => Assignment.create(assignment)));
+      console.log('Seeded DB.');
     }
     else{
       throw 'Error: Trying to seed in production environment.';
