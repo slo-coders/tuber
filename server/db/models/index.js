@@ -1,5 +1,5 @@
 const User = require('./User');
-const Topic = require('./Topic');
+const Assignment = require('./Assignment');
 
 //Associations
 //User.hasMany(UserMeeting);
@@ -7,7 +7,7 @@ const Topic = require('./Topic');
 //Meeting.hasMany(UserMeeting);
 //UserMeeting.belonsTo(Meeting);
 
-
 module.exports = {
-  User
+  User,
+  Assignment
 };

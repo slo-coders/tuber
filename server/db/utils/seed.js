@@ -1,6 +1,7 @@
-const {db, User} = require('../index');
+const {db, User, Assignment} = require('../index');
 const faker = require('faker');
-
+const path = require('path');
+const fs = require('fs');
 const num = 10;
 
 const emails = {};
@@ -37,7 +38,12 @@ const seed = async () => {
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
       console.log('Seeded DB.');
-      await Promise.all()
+      //Assignment seeding
+      let src = path.join(__dirname, 'seeds', 'assignmentSeed.json');
+      let data = fs.readFileSync(src, 'utf8');
+      let assignments = JSON.parse(data);
+      //BROKEN
+      //await Promise.all(assignments.map(assignment => Assignment.create(assignment)));
     }
     else{
       throw 'Error: Trying to seed in production environment.';
