@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../server/server');
-const { Course } = require('../server/db/index');
+const { Course, db } = require('../server/db/index');
 
 describe('GET courses', () => {
   it('returns all availible courses', async () => {
@@ -48,3 +48,5 @@ describe('PUT and DELETE courses', () => {
     expect(response.status).toEqual(204);
   });
 });
+
+afterAll(() => db.close());
