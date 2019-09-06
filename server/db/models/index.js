@@ -1,5 +1,6 @@
 const User = require('./User');
 const Assignment = require('./Assignment');
+const Course = require('./Course');
 
 //Associations
 //User.hasMany(UserMeeting);
@@ -9,5 +10,6 @@ const Assignment = require('./Assignment');
 
 module.exports = {
   User,
-  Assignment
+  Assignment,
+  Course
 };
