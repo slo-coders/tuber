@@ -45,6 +45,8 @@ describe('PUT and DELETE courses', () => {
   });
   it('DELETE a product from the products list', async () => {
     const response = await request(app).delete(`/api/courses/${course.id}`);
+    const noResponse = await request(app).get(`/api/courses/${course.id}`);
+    expect(noResponse.body.id).toBe(undefined);
     expect(response.status).toEqual(204);
   });
 });
