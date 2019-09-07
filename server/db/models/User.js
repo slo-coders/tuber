@@ -5,7 +5,7 @@ const hash = require('../utils/hash');
 const User = db.define(
   'user',
   {
-    id: {
+    userId: {
       type: db.Sequelize.UUID,
       defaultValue: db.Sequelize.UUIDV4,
       primaryKey: true,
@@ -67,16 +67,22 @@ User.beforeValidate(studentSubmitted => {
 });
 
 // Class Methods
-User.updateInfo = async function(id, updatesObj) {
-  const user = await this.findByPk(id);
+User.updateInfo = async function(userId, updatesObj) {
+  const user = await this.findByPk(userId);
   const updatedStudent = { ...user, ...updatesObj };
   return await user.update(updatedStudent, {
-    fields: ['firstName', 'lastName', 'email', 'schoolId', 'imageUrl'],
+    fields: ['firstName', 'lastName', 'email', 'imageUrl'],
   });
 };
 
-User.remove = async function(id) {
-  const user = await this.findByPk(id);
+User.createNew = async function(userObj) {
+  return await this.create(userObj, {
+    fields: ['firstName', 'lastName', 'email', 'imageUrl'],
+  });
+};
+
+User.remove = async function(userId) {
+  const user = await this.findByPk(userId);
   await user.destroy();
 };
 
