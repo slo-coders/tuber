@@ -8,7 +8,7 @@ export class Courses extends React.Component {
     this.props.listCourses();
   }
   render() {
-    const { courses } = this.props;
+    const { courses } = this.props.courses;
     if (courses === undefined) return null;
     return (
       <div>

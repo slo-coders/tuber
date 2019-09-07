@@ -3,7 +3,7 @@ const app = require('../server/server');
 const { Course, db } = require('../server/db/index');
 
 describe('GET courses', () => {
-  it('returns all availible courses', async () => {
+  it('returns all available courses', async () => {
     const response = await request(app).get('/api/courses');
     expect(response.status).toEqual(200);
     expect(response.body.length).toEqual(3);
