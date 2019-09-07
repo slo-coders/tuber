@@ -1,23 +1,22 @@
-const { db, User } = require('../index');
+const { db, User, Course } = require('../index');
 const faker = require('faker');
 
 const num = 10;
 
 const emails = {};
 
-const users = Array(num)
-  .fill({})
+const users = Array(num).fill({})
   .map(() => {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
     const imageUrl = faker.image.avatar();
-    const email = `${firstName}.${lastName}@slo.edu`.toLowerCase();
+    const email = (`${firstName}.${lastName}@slo.edu`).toLowerCase();
     //const weightedAveSoftSkillsRating = 4.2;
     return {
       firstName,
       lastName,
       email,
-      imageUrl,
+      imageUrl
       // weightedAveSoftSkillsRating
     };
   })
@@ -29,6 +28,9 @@ const users = Array(num)
     }
   });
 
+const courses = [{ courseName: "Intermediate Algebra", courseCode: "96", syllabusBody: "Review of basic algebra skills at the intermediate algebra level intended primarily to prepare students for MATH 116. Not for baccalaureate credit. Credit/No Credit grading only. 3 lectures." }, { courseName: "Calculus 1", courseCode: '141', syllabusBody: "Limits, continuity, differentiation. Introduction to integration. 4 lectures. Crosslisted as HNRS/MATH 141." }, { courseName: "Partial Differential Equations", courseCode: "419", syllabusBody: "Evolution of mathematics from earliest to modern times. Major trends in mathematical thought, the interplay of mathematical and technological innovations, and the contributions of great mathematicians. Appropriate for prospective and in-service teachers. 4 lectures." }];
+
+
 // Sync to DB then Seed Dummy Data
 const seed = async () => {
   try {
@@ -37,8 +39,12 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
+
+
+      await Promise.all(courses.map(course => Course.create({ ...course })));
       console.log('Seeded DB.');
-    } else {
+    }
+    else {
       throw 'Error: Trying to seed in production environment.';
     }
   } catch (error) {
