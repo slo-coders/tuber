@@ -12,7 +12,11 @@ const CourseTopic = require('./CourseTopic');
 
 module.exports = {
   User,
+<<<<<<< HEAD
   Topic,
   Course,
   CourseTopic
+=======
+  Course,
+>>>>>>> dev
 };
