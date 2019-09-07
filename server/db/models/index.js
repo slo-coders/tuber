@@ -9,5 +9,5 @@ const Course = require('./Course');
 
 module.exports = {
   User,
-  Course
+  Course,
 };

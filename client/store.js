@@ -4,7 +4,8 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 
 const thunkMiddleware = require('redux-thunk').default;
 
-
-const reducer = combineReducers({/*add approperate reducers here */ });
+const reducer = combineReducers({
+  /*add approperate reducers here */
+});
 
 export default createStore(reducer, applyMiddleware(thunkMiddleware));
