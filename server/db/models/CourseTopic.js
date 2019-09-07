@@ -20,7 +20,7 @@ CourseTopic.associate = async function(courseCode, topicTitle) {
   });
   return await CourseTopic.create({
     topicId: topicToConnect.id,
-    courseid: courseToConnect.id,
+    courseId: courseToConnect.id,
   });
 };
 

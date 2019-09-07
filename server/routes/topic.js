@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { Topic } = require('../db/index.js');
 
+//WIP not hooked up yet . . . i think
+
 router.get('/', async (req, res, next) => {
   try {
     res.send(await Topic.findAll());
