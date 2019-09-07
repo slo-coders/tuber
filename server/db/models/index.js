@@ -14,18 +14,18 @@ Course.belongsToMany(Topic, {
   through: 'coursetopic',
   as: 'course',
   foreignKey: 'courseId',
-  otherKey: 'topicId'
+  otherKey: 'topicId',
 });
 Topic.belongsToMany(Course, {
   through: 'coursetopic',
   as: 'topic',
   foreignKey: 'topicId',
-  otherKey: 'courseId'
+  otherKey: 'courseId',
 });
 
 module.exports = {
   User,
   Topic,
   Course,
-  CourseTopic
+  CourseTopic,
 };

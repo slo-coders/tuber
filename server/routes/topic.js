@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Topic } = require('../db/index.js');
 
 router.get('/', async (req, res, next) => {
-  try{
+  try {
     res.send(await Topic.findAll());
   } catch (err) {
     next(err);
@@ -10,13 +10,15 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/:id', async (req, res, next) => {
-  try{
-    res.send(await Topic.findOne({
-      where: {
-        id: req.body.id
-      }
-    }));
-  } catch(err) {
+  try {
+    res.send(
+      await Topic.findOne({
+        where: {
+          id: req.body.id,
+        },
+      }),
+    );
+  } catch (err) {
     next(err);
   }
 });
@@ -29,7 +31,7 @@ router.post('/', async (req, res, next) => {
       dueDateRequired: req.body.dueDateRequired,
       dueAt: req.body.dueAt,
       htmlURL: req.body.htmlURL,
-      courseID: req.body.courseID
+      courseID: req.body.courseID,
     });
     res.status(201).send(newTopic);
   } catch (err) {

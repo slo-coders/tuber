@@ -70,8 +70,8 @@ const seed = async () => {
       // Course seeding
       await Promise.all(courses.map(course => Course.create({ ...course })));
       //CourseTopic associations made
-        //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
-      CourseTopic.associate('96','Limits');
+      //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
+      CourseTopic.associate('96', 'Limits');
 
       // db.close(); //Not closing since some tests don't include after hook to sync db then seed data
       console.log('Seeded DB.');
