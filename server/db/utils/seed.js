@@ -1,4 +1,4 @@
-const { db, User, Course, Assignment } = require('../index');
+const { db, User, Course, Topic } = require('../index');
 const faker = require('faker');
 const path = require('path');
 const fs = require('fs');
@@ -40,11 +40,11 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
-      //Assignment seeding
-      let src = path.join(__dirname, 'seeds', 'assignmentSeed.json');
+      //Topic seeding
+      let src = path.join(__dirname, 'seeds', 'topicSeed.json');
       let data = fs.readFileSync(src, 'utf8');
-      let assignments = JSON.parse(data);
-      await Promise.all(assignments.map(assignment => Assignment.create(assignment)));
+      let topics = JSON.parse(data);
+      await Promise.all(topics.map(topic => Topic.create(topic)));
       // Course seeding
       await Promise.all(courses.map(course => Course.create({ ...course })));
       console.log('Seeded DB.');
