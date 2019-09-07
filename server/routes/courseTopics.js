@@ -9,4 +9,23 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const courseTopic = await CourseTopic.findByPk(req.params.id);
+    res.send(courseTopic);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/', async (req, res, next) => {
+  try {
+    const newCourseTopic = await CourseTopic.associate('96', 'Limits');
+    res.status(201).send(newCourseTopic);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 module.exports = router;
