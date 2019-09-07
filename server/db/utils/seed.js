@@ -62,16 +62,12 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
-<<<<<<< HEAD
       //Topic seeding
       let src = path.join(__dirname, 'seeds', 'topicSeed.json');
       let data = fs.readFileSync(src, 'utf8');
       let topics = JSON.parse(data);
       await Promise.all(topics.map(topic => Topic.create(topic)));
       // Course seeding
-=======
-
->>>>>>> dev
       await Promise.all(courses.map(course => Course.create({ ...course })));
       console.log('Seeded DB.');
 
