@@ -1,4 +1,4 @@
-const { db, User, Course } = require('../index');
+const { db, User, Course, Meetup } = require('../index');
 const faker = require('faker');
 
 //Generate Dummy Data
@@ -31,6 +31,37 @@ do {
     });
 } while (users.length < num);
 
+const meetups = [
+  {
+    meetupType: 'M:M',
+    location: 'Library',
+    matchedAt: new Date(),
+    meetupEnded: new Date(),
+    meetupCancelled: false,
+  },
+  {
+    meetupType: 'M:M',
+    location: 'Library',
+    matchedAt: new Date(),
+    meetupEnded: new Date(),
+    meetupCancelled: false,
+  },
+  {
+    meetupType: 'M:M',
+    location: 'Coffee Shop',
+    matchedAt: new Date(),
+    meetupEnded: new Date(),
+    meetupCancelled: false,
+  },
+  {
+    meetupType: 'M:M',
+    location: 'Computer Lab',
+    matchedAt: new Date(),
+    meetupEnded: new Date(),
+    meetupCancelled: true,
+  },
+];
+
 const courses = [
   {
     courseName: 'Intermediate Algebra',
@@ -60,6 +91,8 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
+
+      await Promise.all(meetups.map(m => Meetup.create({ ...m })));
 
       await Promise.all(courses.map(course => Course.create({ ...course })));
       console.log('Seeded DB.');
