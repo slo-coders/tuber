@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   topics: [],
-  sinlgeTopic: {}
+  sinlgeTopic: {},
 };
 
 const topicReducer = (state = initialState, action) => {
@@ -17,10 +17,10 @@ const topicReducer = (state = initialState, action) => {
       return { ...state, singleTopic: action.payload };
     case FETCH_TOPIC_ALL:
       return { ...state, topics: action.payload };
-      //Unsure about POST_TOPIC, but don't know a current way to test functionality
+    //Unsure about POST_TOPIC, but don't know a current way to test functionality
     case POST_TOPIC:
       return { ...state, singleTopic: [...state.topics, action.payload] };
-      //EDIT_TOPIC route broken upstream
+    //EDIT_TOPIC route broken upstream
     case EDIT_TOPIC:
       return {
         ...state,

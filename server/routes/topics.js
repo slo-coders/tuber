@@ -45,15 +45,13 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const targetTopic = await Topic.findByPk(req.params.id);
-    await targetTopic.update(
-        {
-          title: req.body.title,
-          description: req.body.description,
-          dueDateRequired: req.body.dueDateRequired,
-          dueAt: req.body.dueAt,
-          htmlURL: req.body.htmlURL
-        }
-    );
+    await targetTopic.update({
+      title: req.body.title,
+      description: req.body.description,
+      dueDateRequired: req.body.dueDateRequired,
+      dueAt: req.body.dueAt,
+      htmlURL: req.body.htmlURL,
+    });
     res.send(targetTopic);
   } catch (err) {
     next(err);

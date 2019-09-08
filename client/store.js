@@ -9,7 +9,7 @@ const thunkMiddleware = require('redux-thunk').default;
 const reducer = combineReducers({
   /*add approperate reducers here */
   courses: courseReducer,
-  topics: topicReducer
+  topics: topicReducer,
 });
 
 export default createStore(reducer, applyMiddleware(thunkMiddleware));
