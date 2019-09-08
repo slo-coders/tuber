@@ -33,7 +33,7 @@ const courseReducer = (state = initialState, action) => {
     case DELETE_COURSE:
       return {
         ...state,
-        courses: state.courses.filter(el => el.id !== action.payload.id),
+        courses: state.courses.filter(el => el.id !== action.payload),
       };
 
     default:
