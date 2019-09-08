@@ -18,7 +18,7 @@ router.use('/users', require('./users')); //use if sessions are NOT setup
 // router.use('/courses', authorized('./course')); //use if sessions are setup
 router.use('/courses', require('./courses')); //use if session are NOT setup
 router.use('/courseTopics', require('./courseTopics')); //use if session are NOT setup
-
+router.use('/topics', require('./topics'));
 
 
 module.exports = router;

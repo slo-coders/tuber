@@ -16,7 +16,7 @@ router.get('/:id', async (req, res, next) => {
     res.send(
       await Topic.findOne({
         where: {
-          id: req.body.id,
+          id: req.params.id,
         },
       }),
     );
@@ -41,21 +41,32 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-//WIP saving to move local
-/*
+//WIP - Not yet working.
 router.put('/:id', async (req, res, next) => {
   try {
-    Topic.update(
-      {title: req.body.title},
-      {description: req.body.description},
-      {dueDateRequired: req.body.dueDateRequired},
-      {dueAt: req.body.dueAt},
-      {htmlURL: req.body.htmlURL},
-      {courseID: req.body.courseID},
-      {where: {id: req.body.id}}
+    const targetTopic = await Topic.findByPk(req.params.id);
+    await targetTopic.update(
+        {
+          title: req.body.title,
+          description: req.body.description,
+          dueDateRequired: req.body.dueDateRequired,
+          dueAt: req.body.dueAt,
+          htmlURL: req.body.htmlURL
+        }
     );
+    res.send(targetTopic);
   } catch (err) {
     next(err);
   }
 });
-*/
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Topic.destroy({ where: { id: req.params.id } });
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
+
+module.exports = router;
