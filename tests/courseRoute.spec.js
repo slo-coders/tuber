@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../server/server');
 const { Course, db } = require('../server/db/index');
 
-describe('GET courses', () => {
+describe('`/api/courses` route handling a GET request', () => {
   it('returns all available courses', async () => {
     const response = await request(app).get('/api/courses');
     expect(response.status).toEqual(200);
@@ -11,7 +11,7 @@ describe('GET courses', () => {
   });
 });
 
-describe('POST courses', () => {
+describe('`/api/courses` route handling a POST request', () => {
   it('returns posts a new course and course content', async () => {
     const response = await request(app)
       .post('/api/courses')
@@ -26,7 +26,7 @@ describe('POST courses', () => {
   });
 });
 
-describe('PUT and DELETE courses', () => {
+describe('`/api/courses/:id` route handling a PUT and DELETE request', () => {
   let course;
   beforeAll(async () => {
     course = await Course.findOne({
