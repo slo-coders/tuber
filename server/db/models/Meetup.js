@@ -20,9 +20,6 @@ const Meetup = db.define('meetup', {
   meetupEnded: {
     type: Sequelize.DATE,
   },
-  meetupCancelled: {
-    type: Sequelize.BOOLEAN,
-  },
 });
 
 module.exports = Meetup;

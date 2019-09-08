@@ -37,28 +37,24 @@ const meetups = [
     location: 'Library',
     matchedAt: new Date(),
     meetupEnded: new Date(),
-    meetupCancelled: false,
   },
   {
     meetupType: 'M:M',
     location: 'Library',
     matchedAt: new Date(),
     meetupEnded: new Date(),
-    meetupCancelled: false,
   },
   {
     meetupType: 'M:M',
     location: 'Coffee Shop',
     matchedAt: new Date(),
     meetupEnded: new Date(),
-    meetupCancelled: false,
   },
   {
     meetupType: 'M:M',
     location: 'Computer Lab',
     matchedAt: new Date(),
     meetupEnded: new Date(),
-    meetupCancelled: true,
   },
 ];
 

@@ -13,8 +13,8 @@ router.get('/:id', async (req, res, next) => {
   try {
     const course = await Course.findByPk(req.params.id);
     res.send(course);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -26,8 +26,8 @@ router.post('/', async (req, res, next) => {
       syllabusBody: req.body.syllabusBody,
     });
     res.status(201).send(newCourse);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -40,8 +40,8 @@ router.put('/:id', async (req, res, next) => {
       syllabusBody: req.body.syllabusBody,
     });
     res.send(courseUpdate);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -49,8 +49,8 @@ router.delete('/:id', async (req, res, next) => {
   try {
     await Course.destroy({ where: { id: req.params.id } });
     res.sendStatus(204);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 });
 
