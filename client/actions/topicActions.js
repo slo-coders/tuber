@@ -35,7 +35,6 @@ export const postTopicThunk = topic => async dispatch => {
   }
 };
 
-//WIP route not functioning
 export const editTopicThunk = (topicId, info) => async dispatch => {
   try {
     const response = await axios.put(`/api/topics/${topicId}`, info);

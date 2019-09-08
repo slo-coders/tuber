@@ -18,6 +18,8 @@
     "test": "npm run seed:test & NODE_ENV='test' jest",
     "test-watch": "npm run test -- --watchAll",
     "lint": "node_modules/.bin/eslint client server",
+    "test:sam": "env NODE_ENV='test'",
+    "test-watch:sam": "npm run test:sam -- --watchAll",
     "prettier": "prettier --write --single-quote \"client/**/*.js\" \"server/**/*.js\" "
   },
   "contributors": [

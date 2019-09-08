@@ -71,7 +71,7 @@ describe('Express routes for user', () => {
       expect(res.body.lastName).toEqual('Fields');
     });
     it('updates user email', async () => {
-      const email = 'hcampos@cal.edu'; 
+      const email = 'hcampos@cal.edu';
       const res = await fauxios
         .put(`/api/users/${newUserId}`)
         .send({ email });
@@ -79,7 +79,7 @@ describe('Express routes for user', () => {
       expect(res.body.email).toEqual(email);
     });
     it('updates user imageUrls', async () => {
-      const imageUrl = 'https://avatars.dicebear.com/v2/bottts/1.svg'; 
+      const imageUrl = 'https://avatars.dicebear.com/v2/bottts/1.svg';
       const res = await fauxios
         .put(`/api/users/${newUserId}`)
         .send({ imageUrl });
@@ -87,7 +87,7 @@ describe('Express routes for user', () => {
       expect(res.body.imageUrl).toEqual(imageUrl);
     });
     it('prevents updates to userId', async () => {
-      const userId = '504c85d7-5dab-4196-99b4-b03a41877359'; 
+      const userId = '504c85d7-5dab-4196-99b4-b03a41877359';
       const res = await fauxios
         .put(`/api/users/${newUserId}`)
         .send({ userId });

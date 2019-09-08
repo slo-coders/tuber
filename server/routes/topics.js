@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const { Topic } = require('../db/index.js');
 
-//WIP not hooked up yet . . . i think
-
 router.get('/', async (req, res, next) => {
   try {
     res.send(await Topic.findAll());
@@ -41,7 +39,6 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-//WIP - Not yet working.
 router.put('/:id', async (req, res, next) => {
   try {
     const targetTopic = await Topic.findByPk(req.params.id);
