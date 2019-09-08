@@ -88,7 +88,7 @@ const seed = async () => {
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
 
-      await Promise.all(meetups.map(m => Meetup.create({ ...m })));
+      await Promise.all(meetups.map(m => Meetup.create(m)));
 
       await Promise.all(courses.map(course => Course.create({ ...course })));
       console.log('Seeded DB.');
