@@ -3,7 +3,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 //import individual reducers here
 import { userReducer, allUsersReducer } from './storeReducers/userReducer';
 import courseReducer from './storeReducers/courseReducer';
-import meetupReducer from './storeReducers/meetupReducer';
+import meetupReducer from './storeReducers/meetupReducers';
 
 const thunkMiddleware = require('redux-thunk').default;
 
