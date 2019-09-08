@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
     const newMeetup = await Meetup.create({
       meetupType: req.body.meetupType,
       location: req.body.location,
-      meachedAt: req.body.meachedAt,
+      matchedAt: req.body.matchedAt,
       meetupEnded: req.body.meetupEnded,
       meetupCancelled: req.body.meetupEnded,
     });
