@@ -1,7 +1,7 @@
-const { db, User} = require('../server/db/index');
-const seed = require('../server/db/utils/seed');
-const app = require('../server/server');
-const request = require('supertest');
+const { db } = require('../server/db/index');
+// const seed = require('../server/db/utils/seed');
+const app = require('../server/server'); //does not start server
+const request = require('supertest'); //client
 
 const fauxios = request(app);  //supertest both ports and makes HTTP requests to app
 
@@ -10,7 +10,7 @@ const newUser = {
   lastName: "Campos",
   email: "contacthugocampos@gmail.com",
   imageUrl: "https://avatars.dicebear.com/v2/bottts/012.svg"
-}
+};
 
 let newUserId;
 
@@ -19,8 +19,8 @@ let newUserId;
   await seed();
 }); */
 afterAll(async () => {
-  await db.close()
-  console.log('DB closed.')
+  await db.close();
+  console.log('DB closed.');
 });
 
 //Tests
@@ -46,7 +46,7 @@ describe('Express routes for users', () => {
       expect(res.body).toMatchObject(newUser);
     });
   });
-})
+});
 
 describe('Express routes for user', () => {
   describe('`/api/users/:userId` route handling a GET request', () => {
