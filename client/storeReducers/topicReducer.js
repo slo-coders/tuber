@@ -4,7 +4,7 @@ import {
   POST_TOPIC,
   DELETE_TOPIC,
   EDIT_TOPIC,
-} from './actions/actionTypes';
+} from '../actions/actionTypes';
 
 const initialState = {
   topics: [],

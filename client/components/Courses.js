@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 export class Courses extends React.Component {
   componentDidMount() {
     this.props.listCourses();
-    console.log(this.props);
   }
   render() {
     const { courses } = this.props.courses;
