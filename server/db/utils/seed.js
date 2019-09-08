@@ -90,7 +90,7 @@ const seed = async () => {
 
       await Promise.all(meetups.map(m => Meetup.create(m)));
 
-      await Promise.all(courses.map(course => Course.create({ ...course })));
+      await Promise.all(courses.map(course => Course.create(course)));
       console.log('Seeded DB.');
 
       // db.close(); //Not closing since some tests don't include after hook to sync db then seed data

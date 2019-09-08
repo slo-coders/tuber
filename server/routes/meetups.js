@@ -25,7 +25,6 @@ router.post('/', async (req, res, next) => {
       location: req.body.location,
       matchedAt: req.body.matchedAt,
       meetupEnded: req.body.meetupEnded,
-      meetupCancelled: req.body.meetupEnded,
     });
     res.status(201).send(newMeetup);
   } catch (err) {
