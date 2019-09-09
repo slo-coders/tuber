@@ -15,12 +15,14 @@ do {
       const lastName = faker.name.lastName();
       const imageUrl = faker.image.avatar();
       const email = `${firstName}.${lastName}@slo.edu`.toLowerCase();
+      const password = 'test';
       //const weightedAveSoftSkillsRating = 4.2;
       return {
         firstName,
         lastName,
         email,
         imageUrl,
+        password,
         // weightedAveSoftSkillsRating
       };
     })
