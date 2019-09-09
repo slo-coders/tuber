@@ -3,10 +3,11 @@ const db = require('./db');
 const {
   User,
   Course,
-  Topic,
   CourseTopic,
-  UserMeetup,
+  Topic,
+  UserTopic,
   Meetup,
+  UserMeetup,
 } = require('./models/index');
 
-module.exports = { db, User, Course, Topic, UserMeetup, CourseTopic, Meetup };
+module.exports = { db, User, Course, CourseTopic, Topic, UserTopic, Meetup, UserMeetup };
