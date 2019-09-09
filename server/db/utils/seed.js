@@ -89,7 +89,6 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
-<<<<<<< HEAD
       //Topic seeding
       let src = path.join(__dirname, 'seeds', 'topicSeed.json');
       let data = fs.readFileSync(src, 'utf8');
@@ -99,14 +98,12 @@ const seed = async () => {
       await Promise.all(courses.map(course => Course.create({ ...course })));
       //CourseTopic associations made
       //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
-      CourseTopic.associate('96', 'Limits');
-=======
+      //CourseTopic.associate('96', 'Limits');
 
       await Promise.all(meetups.map(m => Meetup.create(m)));
 
       await Promise.all(courses.map(course => Course.create(course)));
       console.log('Seeded DB.');
->>>>>>> dev
 
       // db.close(); //Not closing since some tests don't include after hook to sync db then seed data
       console.log('Seeded DB.');

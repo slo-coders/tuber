@@ -45,4 +45,3 @@ export const deleteUserThunk = userId => async dispatch => {
     console.error(e);
   }
 };
-
