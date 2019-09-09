@@ -1,5 +1,7 @@
-const { db, User, Course, Meetup } = require('../index');
+const { db, User, Course, Topic, Meetup } = require('../index');
 const faker = require('faker');
+const path = require('path');
+const fs = require('fs');
 
 //Generate Dummy Data
 const num = 10;
@@ -87,13 +89,21 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
-
+      //Topic seeding
+      let src = path.join(__dirname, 'seeds', 'topicSeed.json');
+      let data = fs.readFileSync(src, 'utf8');
+      let topics = JSON.parse(data);
+      await Promise.all(topics.map(topic => Topic.create(topic)));
+      // Course seeding
+      await Promise.all(courses.map(course => Course.create({ ...course })));
+      //CourseTopic associations made
+      //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
+      //CourseTopic.associate('96', 'Limits');
+      //Meetup seeding
       await Promise.all(meetups.map(m => Meetup.create(m)));
 
-      await Promise.all(courses.map(course => Course.create(course)));
-      console.log('Seeded DB.');
-
       // db.close(); //Not closing since some tests don't include after hook to sync db then seed data
+      console.log('Seeded DB.');
     } else {
       throw 'Error: Trying to seed in production environment.';
     }
