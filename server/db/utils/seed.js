@@ -54,10 +54,15 @@ const seed = async () => {
       const meetupsReturned = await Meetup.findAll();
 
       await Promise.all(
-        usersReturned.map((user, i) =>
+        userMeetUpData.map((user, i) =>
           UserMeetup.create({
+            meetupType: user.userType,
+            softSkillsRating: user.softSkillsRating,
+            userType: user.userType,
+            proficiencyRating: user.proficiencyRating,
             userId: usersReturned[i].userId,
             meetupId: meetupsReturned[i % 2].id,
+            comments: user.comments,
           }),
         ),
       );
