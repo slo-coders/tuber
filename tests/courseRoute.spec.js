@@ -6,7 +6,7 @@ describe('`/api/courses` route handling a GET request', () => {
   it('returns all available courses', async () => {
     const response = await request(app).get('/api/courses');
     expect(response.status).toEqual(200);
-    expect(response.body.length).toEqual(3);
+    expect(response.body.length).toBeGreaterThan(0);
     expect(response.body[0]).toHaveProperty('courseName');
   });
 });

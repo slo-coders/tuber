@@ -1,4 +1,4 @@
-const { db, User, Course, Topic, CourseTopic, Meetup } = require('../index');
+const { db, User, Course, Topic, Meetup } = require('../index');
 const faker = require('faker');
 const path = require('path');
 const fs = require('fs');
