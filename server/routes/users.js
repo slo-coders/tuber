@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Model
-const { User, Meetup, UserMeetup } = require('../db/index');
+const { User, UserMeetup } = require('../db/index');
 
 // Routes
 router
