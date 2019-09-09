@@ -50,9 +50,10 @@ const User = db.define('user', {
 User.beforeCreate(user => {
   user.password = hash(user.password);
 });
-User.beforeUpdate(user => {
-  user.password = hash(user.password);
-});
+
+// User.beforeUpdate(user => {
+//   user.password = hash(user.password);
+// });
 User.beforeValidate(studentSubmitted => {
   if (studentSubmitted.schoolId === '') {
     studentSubmitted.schoolId = null;
@@ -61,7 +62,7 @@ User.beforeValidate(studentSubmitted => {
 
 //Verify Passwords
 User.verifyPassword = function(user, password) {
-  return user.password === hash(password);
+  return user.password === hash(password) ? true : false;
 };
 
 // Class Methods
@@ -69,13 +70,13 @@ User.updateInfo = async function(userId, updatesObj) {
   const user = await this.findByPk(userId);
   const updatedStudent = { ...user, ...updatesObj };
   return await user.update(updatedStudent, {
-    fields: ['firstName', 'lastName', 'email', 'imageUrl'],
+    fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
   });
 };
 
 User.createNew = async function(userObj) {
   return await this.create(userObj, {
-    fields: ['firstName', 'lastName', 'email', 'imageUrl'],
+    fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
   });
 };
 

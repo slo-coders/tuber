@@ -2,14 +2,16 @@ const { db } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
+const hash = require('../server/db/utils/hash');
 
-const fauxios = request(app);  //supertest both ports and makes HTTP requests to app
+const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
 const newUser = {
-  firstName: "Hugo",
-  lastName: "Campos",
-  email: "contacthugocampos@gmail.com",
-  imageUrl: "https://avatars.dicebear.com/v2/bottts/012.svg"
+  firstName: 'Hugo',
+  lastName: 'Campos',
+  password: 'test',
+  email: 'contacthugocampos@gmail.com',
+  imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
 };
 
 let newUserId;
@@ -30,20 +32,26 @@ describe('Express routes for users', () => {
       const res = await fauxios.get('/api/users');
       expect(res.status).toEqual(200);
       expect(res.body.length).toEqual(10);
-      expect(Object.keys(res.body[0])).toEqual(expect.arrayContaining(
-        ['userId', 'firstName', 'lastName', 'email', 'imageUrl']
-      ));
+      expect(Object.keys(res.body[0])).toEqual(
+        expect.arrayContaining([
+          'userId',
+          'firstName',
+          'lastName',
+          'password',
+          'email',
+          'imageUrl',
+        ]),
+      );
     });
   });
 
   describe('`/api/users` route handling a POST request', () => {
     it('responds with new user instance with an id', async () => {
-      const res = await fauxios.post('/api/users')
-        .send(newUser);
+      const res = await fauxios.post('/api/users').send(newUser);
       newUserId = res.body.userId;
       expect(res.status).toEqual(201);
       expect(res.body).toHaveProperty('userId');
-      expect(res.body).toMatchObject(newUser);
+      expect(res.body.password).not.toBe(newUser.password);
     });
   });
 });
@@ -52,12 +60,20 @@ describe('Express routes for user', () => {
   describe('`/api/users/:userId` route handling a GET request', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
+      const hashedUserPassword = hash(newUser.password);
       expect(res.status).toEqual(200);
-      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(
-        ['userId', 'firstName', 'lastName', 'email', 'imageUrl']
-      ));
+      expect(Object.keys(res.body)).toEqual(
+        expect.arrayContaining([
+          'userId',
+          'firstName',
+          'lastName',
+          'password',
+          'email',
+          'imageUrl',
+        ]),
+      );
       expect(res.body).toHaveProperty('userId', newUserId);
-      expect(res.body).toMatchObject(newUser);
+      expect(res.body.password).toEqual(hashedUserPassword);
     });
   });
 
@@ -72,9 +88,7 @@ describe('Express routes for user', () => {
     });
     it('updates user email', async () => {
       const email = 'hcampos@cal.edu';
-      const res = await fauxios
-        .put(`/api/users/${newUserId}`)
-        .send({ email });
+      const res = await fauxios.put(`/api/users/${newUserId}`).send({ email });
       expect(res.status).toEqual(202);
       expect(res.body.email).toEqual(email);
     });
@@ -88,9 +102,7 @@ describe('Express routes for user', () => {
     });
     it('prevents updates to userId', async () => {
       const userId = '504c85d7-5dab-4196-99b4-b03a41877359';
-      const res = await fauxios
-        .put(`/api/users/${newUserId}`)
-        .send({ userId });
+      const res = await fauxios.put(`/api/users/${newUserId}`).send({ userId });
       expect(res.body.userId).not.toBe(userId);
     });
   });
