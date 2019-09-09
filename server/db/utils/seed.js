@@ -48,7 +48,6 @@ const seed = async () => {
       await Promise.all(meetupsData.map(m => Meetup.create(m)));
 
       await Promise.all(coursesData.map(course => Course.create(course)));
-      console.log('Seeded DB.');
 
       const usersReturned = await User.findAll();
       const meetupsReturned = await Meetup.findAll();
