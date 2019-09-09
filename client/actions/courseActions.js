@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import * as action from './actionTypes';
 
 export const listCoursesThunk = () => async dispatch => {
