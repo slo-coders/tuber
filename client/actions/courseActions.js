@@ -46,4 +46,3 @@ export const deleteCourseThunk = courseId => async dispatch => {
     console.error(e);
   }
 };
-
