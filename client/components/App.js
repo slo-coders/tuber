@@ -1,8 +1,9 @@
 import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
-import Home from '../components/Home';
-import Courses from '../components/Courses';
-import Users from '../components/Users';
+import Home from './Home';
+import Nav from './Nav';
+import UserProfile from './UserProfile';
+import RequestMatch from './RequestMatch';
 
 class App extends React.Component {
   componentDidMount() {}
@@ -10,11 +11,16 @@ class App extends React.Component {
   render() {
     return (
       <HashRouter>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Courses />
-          <Users />
-        </div>
+        <Route path="/" component={Nav} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/profile" component={UserProfile} />
+        <Route
+          exact
+          path="/request_match"
+          /* path will eventually depend on match status */ component={
+            RequestMatch
+          }
+        />
       </HashRouter>
     );
   }
