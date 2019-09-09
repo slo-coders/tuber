@@ -1,17 +1,12 @@
 const User = require('./User');
-const Topic = require('./Topic');
 const Course = require('./Course');
+const Topic = require('./Topic');
 const CourseTopic = require('./CourseTopic');
-// const UserMeetup = require('./UserMeetup');
+const UserTopic = require('./UserTopic');
 const Meetup = require('./Meetup');
 const UserMeetup = require('./UserMeetup');
 
 //Associations
-//User.hasMany(UserMeeting);
-//UserMeeting.belongsTo(User);
-//Meeting.hasMany(UserMeeting);
-//UserMeeting.belonsTo(Meeting);
-
 // CourseTopic associations
 Course.belongsToMany(Topic, {
   through: 'coursetopic',
@@ -19,12 +14,28 @@ Course.belongsToMany(Topic, {
   foreignKey: 'courseId',
   otherKey: 'topicId',
 });
+
 Topic.belongsToMany(Course, {
   through: 'coursetopic',
   as: 'topic',
   foreignKey: 'topicId',
   otherKey: 'courseId',
 });
+
+//UserTopic associations
+User.belongsToMany(Meetup, {
+  through: UserTopic,
+  foreignKey: 'userId',
+  otherKey: 'topicId',
+});
+
+Meetup.belongsToMany(User, {
+  through: UserTopic,
+  foreignKey: 'topicId',
+  otherKey: 'userId',
+});
+
+//UserMeetup associations
 User.belongsToMany(Meetup, {
   through: UserMeetup,
   foreignKey: 'userId',
@@ -40,6 +51,7 @@ Meetup.belongsToMany(User, {
 module.exports = {
   User,
   Topic,
+  UserTopic,
   Course,
   CourseTopic,
   Meetup,
