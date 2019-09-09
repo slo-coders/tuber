@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 const { db, User, Course, Meetup, UserMeetup } = require('../index');
 const meetupsData = require('./seedFiles/meetupData');
 const coursesData = require('./seedFiles/courseData');
 const userMeetUpData = require('./seedFiles/userMeetupData');
+=======
+const { db, User, Course, Topic, Meetup } = require('../index');
+>>>>>>> dev
 const faker = require('faker');
+const path = require('path');
+const fs = require('fs');
 
 //Generate Dummy Data
 const num = 10;
@@ -65,7 +71,21 @@ const seed = async () => {
         ),
       );
 
+      //Topic seeding
+      let src = path.join(__dirname, 'seeds', 'topicSeed.json');
+      let data = fs.readFileSync(src, 'utf8');
+      let topics = JSON.parse(data);
+      await Promise.all(topics.map(topic => Topic.create(topic)));
+      // Course seeding
+
+      //CourseTopic associations made
+      //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
+      //CourseTopic.associate('96', 'Limits');
+      //Meetup seeding
+
+
       // db.close(); //Not closing since some tests don't include after hook to sync db then seed data
+      console.log('Seeded DB.');
     } else {
       throw 'Error: Trying to seed in production environment.';
     }
