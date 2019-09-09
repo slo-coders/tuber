@@ -25,11 +25,9 @@ const mapStateToProps = state => ({
   users: state.allUsers,
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    listUsers: () => dispatch(listUsersThunk()),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  listUsers: () => dispatch(listUsersThunk()),
+});
 
 Users.defaultProps = {
   users: [],
