@@ -1,15 +1,15 @@
-const { db } = require('../server/db/index');
+const { db, User, Meetup, UserMeetup } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
 
-const fauxios = request(app);  //supertest both ports and makes HTTP requests to app
+const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
 const newUser = {
-  firstName: "Hugo",
-  lastName: "Campos",
-  email: "contacthugocampos@gmail.com",
-  imageUrl: "https://avatars.dicebear.com/v2/bottts/012.svg"
+  firstName: 'Hugo',
+  lastName: 'Campos',
+  email: 'contacthugocampos@gmail.com',
+  imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
 };
 
 let newUserId;
@@ -30,16 +30,21 @@ describe('Express routes for users', () => {
       const res = await fauxios.get('/api/users');
       expect(res.status).toEqual(200);
       expect(res.body.length).toEqual(10);
-      expect(Object.keys(res.body[0])).toEqual(expect.arrayContaining(
-        ['userId', 'firstName', 'lastName', 'email', 'imageUrl']
-      ));
+      expect(Object.keys(res.body[0])).toEqual(
+        expect.arrayContaining([
+          'userId',
+          'firstName',
+          'lastName',
+          'email',
+          'imageUrl',
+        ]),
+      );
     });
   });
 
   describe('`/api/users` route handling a POST request', () => {
     it('responds with new user instance with an id', async () => {
-      const res = await fauxios.post('/api/users')
-        .send(newUser);
+      const res = await fauxios.post('/api/users').send(newUser);
       newUserId = res.body.userId;
       expect(res.status).toEqual(201);
       expect(res.body).toHaveProperty('userId');
@@ -53,9 +58,15 @@ describe('Express routes for user', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
       expect(res.status).toEqual(200);
-      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(
-        ['userId', 'firstName', 'lastName', 'email', 'imageUrl']
-      ));
+      expect(Object.keys(res.body)).toEqual(
+        expect.arrayContaining([
+          'userId',
+          'firstName',
+          'lastName',
+          'email',
+          'imageUrl',
+        ]),
+      );
       expect(res.body).toHaveProperty('userId', newUserId);
       expect(res.body).toMatchObject(newUser);
     });
@@ -72,9 +83,7 @@ describe('Express routes for user', () => {
     });
     it('updates user email', async () => {
       const email = 'hcampos@cal.edu';
-      const res = await fauxios
-        .put(`/api/users/${newUserId}`)
-        .send({ email });
+      const res = await fauxios.put(`/api/users/${newUserId}`).send({ email });
       expect(res.status).toEqual(202);
       expect(res.body.email).toEqual(email);
     });
@@ -88,9 +97,7 @@ describe('Express routes for user', () => {
     });
     it('prevents updates to userId', async () => {
       const userId = '504c85d7-5dab-4196-99b4-b03a41877359';
-      const res = await fauxios
-        .put(`/api/users/${newUserId}`)
-        .send({ userId });
+      const res = await fauxios.put(`/api/users/${newUserId}`).send({ userId });
       expect(res.body.userId).not.toBe(userId);
     });
   });
@@ -103,5 +110,19 @@ describe('Express routes for user', () => {
       expect(noUserNoErr.status).toEqual(404);
       expect(noUserNoErr.body.userId).toBe(undefined);
     });
+  });
+});
+
+describe('`/api/users/:userId/userMeetup` route handleing a GET request for current user meetups', () => {
+  it('fetches user meetup info based on a specific user ID', async () => {
+    const users = await User.findAll();
+
+    console.log(users[0].userId);
+
+    const response = await request(app).get(
+      `/api/users/${users[0].userId}/userMeetup`,
+    );
+    console.log(response);
+    expect(response.status).toEqual(200);
   });
 });
