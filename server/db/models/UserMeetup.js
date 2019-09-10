@@ -41,7 +41,6 @@ UserMeetup.updateUserMeetup = async function(userId, meetupId, req) {
   const userMeetup = await this.findAll({
     where: { meetupId },
   });
-
   const partnerStats = userMeetup.filter(el => el.userId !== userId);
   const personalStats = userMeetup.filter(el => el.userId === userId);
   const updatePersonalStats = await personalStats[0].update({

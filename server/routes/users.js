@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Model
-const { User, UserMeetup } = require('../db/index');
+const { User, UserMeetup, Meetup } = require('../db/index');
 
 // Routes
 router
@@ -55,18 +55,17 @@ router
     }
   });
 
-//This route needs attention
-// router.get('/:userId/userMeetup', async (req, res, next) => {
-//   try {
-//     const user = await User.findOne({
-//       where: { userId: req.params.userId },
-//       include: [{ model: Meetup, through: { model: UserMeetup } }],
-//     });
-//     res.send(user);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+router.get('/:userId/userMeetup', async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { userId: req.params.userId },
+      include: [{ model: Meetup, through: { model: UserMeetup } }],
+    });
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get('/:userId/userMeetup/:meetupId', async (req, res, next) => {
   try {
