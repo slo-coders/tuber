@@ -5,8 +5,29 @@ const router = express.Router();
 const { User, UserMeetup } = require('../db/index');
 
 // Routes
-router
-  .route('/:userId')
+// `/api/users/:userId/topics/:topicId?`
+router.use('/:userId/topics', require('./userTopics'));
+
+//`/api/users`
+router.route('/')
+  .get(async (req, res, next) => {
+    try {
+      res.send(await User.findAll());
+    } catch (err) {
+      next(err);
+    }
+  })
+  .post(async (req, res, next) => {
+    try {
+      const newUser = await User.createNew(req.body);
+      res.status(201).send(newUser);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+//`/api/users/:userId`
+router.route('/:userId')
   .get(async (req, res, next) => {
     try {
       const user = await User.findByPk(req.params.userId);
@@ -15,43 +36,24 @@ router
       } else {
         res.status(404).end();
       }
-    } catch (e) {
-      next(e);
+    } catch (err) {
+      next(err);
     }
   })
   .put(async (req, res, next) => {
     try {
       const updatedUser = await User.updateInfo(req.params.userId, req.body);
       res.status(202).send(updatedUser);
-    } catch (e) {
-      console.log(e);
-      next(e);
+    } catch (err) {
+      next(err);
     }
   })
   .delete(async (req, res, next) => {
     try {
       await User.remove(req.params.userId);
       res.sendStatus(204);
-    } catch (e) {
-      next(e);
-    }
-  });
-
-router
-  .route('/')
-  .get(async (req, res, next) => {
-    try {
-      res.send(await User.findAll());
-    } catch (e) {
-      next(e);
-    }
-  })
-  .post(async (req, res, next) => {
-    try {
-      const newUser = await User.createNew(req.body);
-      res.status(201).send(newUser);
-    } catch (e) {
-      next(e);
+    } catch (err) {
+      next(err);
     }
   });
 
