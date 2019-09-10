@@ -1,8 +1,7 @@
 const express = require('express');
 const path = require('path');
-const { User } = require('./db/index');
-
-const { db } = require('../server/db/index');
+const routes = require('./routes/index');
+const { db, User } = require('./db/index');
 const session = require('express-session');
 const createSequelizeStore = require('connect-session-sequelize');
 const SequelizeStore = createSequelizeStore(session.Store);
@@ -33,9 +32,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/api', routes);
-app.use('/', express.static(path.join(__dirname, '..', 'public')));
-
+app.use('/api', routes);
 app.use('/api/sessions', require('./routes/sessions'));
 
 //PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
@@ -45,7 +42,7 @@ if (process.env.NODE_ENV !== 'test') {
       if (req.session && req.session.userId) {
         const sessionUser = await User.findOne({
           where: {
-            userId: req.session.userId,
+            id: req.session.userId,
           },
         });
         if (!sessionUser) {
@@ -62,6 +59,6 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
-app.use('/api', require('./routes/index'));
+app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
 module.exports = app;

@@ -2,53 +2,62 @@ const db = require('../db');
 const { hash } = require('../utils/hash');
 
 // Model Definition
-const User = db.define('user', {
-  userId: {
-    type: db.Sequelize.UUID,
-    defaultValue: db.Sequelize.UUIDV4,
-    primaryKey: true,
-  },
-  firstName: {
-    type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
+const User = db.define(
+  'user',
+  {
+    id: {
+      type: db.Sequelize.UUID,
+      defaultValue: db.Sequelize.UUIDV4,
+      primaryKey: true,
+    },
+    firstName: {
+      type: db.Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    lastName: {
+      type: db.Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    password: {
+      type: db.Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    salt: {
+      type: db.Sequelize.STRING,
+    },
+    email: {
+      type: db.Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+        notEmpty: true,
+      },
+    },
+    imageUrl: {
+      type: db.Sequelize.STRING(800),
+      validate: {
+        isUrl: true,
+      },
     },
   },
-  lastName: {
-    type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
+  {
+    scopes: {
+      withoutPassword: {
+        attributes: { exclude: ['password'] },
+      },
     },
   },
-  password: {
-    type: db.Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-  salt: {
-    type: db.Sequelize.STRING,
-  },
-
-  email: {
-    type: db.Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true,
-      notEmpty: true,
-    },
-  },
-  imageUrl: {
-    type: db.Sequelize.STRING(800),
-    validate: {
-      isUrl: true,
-    },
-  },
-});
+);
 
 // Lifecycle Events (a.k.a. Hooks)
 User.beforeCreate(user => {
