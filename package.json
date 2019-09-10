@@ -41,7 +41,8 @@
     "verbose": true,
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
-    ]
+    ],
+    "testEnvironment": "node"
   },
   "license": "ISC",
   "babel": {

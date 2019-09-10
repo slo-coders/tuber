@@ -5,6 +5,7 @@ const CourseTopic = require('./CourseTopic');
 const UserTopic = require('./UserTopic');
 const Meetup = require('./Meetup');
 const UserMeetup = require('./UserMeetup');
+const Session = require('./Session');
 
 //Associations
 // CourseTopic associations
@@ -56,4 +57,5 @@ module.exports = {
   CourseTopic,
   Meetup,
   UserMeetup,
+  Session,
 };
