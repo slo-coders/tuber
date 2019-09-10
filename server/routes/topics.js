@@ -33,7 +33,8 @@ router.post('/', async (req, res, next) => {
       htmlURL: req.body.htmlURL,
       courseID: req.body.courseID,
     });
-    res.status(201).send(newTopic);
+    res.status(201);
+    res.send(newTopic);
   } catch (err) {
     next(err);
   }
@@ -49,7 +50,7 @@ router.put('/:id', async (req, res, next) => {
       dueAt: req.body.dueAt,
       htmlURL: req.body.htmlURL,
     });
-    res.send(targetTopic);
+    res.status(200).send(targetTopic);
   } catch (err) {
     next(err);
   }
