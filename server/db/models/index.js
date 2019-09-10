@@ -23,13 +23,13 @@ Topic.belongsToMany(Course, {
 });
 
 //UserTopic associations
-User.belongsToMany(Meetup, {
+User.belongsToMany(Topic, {
   through: UserTopic,
   foreignKey: 'userId',
   otherKey: 'topicId',
 });
 
-Meetup.belongsToMany(User, {
+Topic.belongsToMany(User, {
   through: UserTopic,
   foreignKey: 'topicId',
   otherKey: 'userId',
