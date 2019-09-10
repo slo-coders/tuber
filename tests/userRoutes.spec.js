@@ -21,10 +21,6 @@ Object.keys(newUser).forEach(key => {
 
 let newUserId;
 
-//Hooks
-/* beforeAll(async () => {
-  await seed();
-}); */
 afterAll(async () => {
   await db.close();
   console.log('DB closed.');
