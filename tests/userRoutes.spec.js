@@ -2,7 +2,7 @@ const { db } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
-const hash = require('../server/db/utils/hash');
+const { hash, verifyPassword } = require('../server/db/utils/hash');
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
@@ -60,7 +60,7 @@ describe('Express routes for user', () => {
   describe('`/api/users/:userId` route handling a GET request', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
-      const hashedUserPassword = hash(newUser.password);
+      console.log('RESR', res.body);
       expect(res.status).toEqual(200);
       expect(Object.keys(res.body)).toEqual(
         expect.arrayContaining([
@@ -73,7 +73,9 @@ describe('Express routes for user', () => {
         ]),
       );
       expect(res.body).toHaveProperty('userId', newUserId);
-      expect(res.body.password).toEqual(hashedUserPassword);
+      expect(
+        verifyPassword(newUser.password, res.body.password, res.body.salt),
+      ).toEqual(true);
     });
   });
 

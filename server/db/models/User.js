@@ -1,5 +1,5 @@
 const db = require('../db');
-const crypto = require('crypto');
+const { hash } = require('../utils/hash');
 
 // Model Definition
 const User = db.define('user', {
@@ -52,13 +52,13 @@ const User = db.define('user', {
 
 // Lifecycle Events (a.k.a. Hooks)
 User.beforeCreate(user => {
-  const data = User.hashPassword(user.password);
+  const data = hash(user.password);
   user.password = data.hash;
   user.salt = data.salt;
 });
 
 User.beforeUpdate(user => {
-  const data = User.hashPassword(user.password);
+  const data = hash(user.password);
   user.password = data.hash;
   user.salt = data.salt;
 });
@@ -68,23 +68,6 @@ User.beforeValidate(studentSubmitted => {
     studentSubmitted.schoolId = null;
   }
 });
-
-//Set passwwords
-User.hashPassword = function(password) {
-  this.salt = crypto.randomBytes(32).toString('hex');
-  this.hash = crypto
-    .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
-    .toString(`hex`);
-  return { salt: this.salt, hash: this.hash };
-};
-
-//Verify Passwords
-User.verifyPassword = function(password) {
-  let hash = crypto
-    .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
-    .toString(`hex`);
-  return this.hash === hash;
-};
 
 // Class Methods
 User.updateInfo = async function(userId, updatesObj) {
@@ -97,7 +80,7 @@ User.updateInfo = async function(userId, updatesObj) {
 
 User.createNew = async function(userObj) {
   return await this.create(userObj, {
-    fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
+    fields: ['firstName', 'lastName', 'password', 'salt', 'email', 'imageUrl'],
   });
 };
 
@@ -110,7 +93,7 @@ User.login = async function(email, password) {
   return await this.findOne({
     where: {
       email,
-      password: User.hashPassword(password),
+      password: hash(password),
     },
   });
 };
