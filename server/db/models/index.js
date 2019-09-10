@@ -39,7 +39,7 @@ Topic.belongsToMany(User, {
 User.belongsToMany(Meetup, {
   through: UserMeetup,
   foreignKey: 'userId',
-  otherKey: 'MeetupId',
+  otherKey: 'meetupId',
 });
 
 Meetup.belongsToMany(User, {

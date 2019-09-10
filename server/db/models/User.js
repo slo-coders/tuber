@@ -1,9 +1,8 @@
 const db = require('../db');
-const hash = require('../utils/hash');
+const { hash } = require('../utils/hash');
 
 // Model Definition
-const User = db.define(
-  'user',
+const User = db.define('user',
   {
     id: {
       type: db.Sequelize.UUID,
@@ -24,13 +23,16 @@ const User = db.define(
         notEmpty: true,
       },
     },
-    // password: {
-    //   type: db.Sequelize.STRING,
-    //   allowNull: false,
-    //   validate: {
-    //     notEmpty: true
-    //   }
-    // },
+    password: {
+      type: db.Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    salt: {
+      type: db.Sequelize.STRING,
+    },
     email: {
       type: db.Sequelize.STRING,
       allowNull: false,
@@ -47,19 +49,21 @@ const User = db.define(
       },
     },
   },
-  /*   {//Model Options (can include Lifecyle Events (a.k.a. Hooks) too)
-    hooks: {
-      beforeCreate: user => {
-        user.password = hash(user.password);
-      },
-      beforeUpdate: user => {
-        user.password = hash(user.password);
-      }
-    }
-  } */
 );
 
 // Lifecycle Events (a.k.a. Hooks)
+User.beforeCreate(user => {
+  const data = hash(user.password);
+  user.password = data.hash;
+  user.salt = data.salt;
+});
+
+User.beforeUpdate(user => {
+  const data = hash(user.password);
+  user.password = data.hash;
+  user.salt = data.salt;
+});
+
 User.beforeValidate(studentSubmitted => {
   if (studentSubmitted.schoolId === '') {
     studentSubmitted.schoolId = null;
@@ -71,13 +75,13 @@ User.updateInfo = async function(userId, updatesObj) {
   const user = await this.findByPk(userId);
   const updatedStudent = { ...user, ...updatesObj };
   return await user.update(updatedStudent, {
-    fields: ['firstName', 'lastName', 'email', 'imageUrl'],
+    fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
   });
 };
 
 User.createNew = async function(userObj) {
   return await this.create(userObj, {
-    fields: ['firstName', 'lastName', 'email', 'imageUrl'],
+    fields: ['firstName', 'lastName', 'password', 'salt', 'email', 'imageUrl'],
   });
 };
 

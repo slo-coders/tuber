@@ -27,3 +27,4 @@ export const EDIT_USER = 'EDIT_USER';
 //User-meetup actions
 export const GET_MEETUP_DATA = 'GET_MEETUP_DATA';
 export const UPDATE_MEETUP_DATA = 'UPDATE_MEETUP_DATA';
+export const GET_USER_MEETUP_DATA = 'GET_USER_MEETUP_DATA ';
