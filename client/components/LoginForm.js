@@ -12,10 +12,10 @@ export class LoginForm extends Component{
     this.onHandle = this.onHandle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-  componentDidMount() {
-    console.log('Prepare to log in');
-  }
 
+  componentDidMount() {
+    console.log('Login Form Loaded');
+  }
   onHandle(ev) {
     this.setState({
       [ev.target.name]: ev.target.value,
@@ -24,8 +24,8 @@ export class LoginForm extends Component{
   onSubmit(ev) {
     ev.preventDefault();
     console.log(this.state);
-    console.log('I do nothing meanigful...so far');
-    loginThunked(this.state);
+    console.log('I do nothing meanigful so far, attempting to trigger loginThunked');
+    loginThunked;
   }
 
   render() {
@@ -48,7 +48,7 @@ export class LoginForm extends Component{
           />
           <button
             disabled={
-              this.state.email ||
+              this.state.email &&
               this.state.password ?
               false : true
             }
@@ -61,7 +61,13 @@ export class LoginForm extends Component{
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    loginThunked: (userInfo) => dispatch(loginThunked(userInfo))
+  };
+};
+
 export default connect(
   null,
-  null,
+  mapDispatchToProps,
 )(LoginForm);

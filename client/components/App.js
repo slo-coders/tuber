@@ -4,6 +4,7 @@ import Home from './Home';
 import Nav from './Nav';
 import UserProfile from './UserProfile';
 import RequestMatch from './RequestMatch';
+import { LoginForm } from './LoginForm';
 
 class App extends React.Component {
   componentDidMount() {}
@@ -21,6 +22,7 @@ class App extends React.Component {
             RequestMatch
           }
         />
+        <Route exact path="/login" component={LoginForm} />
       </HashRouter>
     );
   }
