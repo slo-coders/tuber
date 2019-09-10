@@ -1,4 +1,4 @@
-const { db, User, Topic, UserTopic } = require('../server/db/index');
+const { User, Topic, UserTopic } = require('../server/db/index');
 const randIntBtwn = require('../server/db/utils/randIntBtwn');
 const app = require('../server/server');
 const request = require('supertest'); //client
@@ -14,16 +14,12 @@ beforeAll(async () => {
     lastName: 'Campos',
     email: 'emailhugocampos@gmail.com', //needs to be unique relative to other test-created users
     imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
+    password: 'test'
   };
 
   //Getting dummy User id from User table in seeded db 
   const currentUserReturned = await User.create(currentUser);
   userId = currentUserReturned.id;
-});
-
-afterAll(async () => {
-  await db.close();
-  console.log('DB closed.');
 });
 
 //Tests

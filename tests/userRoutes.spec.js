@@ -2,7 +2,7 @@ const { db, UserMeetup } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
-const { verifyPassword } = require('../server/db/utils/hash');
+// const { verifyPassword } = require('../server/db/utils/hash');
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
@@ -11,7 +11,13 @@ const newUser = {
   lastName: 'Campos',
   email: 'contacthugocampos@gmail.com', //needs to be unique relative to other test-created users
   imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
+  password: 'test',
 };
+
+const userWithoutPassword = {};
+Object.keys(newUser).forEach(key => {
+  if (key !== 'password') userWithoutPassword[key] = newUser[key];
+});
 
 let newUserId;
 
@@ -36,11 +42,11 @@ describe('Routes for all users', () => {
           'id',
           'firstName',
           'lastName',
-          'password',
           'email',
           'imageUrl',
         ]),
       );
+      expect(res.body.password).toBe(undefined);
     });
   });
 
@@ -50,7 +56,7 @@ describe('Routes for all users', () => {
       newUserId = res.body.id;
       expect(res.status).toEqual(201);
       expect(res.body).toHaveProperty('id');
-      expect(res.body).toMatchObject(newUser);
+      expect(res.body).toMatchObject(userWithoutPassword);
       expect(res.body.password).not.toBe(newUser.password);
     });
   });
@@ -60,23 +66,23 @@ describe('Routes for a single user', () => {
   describe('`/api/users/:userId` route handling a GET request', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
-      console.log('RESR', res.body);
+      // console.log('RES', res.body);
       expect(res.status).toEqual(200);
       expect(Object.keys(res.body)).toEqual(
         expect.arrayContaining([
           'id',
           'firstName',
           'lastName',
-          'password',
           'email',
           'imageUrl',
         ]),
       );
-      expect(res.body).toMatchObject(newUser);
+      expect(res.body).toMatchObject(userWithoutPassword);
       expect(res.body).toHaveProperty('id', newUserId);
-      expect(
+      /* expect(
         verifyPassword(newUser.password, res.body.password, res.body.salt),
-      ).toEqual(true);
+        ).toEqual(true); */
+      expect(res.body.password).toBe(undefined);
     });
   });
 

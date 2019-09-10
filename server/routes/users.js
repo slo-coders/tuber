@@ -13,7 +13,7 @@ router
   .route('/')
   .get(async (req, res, next) => {
     try {
-      res.send(await User.findAll());
+      res.send(await User.scope('withoutPassword').findAll());
     } catch (err) {
       next(err);
     }
@@ -32,7 +32,7 @@ router
   .route('/:userId')
   .get(async (req, res, next) => {
     try {
-      const user = await User.findByPk(req.params.userId);
+      const user = await User.scope('withoutPassword').findByPk(req.params.userId);
       if (user) {
         res.send(user);
       } else {
@@ -62,7 +62,7 @@ router
 router.get('/:userId/userMeetup', async (req, res, next) => {
   try {
     const user = await User.findOne({
-      where: { userId: req.params.userId },
+      where: { id: req.params.userId },
       include: [{ model: Meetup, through: { model: UserMeetup } }],
     });
     res.send(user);

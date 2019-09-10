@@ -49,6 +49,13 @@ const User = db.define('user',
       },
     },
   },
+  {
+    scopes: {
+      withoutPassword: {
+        attributes: { exclude: ['password'] },
+      }
+    }
+  }
 );
 
 // Lifecycle Events (a.k.a. Hooks)

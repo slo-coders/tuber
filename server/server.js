@@ -42,7 +42,7 @@ if (process.env.NODE_ENV !== 'test') {
       if (req.session && req.session.userId) {
         const sessionUser = await User.findOne({
           where: {
-            userId: req.session.userId,
+            id: req.session.userId,
           },
         });
         if (!sessionUser) {

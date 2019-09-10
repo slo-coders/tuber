@@ -6,7 +6,7 @@ router.get('/login', async (req, res, next) => {
   try {
     console.log('SESSION get', req.session);
     const loggedUser = await User.findOne({
-      where: { userId: req.session.userId },
+      where: { id: req.session.userId },
     });
     res.send(loggedUser);
   } catch (err) {
@@ -32,7 +32,7 @@ router.post('/login', async (req, res, next) => {
 
     if (!loggedSessionUser) {
       res.sendStatus(401);
-    } else if (req.session.userId === loggedSessionUser.userId) {
+    } else if (req.session.userId === loggedSessionUser.id) {
       res.send('Already logged in');
     }
 
@@ -51,7 +51,7 @@ router.post('/login', async (req, res, next) => {
     //How do you fix possilbe race conditions
 
     // eslint-disable-next-line require-atomic-updates
-    req.session.userId = loggedSessionUser.userId;
+    req.session.userId = loggedSessionUser.id;
 
     res.send('You are logged in');
   } catch (err) {
