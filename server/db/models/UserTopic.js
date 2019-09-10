@@ -1,7 +1,7 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
 
-const UserTopic = db.define('meetup', {
+const UserTopic = db.define('user_topic', {
   id: {
     primaryKey: true,
     type: Sequelize.UUID,
