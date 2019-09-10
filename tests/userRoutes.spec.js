@@ -24,7 +24,7 @@ afterAll(async () => {
 });
 
 //Tests
-describe('Express routes for users', () => {
+describe('Routes for all users', () => {
   describe('`/api/users` route handling a GET request', () => {
     it('responds with an array of all available users', async () => {
       const res = await fauxios.get('/api/users');
@@ -53,7 +53,7 @@ describe('Express routes for users', () => {
   });
 });
 
-describe('Express routes for user', () => {
+describe('Routes for a single user', () => {
   describe('`/api/users/:userId` route handling a GET request', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
