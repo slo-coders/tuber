@@ -21,15 +21,15 @@ describe('`/api/topics` route handling a GET request', () => {
   });
 });
 
-describe('`/api/topics` route handling a POST request', () => {
-  it('returns posts a new course and course content', async () => {
-    const response = await fauxios
-      .post('/api/topics/')
-      .send(newTopic);
-    expect(response.status).toEqual(201);
-    expect(response.body.title).toBe('TestTitle');
-  });
-});
+// describe('`/api/topics` route handling a POST request', () => {
+//   it('returns posts a new course and course content', async () => {
+//     const response = await fauxios
+//       .post('/api/topics/')
+//       .send(newTopic);
+//     expect(response.status).toEqual(201);
+//     expect(response.body.title).toBe('TestTitle');
+//   });
+// });
 
 // describe('`/api/topics/:id` route handling a PUT and DELETE request', () => {
 //   let topic;
