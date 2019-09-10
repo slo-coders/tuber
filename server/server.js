@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
+const routes = require('./routes/index');
 // const session = require('express-session');
 // const {db} = require('./db/index');
-/* const routes = require('./routes/index');
-const sessionRoutes = require('./routes/sessionRoutes');
+/* const sessionRoutes = require('./routes/sessionRoutes');
 const SequelizeStore = require('connect-session-sequelize')(session.Store); */
 
 require('dotenv').config();
@@ -33,9 +33,7 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use('/', sessionRoutes)
-// app.use('/api', routes);
+app.use('/api', routes);
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
-
-app.use('/api', require('./routes/index'));
 
 module.exports = app;
