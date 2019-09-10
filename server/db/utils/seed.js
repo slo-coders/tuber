@@ -1,4 +1,7 @@
-const { db, User, Course, Topic, Meetup } = require('../index');
+const { db, User, Course, Meetup, UserMeetup, Topic } = require('../index');
+const meetupsData = require('./seedFiles/meetupData');
+const coursesData = require('./seedFiles/courseData');
+const userMeetUpData = require('./seedFiles/userMeetupData');
 const faker = require('faker');
 const path = require('path');
 const fs = require('fs');
@@ -39,54 +42,6 @@ do {
     });
 } while (users.length < num);
 
-const meetups = [
-  {
-    meetupType: 'M:M',
-    location: 'Library',
-    matchedAt: new Date(),
-    meetupEnded: new Date(),
-  },
-  {
-    meetupType: 'M:M',
-    location: 'Library',
-    matchedAt: new Date(),
-    meetupEnded: new Date(),
-  },
-  {
-    meetupType: 'M:M',
-    location: 'Coffee Shop',
-    matchedAt: new Date(),
-    meetupEnded: new Date(),
-  },
-  {
-    meetupType: 'M:M',
-    location: 'Computer Lab',
-    matchedAt: new Date(),
-    meetupEnded: new Date(),
-  },
-];
-
-const courses = [
-  {
-    courseName: 'Intermediate Algebra',
-    courseCode: '96',
-    syllabusBody:
-      'Review of basic algebra skills at the intermediate algebra level intended primarily to prepare students for MATH 116. Not for baccalaureate credit. Credit/No Credit grading only. 3 lectures.',
-  },
-  {
-    courseName: 'Calculus 1',
-    courseCode: '141',
-    syllabusBody:
-      'Limits, continuity, differentiation. Introduction to integration. 4 lectures. Crosslisted as HNRS/MATH 141.',
-  },
-  {
-    courseName: 'Partial Differential Equations',
-    courseCode: '419',
-    syllabusBody:
-      'Evolution of mathematics from earliest to modern times. Major trends in mathematical thought, the interplay of mathematical and technological innovations, and the contributions of great mathematicians. Appropriate for prospective and in-service teachers. 4 lectures.',
-  },
-];
-
 // Sync to DB then Seed Dummy Data
 const seed = async () => {
   try {
@@ -95,18 +50,39 @@ const seed = async () => {
       console.log('Synced DB.');
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
+
+      await Promise.all(meetupsData.map(m => Meetup.create(m)));
+
+      await Promise.all(coursesData.map(course => Course.create(course)));
+
+      const usersReturned = await User.findAll();
+      const meetupsReturned = await Meetup.findAll();
+
+      await Promise.all(
+        userMeetUpData.map((user, i) =>
+          UserMeetup.create({
+            meetupType: user.userType,
+            softSkillsRating: user.softSkillsRating,
+            userType: user.userType,
+            proficiencyRating: user.proficiencyRating,
+            userId: usersReturned[i].userId,
+            meetupId: meetupsReturned[i % 2].id,
+            comments: user.comments,
+          }),
+        ),
+      );
+
       //Topic seeding
-      let src = path.join(__dirname, 'seeds', 'topicSeed.json');
+      let src = path.join(__dirname, 'seedFiles', 'topicSeed.json');
       let data = fs.readFileSync(src, 'utf8');
       let topics = JSON.parse(data);
       await Promise.all(topics.map(topic => Topic.create(topic)));
       // Course seeding
-      await Promise.all(courses.map(course => Course.create({ ...course })));
+
       //CourseTopic associations made
       //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
       //CourseTopic.associate('96', 'Limits');
       //Meetup seeding
-      await Promise.all(meetups.map(m => Meetup.create(m)));
 
       // db.close(); //Not closing since some tests don't include after hook to sync db then seed data
       console.log('Seeded DB.');

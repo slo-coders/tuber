@@ -1,4 +1,4 @@
-const { db } = require('../server/db/index');
+const { db, UserMeetup } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
@@ -117,5 +117,48 @@ describe('Express routes for user', () => {
       expect(noUserNoErr.status).toEqual(404);
       expect(noUserNoErr.body.userId).toBe(undefined);
     });
+  });
+});
+
+describe('`/api/users/:userId/userMeetup/:meetupId` route returns an array of users for a user-meetup', () => {
+  it('fetches user-meetup info based on a specific user ID', async () => {
+    const users = await UserMeetup.findAll();
+
+    const response = await request(app).get(
+      `/api/users/${users[0].userId}/userMeetup/${users[0].meetupId}`,
+    );
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(2);
+    expect(response.body[0]).toHaveProperty('userMeetupId');
+    expect(response.body[1]).toHaveProperty('proficiencyRating');
+  });
+});
+
+describe('`/api/users/:userId/userMeetup/:meetupId` route to handle PUT request to update user status', () => {
+  it('updates user and partner info', async () => {
+    const users = await UserMeetup.findAll();
+
+    const req = {
+      body: {
+        userType: 'mentor',
+        softSkillsRating: '200',
+        proficiencyRating: '400',
+        comments: 'worked on some homework stuff',
+      },
+    };
+
+    const response = await request(app)
+      .put(`/api/users/${users[0].userId}/userMeetup/${users[0].meetupId}`)
+      .send(
+        await UserMeetup.updateUserMeetup(
+          users[0].userId,
+          users[0].meetupId,
+          req,
+        ),
+      );
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(2);
+    expect(response.body[1].userType).toBe('mentor');
+    expect(response.body[0].softSkillsRating).not.toBe(null);
   });
 });

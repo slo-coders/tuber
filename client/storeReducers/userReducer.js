@@ -32,5 +32,5 @@ export const allUsersReducer = (state = initAllUsers, action) => {
       return { ...state, allPartnerOptions: action.payload };
     default:
       return state;
-  } 
+  }
 };*/
