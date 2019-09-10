@@ -5,7 +5,7 @@ const request = require('supertest'); //client
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
-let userId, topics;
+let userId, topics, currentUserReturned;
 
 
 //Tests
@@ -21,12 +21,12 @@ describe('Routes for a new user\'s topic information', () => {
     };
 
     //Getting dummy User id from User table in seeded db 
-    const currentUserReturned = await User.create(currentUser);
+    currentUserReturned = await User.create(currentUser);
     userId = currentUserReturned.id;
   });
 
   afterAll(async () => {
-    await User.findByPk(userId).destroy();
+    await currentUserReturned.destroy();
     await db.close();
     console.log('DB closed.');
   });
