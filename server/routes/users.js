@@ -6,7 +6,7 @@ const { User, UserMeetup } = require('../db/index');
 
 // Routes
 // `/api/users/:userId/topics/:topicId?`
-router.use('/:userId/topics', require('./userTopics'));
+router.all('/:userId/topics', require('./userTopics'));
 
 //`/api/users`
 router.route('/')
@@ -61,7 +61,7 @@ router.route('/:userId')
 // router.get('/:userId/userMeetup', async (req, res, next) => {
 //   try {
 //     const user = await User.findOne({
-//       where: { userId: req.params.userId },
+//       where: { id: req.params.userId },
 //       include: [{ model: Meetup, through: { model: UserMeetup } }],
 //     });
 //     res.send(user);
@@ -93,4 +93,5 @@ router.put('/:userId/userMeetup/:meetupId', async (req, res, next) => {
     next(err);
   }
 });
+
 module.exports = router;
