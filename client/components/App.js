@@ -4,6 +4,7 @@ import Home from './Home';
 import Nav from './Nav';
 import UserProfile from './UserProfile';
 import RequestMatch from './RequestMatch';
+import SignUp from './SignUp/SignUp';
 
 class App extends React.Component {
   componentDidMount() {}
@@ -14,6 +15,7 @@ class App extends React.Component {
         <Route path="/" component={Nav} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/profile" component={UserProfile} />
+        <Route exact path="/signup" component={SignUp} />
         <Route
           exact
           path="/request_match"
