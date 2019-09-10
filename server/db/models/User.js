@@ -1,5 +1,5 @@
 const db = require('../db');
-const hash = require('../utils/hash');
+const crypto = require('crypto');
 
 // Model Definition
 const User = db.define('user', {
@@ -29,6 +29,10 @@ const User = db.define('user', {
       notEmpty: true,
     },
   },
+  salt: {
+    type: db.Sequelize.STRING,
+  },
+
   email: {
     type: db.Sequelize.STRING,
     allowNull: false,
@@ -48,21 +52,38 @@ const User = db.define('user', {
 
 // Lifecycle Events (a.k.a. Hooks)
 User.beforeCreate(user => {
-  user.password = hash(user.password);
+  const data = User.hashPassword(user.password);
+  user.password = data.hash;
+  user.salt = data.salt;
 });
 
-// User.beforeUpdate(user => {
-//   user.password = hash(user.password);
-// });
+User.beforeUpdate(user => {
+  const data = User.hashPassword(user.password);
+  user.password = data.hash;
+  user.salt = data.salt;
+});
+
 User.beforeValidate(studentSubmitted => {
   if (studentSubmitted.schoolId === '') {
     studentSubmitted.schoolId = null;
   }
 });
 
+//Set passwwords
+User.hashPassword = function(password) {
+  this.salt = crypto.randomBytes(32).toString('hex');
+  this.hash = crypto
+    .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
+    .toString(`hex`);
+  return { salt: this.salt, hash: this.hash };
+};
+
 //Verify Passwords
-User.verifyPassword = function(user, password) {
-  return user.password === hash(password) ? true : false;
+User.verifyPassword = function(password) {
+  let hash = crypto
+    .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
+    .toString(`hex`);
+  return this.hash === hash;
 };
 
 // Class Methods
@@ -89,7 +110,7 @@ User.login = async function(email, password) {
   return await this.findOne({
     where: {
       email,
-      password: hash(password),
+      password: User.hashPassword(password),
     },
   });
 };

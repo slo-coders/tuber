@@ -16,6 +16,8 @@ do {
       const imageUrl = faker.image.avatar();
       const email = `${firstName}.${lastName}@slo.edu`.toLowerCase();
       const password = 'test';
+      let salt = 'test2';
+      let interation = 12345678;
       //const weightedAveSoftSkillsRating = 4.2;
       return {
         firstName,
@@ -23,6 +25,8 @@ do {
         email,
         imageUrl,
         password,
+        salt,
+        interation,
         // weightedAveSoftSkillsRating
       };
     })
