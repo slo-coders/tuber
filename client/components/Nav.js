@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {LoginForm} from './LoginForm';
 
 function Nav() {
   return (
@@ -27,6 +28,16 @@ function Nav() {
               </a>
             </div>
           </div>
+          <div className="navbar-item">
+            <div className="buttons">
+              <a
+                className="button is-primary"
+              >
+                Log In
+              </a>
+            </div>
+          </div>
+          <LoginForm/>
         </div>
       </div>
     </nav>
