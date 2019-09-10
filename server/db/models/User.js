@@ -2,7 +2,8 @@ const db = require('../db');
 const { hash } = require('../utils/hash');
 
 // Model Definition
-const User = db.define('user',
+const User = db.define(
+  'user',
   {
     id: {
       type: db.Sequelize.UUID,
@@ -53,9 +54,9 @@ const User = db.define('user',
     scopes: {
       withoutPassword: {
         attributes: { exclude: ['password'] },
-      }
-    }
-  }
+      },
+    },
+  },
 );
 
 // Lifecycle Events (a.k.a. Hooks)

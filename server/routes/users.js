@@ -32,7 +32,9 @@ router
   .route('/:userId')
   .get(async (req, res, next) => {
     try {
-      const user = await User.scope('withoutPassword').findByPk(req.params.userId);
+      const user = await User.scope('withoutPassword').findByPk(
+        req.params.userId,
+      );
       if (user) {
         res.send(user);
       } else {
