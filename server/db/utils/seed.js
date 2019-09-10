@@ -1,40 +1,13 @@
-const { db, User, Course, Meetup, UserMeetup, Topic } = require('../index');
+const { db, User, Course, Topic, UserTopic, Meetup, UserMeetup} = require('../index');
+const users = require('./seedFiles/userData');
+const randIntBtwn = require('./randIntBtwn');
 const meetupsData = require('./seedFiles/meetupData');
 const coursesData = require('./seedFiles/courseData');
 const userMeetUpData = require('./seedFiles/userMeetupData');
-const faker = require('faker');
 const path = require('path');
 const fs = require('fs');
 
-//Generate Dummy Data
-const num = 10;
-const emails = {};
-let users = Array(num).fill({});
-
-do {
-  users = users
-    .map(() => {
-      const firstName = faker.name.firstName();
-      const lastName = faker.name.lastName();
-      const imageUrl = faker.image.avatar();
-      const email = `${firstName}.${lastName}@slo.edu`.toLowerCase();
-      //const weightedAveSoftSkillsRating = 4.2;
-      return {
-        firstName,
-        lastName,
-        email,
-        imageUrl,
-        // weightedAveSoftSkillsRating
-      };
-    })
-    .filter(user => {
-      if (emails[user.email]) return false;
-      else {
-        emails[user.email] = true;
-        return true;
-      }
-    });
-} while (users.length < num);
+let usersReturned;
 
 // Sync to DB then Seed Dummy Data
 const seed = async () => {
@@ -42,16 +15,43 @@ const seed = async () => {
     if (process.env.NODE_ENV !== 'production') {
       await db.sync({ force: true });
       console.log('Synced DB.');
+
+      //Seed User
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
+      usersReturned = await User.findAll();
 
-      await Promise.all(meetupsData.map(m => Meetup.create(m)));
-
+      //Seed Course
       await Promise.all(coursesData.map(course => Course.create(course)));
 
-      const usersReturned = await User.findAll();
+      //Seed Topic
+      let src = path.join(__dirname, 'seedFiles', 'topicSeed.json');
+      let data = fs.readFileSync(src, 'utf8');
+      let topics = JSON.parse(data);
+      await Promise.all(topics.map(topic => Topic.create(topic)));
+      //CourseTopic associations made
+      //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
+      //CourseTopic.associate('96', 'Limits');
+      const topicsReturned = await Topic.findAll();
+
+      //Seed UserTopic
+      usersReturned.forEach(async (user) => {
+        const start = randIntBtwn(0, topicsReturned.length - 1);
+        const end = randIntBtwn(start, topicsReturned.length + 1);
+        const ratedTopics = topicsReturned.slice(start, end)
+        .map(topic => ({
+            userId: user.id,
+            topicId: topic.id,
+            proficiencyRating: randIntBtwn(0, 500),
+        }));
+        await Promise.all(ratedTopics.map(uTop => UserTopic.create(uTop)));
+      });
+
+      //Seed Meetup
+      await Promise.all(meetupsData.map(m => Meetup.create(m)));
       const meetupsReturned = await Meetup.findAll();
 
+      //Seed UserMeetup
       await Promise.all(
         userMeetUpData.map((user, i) =>
           UserMeetup.create({
@@ -59,26 +59,13 @@ const seed = async () => {
             softSkillsRating: user.softSkillsRating,
             userType: user.userType,
             proficiencyRating: user.proficiencyRating,
-            userId: usersReturned[i].userId,
+            userId: usersReturned[i].id,
             meetupId: meetupsReturned[i % 2].id,
             comments: user.comments,
           }),
         ),
       );
 
-      //Topic seeding
-      let src = path.join(__dirname, 'seedFiles', 'topicSeed.json');
-      let data = fs.readFileSync(src, 'utf8');
-      let topics = JSON.parse(data);
-      await Promise.all(topics.map(topic => Topic.create(topic)));
-      // Course seeding
-
-      //CourseTopic associations made
-      //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
-      //CourseTopic.associate('96', 'Limits');
-      //Meetup seeding
-
-      // db.close(); //Not closing since some tests don't include after hook to sync db then seed data
       console.log('Seeded DB.');
     } else {
       throw 'Error: Trying to seed in production environment.';
