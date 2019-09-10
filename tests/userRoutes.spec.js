@@ -113,6 +113,17 @@ describe('Express routes for user', () => {
   });
 });
 
+describe('`/api/users/:userId/userMeetup` route which returns dataset meetup and user-meetup information for a particular single user', () => {
+  it('returns a user with a meetups property', async () => {
+    const users = await UserMeetup.findAll();
+    const response = await request(app).get(
+      `/api/users/${users[0].userId}/userMeetup`,
+    );
+    expect(response.status).toEqual(200);
+    expect(response.body).toHaveProperty('meetups');
+  });
+});
+
 describe('`/api/users/:userId/userMeetup/:meetupId` route returns an array of users for a user-meetup', () => {
   it('fetches user-meetup info based on a specific user ID', async () => {
     const users = await UserMeetup.findAll();
