@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loginThunked, fetchLoggedInThunked } from '../actions/sessionActions';
+import { loginThunked } from '../actions/sessionActions';
+// fetchLoggedInThunked import and trigger on component load?
 
 export class LoginForm extends Component{
   constructor() {
@@ -25,36 +26,51 @@ export class LoginForm extends Component{
     ev.preventDefault();
     console.log(this.state);
     console.log('I do nothing meanigful so far, attempting to trigger loginThunked');
-    loginThunked(this.state);
+    this.props.loginThunked(this.state);
   }
 
   render() {
     return(
-      <div>
+      <div className="column is-one-third">
         <form className="LoginForm" onSubmit={ev =>   this.onSubmit(ev)}>
-          <label> Email </label>
-          <input
-            type="text"
-            onChange={this.onHandle}
-            name="email"
-            value={this.state.email}
-          />
-          <label> Password </label>
-          <input
-            type="text"
-            onChange={this.onHandle}
-            name="password"
-            value={this.state.password}
-          />
-          <button
-            disabled={
-              this.state.email &&
-              this.state.password ?
-              false : true
-            }
-          >
-            Log In
-          </button>
+          <div className='field'>
+            <div className='control'>
+              <label> Email </label>
+              <input
+                type="email"
+                onChange={this.onHandle}
+                name="email"
+                value={this.state.email}
+                placeholder="Email"
+                className="input"
+              />
+            </div>
+          </div>
+          <div className='field'>
+            <div className='control'>
+              <label> Password </label>
+              <input
+                type="password"
+                onChange={this.onHandle}
+                name="password"
+                value={this.state.password}
+                placeholder="Password"
+                className="input"
+              />
+            </div>
+          </div>
+          <div className= "buttons">
+            <button
+              disabled={
+                this.state.email &&
+                this.state.password ?
+                false : true
+              }
+              className= "button is-primary"
+              >
+              Log In
+            </button>
+          </div>
         </form>
       </div>
     );
@@ -63,7 +79,7 @@ export class LoginForm extends Component{
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginThunked: (userInfo) => dispatch(loginThunked(userInfo))
+    loginThunked: userInfo => dispatch(loginThunked(userInfo))
   };
 };
 

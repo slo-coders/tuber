@@ -27,16 +27,6 @@ function Nav() {
               </a>
             </div>
           </div>
-          <div className="navbar-item">
-            <div className="buttons">
-              <Link
-                className="button is-primary"
-                to="/login"
-              >
-                Log In
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </nav>
