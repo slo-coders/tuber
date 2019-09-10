@@ -1,40 +1,66 @@
 const express = require('express');
 const path = require('path');
-// const session = require('express-session');
-// const {db} = require('./db/index');
-/* const routes = require('./routes/index');
-const sessionRoutes = require('./routes/sessionRoutes');
-const SequelizeStore = require('connect-session-sequelize')(session.Store); */
+const { User } = require('./db/index');
+
+const { db } = require('../server/db/index');
+const session = require('express-session');
+const createSequelizeStore = require('connect-session-sequelize');
+const SequelizeStore = createSequelizeStore(session.Store);
 
 require('dotenv').config();
 
 const app = express();
 
-/*
-const store = new SequelizeStore({
-  db,
-  table: 'session',
-  extendDefaults: (defaults, _session) => {
-    return {
-      data: defaults.data,
-      expires: defaults.expires,
-      userId: _session.userId,
-    }
-  }
-})
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'Salt and Sanctuary',
+    cookie: { maxAge: 3 * 60 * 60 * 1000 },
+    resave: false,
+    saveUninitialized: false,
+    name: 'SID',
+    store: new SequelizeStore({
+      db,
+      table: 'session',
+      extendDefaultFields: (defaults, session) => ({
+        data: defaults.data,
+        expires: defaults.expires,
+        userId: session.userId,
+      }),
+    }),
+  }),
+);
 
-app.use(session({
-  secret: 'a;ldf;alskdf',
-  resave: false,
-  saveUninitialized: true,
-  store
-}))
-*/
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use('/', sessionRoutes)
+
 // app.use('/api', routes);
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
+
+app.use('/api/sessions', require('./routes/sessions'));
+
+//PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
+if (process.env.NODE_ENV !== 'test') {
+  app.use(async (req, res, next) => {
+    try {
+      if (req.session && req.session.userId) {
+        const sessionUser = await User.findOne({
+          where: {
+            userId: req.session.userId,
+          },
+        });
+        if (!sessionUser) {
+          console.log('Please try again');
+        }
+        next();
+      } else {
+        res.sendStatus(401);
+        next();
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+}
 
 app.use('/api', require('./routes/index'));
 

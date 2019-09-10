@@ -14,7 +14,7 @@ const verifyPassword = function(password, userHash, userSalt) {
   let hash = crypto
     .pbkdf2Sync(password, userSalt, 1000, 64, `sha512`)
     .toString(`hex`);
-  return userHash === hash;
+  return userHash === hash ? true : false;
 };
 
 module.exports = { hash, verifyPassword };

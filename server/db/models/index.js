@@ -5,6 +5,7 @@ const CourseTopic = require('./CourseTopic');
 // const UserMeetup = require('./UserMeetup');
 const Meetup = require('./Meetup');
 const UserMeetup = require('./UserMeetup');
+const Session = require('./Session');
 
 //Associations
 //User.hasMany(UserMeeting);
@@ -44,4 +45,5 @@ module.exports = {
   CourseTopic,
   Meetup,
   UserMeetup,
+  Session,
 };
