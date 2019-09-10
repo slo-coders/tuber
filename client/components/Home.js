@@ -1,8 +1,14 @@
 import React from 'react';
 
-export const Home = () => {
-  console.log('In this home component');
-  return <div>This is the home component</div>;
+const Home = () => {
+  return (
+    <div>
+      <span className="icon has-text-warning">
+        <i className="fas fa-exclamation-triangle"></i>
+      </span>
+      <div>The Home component is under construction</div>
+    </div>
+  );
 };
 
 export default Home;

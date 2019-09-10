@@ -1,15 +1,15 @@
-const { db } = require('../server/db/index');
+const { db, UserMeetup } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
 
-const fauxios = request(app);  //supertest both ports and makes HTTP requests to app
+const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
 const newUser = {
-  firstName: "Hugo",
-  lastName: "Campos",
-  email: "contacthugocampos@gmail.com",
-  imageUrl: "https://avatars.dicebear.com/v2/bottts/012.svg"
+  firstName: 'Hugo',
+  lastName: 'Campos',
+  email: 'contacthugocampos@gmail.com',
+  imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
 };
 
 let newUserId;
@@ -30,16 +30,21 @@ describe('Express routes for users', () => {
       const res = await fauxios.get('/api/users');
       expect(res.status).toEqual(200);
       expect(res.body.length).toEqual(10);
-      expect(Object.keys(res.body[0])).toEqual(expect.arrayContaining(
-        ['userId', 'firstName', 'lastName', 'email', 'imageUrl']
-      ));
+      expect(Object.keys(res.body[0])).toEqual(
+        expect.arrayContaining([
+          'userId',
+          'firstName',
+          'lastName',
+          'email',
+          'imageUrl',
+        ]),
+      );
     });
   });
 
   describe('`/api/users` route handling a POST request', () => {
     it('responds with new user instance with an id', async () => {
-      const res = await fauxios.post('/api/users')
-        .send(newUser);
+      const res = await fauxios.post('/api/users').send(newUser);
       newUserId = res.body.userId;
       expect(res.status).toEqual(201);
       expect(res.body).toHaveProperty('userId');
@@ -53,9 +58,15 @@ describe('Express routes for user', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
       expect(res.status).toEqual(200);
-      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(
-        ['userId', 'firstName', 'lastName', 'email', 'imageUrl']
-      ));
+      expect(Object.keys(res.body)).toEqual(
+        expect.arrayContaining([
+          'userId',
+          'firstName',
+          'lastName',
+          'email',
+          'imageUrl',
+        ]),
+      );
       expect(res.body).toHaveProperty('userId', newUserId);
       expect(res.body).toMatchObject(newUser);
     });
@@ -72,9 +83,7 @@ describe('Express routes for user', () => {
     });
     it('updates user email', async () => {
       const email = 'hcampos@cal.edu';
-      const res = await fauxios
-        .put(`/api/users/${newUserId}`)
-        .send({ email });
+      const res = await fauxios.put(`/api/users/${newUserId}`).send({ email });
       expect(res.status).toEqual(202);
       expect(res.body.email).toEqual(email);
     });
@@ -88,9 +97,7 @@ describe('Express routes for user', () => {
     });
     it('prevents updates to userId', async () => {
       const userId = '504c85d7-5dab-4196-99b4-b03a41877359';
-      const res = await fauxios
-        .put(`/api/users/${newUserId}`)
-        .send({ userId });
+      const res = await fauxios.put(`/api/users/${newUserId}`).send({ userId });
       expect(res.body.userId).not.toBe(userId);
     });
   });
@@ -103,5 +110,48 @@ describe('Express routes for user', () => {
       expect(noUserNoErr.status).toEqual(404);
       expect(noUserNoErr.body.userId).toBe(undefined);
     });
+  });
+});
+
+describe('`/api/users/:userId/userMeetup/:meetupId` route returns an array of users for a user-meetup', () => {
+  it('fetches user-meetup info based on a specific user ID', async () => {
+    const users = await UserMeetup.findAll();
+
+    const response = await request(app).get(
+      `/api/users/${users[0].userId}/userMeetup/${users[0].meetupId}`,
+    );
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(2);
+    expect(response.body[0]).toHaveProperty('userMeetupId');
+    expect(response.body[1]).toHaveProperty('proficiencyRating');
+  });
+});
+
+describe('`/api/users/:userId/userMeetup/:meetupId` route to handle PUT request to update user status', () => {
+  it('updates user and partner info', async () => {
+    const users = await UserMeetup.findAll();
+
+    const req = {
+      body: {
+        userType: 'mentor',
+        softSkillsRating: '200',
+        proficiencyRating: '400',
+        comments: 'worked on some homework stuff',
+      },
+    };
+
+    const response = await request(app)
+      .put(`/api/users/${users[0].userId}/userMeetup/${users[0].meetupId}`)
+      .send(
+        await UserMeetup.updateUserMeetup(
+          users[0].userId,
+          users[0].meetupId,
+          req,
+        ),
+      );
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(2);
+    expect(response.body[1].userType).toBe('mentor');
+    expect(response.body[0].softSkillsRating).not.toBe(null);
   });
 });
