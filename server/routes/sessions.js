@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const hash = require('../db/utils/hash');
+const { verifyPassword } = require('../db/utils/hash');
 const { User } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
   try {
-    console.log('SESSION', req.session);
+    console.log('SESSION get', req.session);
     const loggedUser = await User.findOne({
-      where: { id: req.session.userId },
+      where: { userId: req.session.userId },
     });
     res.send(loggedUser);
   } catch (err) {
@@ -16,26 +16,33 @@ router.get('/login', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
+  console.log('SESSION POST', req.session);
+  console.log('SESSION POST BODY', req.body);
   const { email, password } = req.body;
   if (!email || !password) {
-    res.sendStatus(401);
+    res.status(401).send('Please enter a valid email and password');
     return;
   }
   try {
     const loggedSessionUser = await User.findOne({
       where: {
-        email,
+        email: req.body.email,
       },
     });
 
     if (!loggedSessionUser) {
       res.sendStatus(401);
-    } else if (loggedSessionUser.id === req.session.id) {
+    } else if (req.session.userId === loggedSessionUser.userId) {
       res.send('Already logged in');
     }
 
-    //this needs to be adjusted with the salted password verification
-    if (hash(password) !== loggedSessionUser.password) {
+    const verified = verifyPassword(
+      password,
+      loggedSessionUser.password,
+      loggedSessionUser.salt,
+    );
+
+    if (!verified) {
       res.send('Unauthorized user. Please make an account');
     }
 
@@ -44,7 +51,9 @@ router.post('/login', async (req, res, next) => {
     //How do you fix possilbe race conditions
 
     // eslint-disable-next-line require-atomic-updates
-    req.session.userId = loggedSessionUser.id;
+    req.session.userId = loggedSessionUser.userId;
+
+    res.send('You are logged in');
   } catch (err) {
     next(err);
   }
