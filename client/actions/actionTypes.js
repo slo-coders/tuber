@@ -1,3 +1,8 @@
+//Session
+export const FETCH_LOGGED_USER = 'FETCH_LOGGED_USER';
+export const LOGIN_USER = 'LOGIN_USER ';
+export const LOGOUT_USER = 'LOGOUT_USER';
+
 //Course actions
 export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';
@@ -11,6 +16,7 @@ export const FETCH_TOPIC = 'FETCH_TOPIC';
 export const DELETE_TOPIC = 'DELETE_TOPIC';
 export const POST_TOPIC = 'POST_TOPIC';
 export const EDIT_TOPIC = 'EDIT_TOPIC';
+
 //Meetup actions
 export const FETCH_MEETUP = 'FETCH_MEETUP';
 export const DELETE_MEETUP = 'DELETE_MEETUP';
@@ -27,3 +33,4 @@ export const EDIT_USER = 'EDIT_USER';
 //User-meetup actions
 export const GET_MEETUP_DATA = 'GET_MEETUP_DATA';
 export const UPDATE_MEETUP_DATA = 'UPDATE_MEETUP_DATA';
+export const GET_USER_MEETUP_DATA = 'GET_USER_MEETUP_DATA ';

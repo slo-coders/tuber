@@ -2,12 +2,14 @@ const { db, UserMeetup } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
 const app = require('../server/server'); //does not start server
 const request = require('supertest'); //client
+const { verifyPassword } = require('../server/db/utils/hash');
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
 const newUser = {
   firstName: 'Hugo',
   lastName: 'Campos',
+  password: 'test',
   email: 'contacthugocampos@gmail.com',
   imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
 };
@@ -35,6 +37,7 @@ describe('Express routes for users', () => {
           'userId',
           'firstName',
           'lastName',
+          'password',
           'email',
           'imageUrl',
         ]),
@@ -48,7 +51,7 @@ describe('Express routes for users', () => {
       newUserId = res.body.userId;
       expect(res.status).toEqual(201);
       expect(res.body).toHaveProperty('userId');
-      expect(res.body).toMatchObject(newUser);
+      expect(res.body.password).not.toBe(newUser.password);
     });
   });
 });
@@ -57,18 +60,22 @@ describe('Express routes for user', () => {
   describe('`/api/users/:userId` route handling a GET request', () => {
     it('responds with an object for one user', async () => {
       const res = await fauxios.get(`/api/users/${newUserId}`);
+      console.log('RESR', res.body);
       expect(res.status).toEqual(200);
       expect(Object.keys(res.body)).toEqual(
         expect.arrayContaining([
           'userId',
           'firstName',
           'lastName',
+          'password',
           'email',
           'imageUrl',
         ]),
       );
       expect(res.body).toHaveProperty('userId', newUserId);
-      expect(res.body).toMatchObject(newUser);
+      expect(
+        verifyPassword(newUser.password, res.body.password, res.body.salt),
+      ).toEqual(true);
     });
   });
 
@@ -110,6 +117,17 @@ describe('Express routes for user', () => {
       expect(noUserNoErr.status).toEqual(404);
       expect(noUserNoErr.body.userId).toBe(undefined);
     });
+  });
+});
+
+describe('`/api/users/:userId/userMeetup` route which returns dataset meetup and user-meetup information for a particular single user', () => {
+  it('returns a user with a meetups property', async () => {
+    const users = await UserMeetup.findAll();
+    const response = await request(app).get(
+      `/api/users/${users[0].userId}/userMeetup`,
+    );
+    expect(response.status).toEqual(200);
+    expect(response.body).toHaveProperty('meetups');
   });
 });
 
