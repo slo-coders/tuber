@@ -8,7 +8,7 @@ const fauxios = request(app); //supertest both ports and makes HTTP requests to 
 const newUser = {
   firstName: 'Hugo',
   lastName: 'Campos',
-  email: 'contacthugocampos@gmail.com',
+  email: 'contacthugocampos@gmail.com', //needs to be unique relative to other test-created users
   imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
 };
 
@@ -32,7 +32,7 @@ describe('Routes for all users', () => {
       expect(res.body.length).toEqual(10);
       expect(Object.keys(res.body[0])).toEqual(
         expect.arrayContaining([
-          'userId',
+          'id',
           'firstName',
           'lastName',
           'email',
@@ -45,9 +45,9 @@ describe('Routes for all users', () => {
   describe('`/api/users` route handling a POST request', () => {
     it('responds with new user instance with an id', async () => {
       const res = await fauxios.post('/api/users').send(newUser);
-      newUserId = res.body.userId;
+      newUserId = res.body.id;
       expect(res.status).toEqual(201);
-      expect(res.body).toHaveProperty('userId');
+      expect(res.body).toHaveProperty('id');
       expect(res.body).toMatchObject(newUser);
     });
   });
@@ -60,14 +60,14 @@ describe('Routes for a single user', () => {
       expect(res.status).toEqual(200);
       expect(Object.keys(res.body)).toEqual(
         expect.arrayContaining([
-          'userId',
+          'id',
           'firstName',
           'lastName',
           'email',
           'imageUrl',
         ]),
       );
-      expect(res.body).toHaveProperty('userId', newUserId);
+      expect(res.body).toHaveProperty('id', newUserId);
       expect(res.body).toMatchObject(newUser);
     });
   });
@@ -95,10 +95,10 @@ describe('Routes for a single user', () => {
       expect(res.status).toEqual(202);
       expect(res.body.imageUrl).toEqual(imageUrl);
     });
-    it('prevents updates to userId', async () => {
+    it('prevents updates to user\'s id', async () => {
       const userId = '504c85d7-5dab-4196-99b4-b03a41877359';
       const res = await fauxios.put(`/api/users/${newUserId}`).send({ userId });
-      expect(res.body.userId).not.toBe(userId);
+      expect(res.body.id).not.toBe(userId);
     });
   });
 
@@ -108,7 +108,7 @@ describe('Routes for a single user', () => {
       expect(res.status).toEqual(204);
       const noUserNoErr = await fauxios.get(`/api/users/${newUserId}`);
       expect(noUserNoErr.status).toEqual(404);
-      expect(noUserNoErr.body.userId).toBe(undefined);
+      expect(noUserNoErr.body.id).toBe(undefined);
     });
   });
 });
@@ -118,7 +118,7 @@ describe('`/api/users/:userId/userMeetup/:meetupId` route returns an array of us
     const users = await UserMeetup.findAll();
 
     const response = await request(app).get(
-      `/api/users/${users[0].userId}/userMeetup/${users[0].meetupId}`,
+      `/api/users/${users[0].id}/userMeetup/${users[0].meetupId}`,
     );
     expect(response.status).toEqual(200);
     expect(response.body.length).toEqual(2);

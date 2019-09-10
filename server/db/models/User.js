@@ -5,7 +5,7 @@ const hash = require('../utils/hash');
 const User = db.define(
   'user',
   {
-    userId: {
+    id: {
       type: db.Sequelize.UUID,
       defaultValue: db.Sequelize.UUIDV4,
       primaryKey: true,

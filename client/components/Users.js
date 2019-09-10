@@ -14,7 +14,7 @@ export class Users extends React.Component {
       <div>
         This is the users component
         {users.map(user => (
-          <div key={user.userId}>{`${user.firstName} ${user.lastName}`}</div>
+          <div key={user.id}>{`${user.firstName} ${user.lastName}`}</div>
         ))}
       </div>
     );
