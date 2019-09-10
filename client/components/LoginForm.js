@@ -25,7 +25,7 @@ export class LoginForm extends Component{
     ev.preventDefault();
     console.log(this.state);
     console.log('I do nothing meanigful so far, attempting to trigger loginThunked');
-    loginThunked;
+    loginThunked(this.state);
   }
 
   render() {
