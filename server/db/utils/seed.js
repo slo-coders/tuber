@@ -1,4 +1,12 @@
-const { db, User, Course, Topic, UserTopic, Meetup, UserMeetup} = require('../index');
+const {
+  db,
+  User,
+  Course,
+  Topic,
+  UserTopic,
+  Meetup,
+  UserMeetup,
+} = require('../index');
 const users = require('./seedFiles/userData');
 const randIntBtwn = require('./randIntBtwn');
 const meetupsData = require('./seedFiles/meetupData');
@@ -35,14 +43,13 @@ const seed = async () => {
       const topicsReturned = await Topic.findAll();
 
       //Seed UserTopic
-      usersReturned.forEach(async (user) => {
+      usersReturned.forEach(async user => {
         const start = randIntBtwn(0, topicsReturned.length - 1);
         const end = randIntBtwn(start, topicsReturned.length + 1);
-        const ratedTopics = topicsReturned.slice(start, end)
-        .map(topic => ({
-            userId: user.id,
-            topicId: topic.id,
-            proficiencyRating: randIntBtwn(0, 500),
+        const ratedTopics = topicsReturned.slice(start, end).map(topic => ({
+          userId: user.id,
+          topicId: topic.id,
+          proficiencyRating: randIntBtwn(0, 500),
         }));
         await Promise.all(ratedTopics.map(uTop => UserTopic.create(uTop)));
       });

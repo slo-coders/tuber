@@ -19,11 +19,13 @@ const UserTopic = db.define('user_topic', {
 module.exports = UserTopic;
 
 UserTopic.createArr = async (userId, arrOfUserTopics) => {
-    return await Promise.all(arrOfUserTopics.map(uTop => 
+  return await Promise.all(
+    arrOfUserTopics.map(uTop =>
       UserTopic.create({
-      userId,
-      topicId: uTop.topicId,
-      proficiencyRating: uTop.proficiencyRating
-    }))
+        userId,
+        topicId: uTop.topicId,
+        proficiencyRating: uTop.proficiencyRating,
+      }),
+    ),
   );
 };

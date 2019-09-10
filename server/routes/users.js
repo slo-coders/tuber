@@ -9,7 +9,8 @@ const { User, UserMeetup } = require('../db/index');
 router.all('/:userId/topics', require('./userTopics'));
 
 //`/api/users`
-router.route('/')
+router
+  .route('/')
   .get(async (req, res, next) => {
     try {
       res.send(await User.findAll());
@@ -27,7 +28,8 @@ router.route('/')
   });
 
 //`/api/users/:userId`
-router.route('/:userId')
+router
+  .route('/:userId')
   .get(async (req, res, next) => {
     try {
       const user = await User.findByPk(req.params.userId);
