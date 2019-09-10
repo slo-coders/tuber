@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { User } = require('./db/index');
 
 const { db } = require('../server/db/index');
 const session = require('express-session');
@@ -34,7 +35,33 @@ app.use(express.urlencoded({ extended: true }));
 
 // app.use('/api', routes);
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
+
 app.use('/api/sessions', require('./routes/sessions'));
+
+//PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
+if (process.env.NODE_ENV !== 'test') {
+  app.use(async (req, res, next) => {
+    try {
+      if (req.session && req.session.userId) {
+        const sessionUser = await User.findOne({
+          where: {
+            userId: req.session.userId,
+          },
+        });
+        if (!sessionUser) {
+          console.log('Please try again');
+        }
+        next();
+      } else {
+        res.sendStatus(401);
+        next();
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+}
+
 app.use('/api', require('./routes/index'));
 
 module.exports = app;
