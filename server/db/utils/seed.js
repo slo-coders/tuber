@@ -6,14 +6,18 @@ const {
   UserTopic,
   Meetup,
   UserMeetup,
+
+  UserSession,
 } = require('../index');
 const users = require('./seedFiles/userData');
 const randIntBtwn = require('./randIntBtwn');
 const meetupsData = require('./seedFiles/meetupData');
 const coursesData = require('./seedFiles/courseData');
 const userMeetUpData = require('./seedFiles/userMeetupData');
+const userSessionData = require('./seedFiles/userSessionData');
 const path = require('path');
 const fs = require('fs');
+const uuid = require('./uuid');
 
 let usersReturned;
 
@@ -71,6 +75,17 @@ const seed = async () => {
             comments: user.comments,
           }),
         ),
+      );
+
+      await Promise.all(
+        userSessionData.map((user, i) => {
+          UserSession.create({
+            userType: user.userType,
+            // sid: uuid(),
+            selectedTopics: user.selectedTopics,
+            userId: usersReturned[i].id,
+          });
+        }),
       );
 
       console.log('Seeded DB.');
