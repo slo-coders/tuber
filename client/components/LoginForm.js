@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginThunked } from '../actions/sessionActions';
+import PropTypes from 'prop-types';
+
 // fetchLoggedInThunked import and trigger on component load?
 
 export class LoginForm extends Component{
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state ={
       email: '',
       password: ''
@@ -24,7 +26,9 @@ export class LoginForm extends Component{
   }
   onSubmit(ev) {
     ev.preventDefault();
+    //console.log(ev);
     console.log(this.state);
+    console.log(this.props);
     console.log('I do nothing meanigful so far, attempting to trigger loginThunked');
     this.props.loginThunked(this.state);
   }
@@ -32,7 +36,7 @@ export class LoginForm extends Component{
   render() {
     return(
       <div className="column is-one-third">
-        <form className="LoginForm" onSubmit={ev =>   this.onSubmit(ev)}>
+        <form className="LoginForm" onSubmit={this.onSubmit}>
           <div className='field'>
             <div className='control'>
               <label> Email </label>
@@ -77,11 +81,17 @@ export class LoginForm extends Component{
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loginThunked: userInfo => dispatch(loginThunked(userInfo))
-  };
+LoginForm.defaultProps = {
+  loginThunked: loginThunked
 };
+LoginForm.propTypes = {
+  loginThunked: PropTypes.func
+};
+
+const mapDispatchToProps = dispatch => ({
+  loginThunked: (userInfo) => dispatch(loginThunked(userInfo)),
+});
+
 
 export default connect(
   null,

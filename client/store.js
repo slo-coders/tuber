@@ -6,7 +6,7 @@ import courseReducer from './storeReducers/courseReducer';
 import topicReducer from './storeReducers/topicReducer';
 import meetupReducer from './storeReducers/meetupReducers';
 import userMeetupReducer from './storeReducers/userMeetupReducer';
-//import authReducer from './storeReducers/authReducer';
+import authReducer from './storeReducers/authReducer';
 
 const thunkMiddleware = require('redux-thunk').default;
 
@@ -19,7 +19,7 @@ const reducer = combineReducers({
   courses: courseReducer,
   topics: topicReducer,
   userMeetup: userMeetupReducer,
-  //auth: authReducer
+  auth: authReducer
 });
 
 export default createStore(reducer, applyMiddleware(thunkMiddleware));
