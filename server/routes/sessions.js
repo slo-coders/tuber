@@ -4,9 +4,9 @@ const { User } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
   try {
-    console.log('SESSION get', req.session);
+    //console.log('SESSION get', req.session);
     const loggedUser = await User.findOne({
-      where: { id: req.session.userId },
+      where: { userId: req.session.userId },
     });
     res.send(loggedUser);
   } catch (err) {
@@ -16,7 +16,7 @@ router.get('/login', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  console.log('SESSION POST', req.session);
+  //console.log('SESSION POST', req.session);
   console.log('SESSION POST BODY', req.body);
   const { email, password } = req.body;
   if (!email || !password) {
@@ -24,12 +24,13 @@ router.post('/login', async (req, res, next) => {
     return;
   }
   try {
+    //LEFT OFF HERE
+    console.log('We tried');
     const loggedSessionUser = await User.findOne({
       where: {
         email: req.body.email,
-      },
+      }
     });
-
     if (!loggedSessionUser) {
       res.sendStatus(401);
     } else if (req.session.userId === loggedSessionUser.id) {

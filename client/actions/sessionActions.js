@@ -3,8 +3,8 @@ import * as action from './actionTypes';
 
 export const loginThunked = userInfo => async dispatch => {
   try {
-    console.log('LOGIN ACTION')
     const loginUser = await axios.post('/api/sessions/login', userInfo);
+    console.log('waldo1'+loginUser)
     dispatch({ type: action.LOGIN_USER, payload: loginUser.data });
   } catch (err) {
     console.error(err);

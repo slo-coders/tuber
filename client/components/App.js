@@ -4,7 +4,7 @@ import Home from './Home';
 import Nav from './Nav';
 import UserProfile from './UserProfile';
 import RequestMatch from './RequestMatch';
-import { LoginForm } from './LoginForm';
+import LoginForm from './LoginForm';
 import SignUp from './SignUp/SignUp';
 
 class App extends React.Component {

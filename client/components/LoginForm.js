@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loginThunked } from '../actions/sessionActions';
+import { loginThunked, fetchLoggedInThunked } from '../actions/sessionActions';
 import PropTypes from 'prop-types';
 
 // fetchLoggedInThunked import and trigger on component load?
@@ -17,7 +17,10 @@ export class LoginForm extends Component{
   }
 
   componentDidMount() {
-    console.log('Login Form Loaded');
+    //this.props.fetchLoggedInThunked();
+  }
+  componentDidUpdate() {
+    this.props.fetchLoggedInThunked();
   }
   onHandle(ev) {
     this.setState({
@@ -26,7 +29,6 @@ export class LoginForm extends Component{
   }
   onSubmit(ev) {
     ev.preventDefault();
-    //console.log(ev);
     console.log(this.state);
     console.log(this.props);
     console.log('I do nothing meanigful so far, attempting to trigger loginThunked');
@@ -82,16 +84,18 @@ export class LoginForm extends Component{
 }
 
 LoginForm.defaultProps = {
-  loginThunked: loginThunked
+  loginThunked: loginThunked,
+  fetchLoggedInThunked: fetchLoggedInThunked
 };
 LoginForm.propTypes = {
-  loginThunked: PropTypes.func
+  loginThunked: PropTypes.func,
+  fetchLoggedInThunked: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => ({
   loginThunked: (userInfo) => dispatch(loginThunked(userInfo)),
+  fetchLoggedInThunked: () => dispatch(fetchLoggedInThunked())
 });
-
 
 export default connect(
   null,
