@@ -3,6 +3,12 @@ export const FETCH_LOGGED_USER = 'FETCH_LOGGED_USER';
 export const LOGIN_USER = 'LOGIN_USER ';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
+//User-session actions
+export const FETCH_ACTIVE_SESSIONS = 'FETCH_USER_SESSIONS';
+export const CREATE_USER_SESSION = 'CREATE_USER_SESSION';
+export const CHANGE_USER_SESSION = 'CHANGE_USER_SESSION';
+export const CLOSE_USER_SESSION = 'CLOSE_USER_SESSION';
+
 //Course actions
 export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';
