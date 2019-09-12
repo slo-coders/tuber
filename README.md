@@ -11,3 +11,7 @@ createdb tuber
 ```
 >NOTE:
 >If testing, create a second database for testing called *tuber-test*.
+
+# 'npm i'
+# 'npm run seed'
+# 'npm run start:dev'
