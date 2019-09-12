@@ -52,7 +52,7 @@ router.post('/login', async (req, res, next) => {
     //How do you fix possilbe race conditions
     // eslint-disable-next-line require-atomic-updates
     req.session.userId = loggedSessionUser.id;
-
+    //res.redirect('#/profile', 301);
     res.send('You are logged in');
   } catch (err) {
     next(err);
