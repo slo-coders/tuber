@@ -46,8 +46,8 @@ export default function Form(props) {
       <div className="field">
         <div className="control">
           <input
-            value={props.password1}
-            name="password1"
+            value={props.password}
+            name="password"
             onChange={props.handleChange}
             className="input"
             type="password"
@@ -56,7 +56,7 @@ export default function Form(props) {
         </div>
       </div>
 
-      <div className="field">
+      {/* <div className="field">
         <div className="control">
           <input
             value={props.password2}
@@ -67,7 +67,7 @@ export default function Form(props) {
             placeholder="Re-enter password"
           />
         </div>
-      </div>
+      </div> */}
     </form>
   );
 }
@@ -76,7 +76,7 @@ Form.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   email: PropTypes.string,
-  password1: PropTypes.string,
-  password2: PropTypes.string,
+  password: PropTypes.string,
+  // password2: PropTypes.string,
   handleChange: PropTypes.func,
 };

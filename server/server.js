@@ -32,7 +32,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', routes);
 app.use('/api/sessions', require('./routes/sessions'));
 
 //PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
@@ -58,6 +57,8 @@ app.use('/api/sessions', require('./routes/sessions'));
 //     }
 //   });
 // }
+
+app.use('/api', routes);
 
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
 

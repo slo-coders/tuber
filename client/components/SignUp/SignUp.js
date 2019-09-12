@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import TopicSelect from './TopicSelect';
 import Form from './Form';
 import SubmitButton from './SubmitButton';
+import { postUserThunk } from '../../actions/userActions';
+import PropTypes from 'prop-types';
 
 class SignUp extends Component {
   constructor() {
@@ -11,11 +13,13 @@ class SignUp extends Component {
       firstName: '',
       lastName: '',
       email: '',
-      password1: '',
-      password2: '',
-      topics: [],
+      password: '',
+      //password2: '',
+      //imageUrl: '',
+      //topics: [],
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
@@ -23,6 +27,11 @@ class SignUp extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+  }
+
+  handleSubmit() {
+    console.log('in handleSubmit, this.state:', this.state);
+    this.props.sendUserInfo(this.state);
   }
 
   render() {
@@ -35,14 +44,24 @@ class SignUp extends Component {
           <TopicSelect />
         </div>
         <div className="column is-one-third">
-          <SubmitButton />
+          <SubmitButton handleSubmit={this.handleSubmit} />
         </div>
       </div>
     );
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    sendUserInfo: userInfo => dispatch(postUserThunk(userInfo)),
+  };
+};
+
+SignUp.propTypes = {
+  sendUserInfo: PropTypes.func,
+};
+
 export default connect(
   null,
-  null,
+  mapDispatchToProps,
 )(SignUp);
