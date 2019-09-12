@@ -51,7 +51,8 @@ class SignUp extends Component {
   }
 
   render() {
-    if (this.props.topics.topics) {
+    const { topics } = this.props.topics;
+    if (topics) {
       return (
         <div>
           <div className="column is-one-third">
@@ -89,7 +90,7 @@ class SignUp extends Component {
             />
           </div>
           <div className="column is-one-third">
-            {this.props.topics.topics.map(topic => (
+            {topics.map(topic => (
               <div key={topic.id}>
                 <CheckBox
                   checkboxItem={topic.title}
