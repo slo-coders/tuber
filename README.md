@@ -12,6 +12,12 @@ createdb tuber
 >NOTE:
 >If testing, create a second database for testing called *tuber-test*.
 
-# 'npm i'
-# 'npm run seed'
-# 'npm run start:dev'
+# npm Commands
+Running a few npm commands and scripts is neccesary to launch application.
+Application will run on localhost:3000 be default without env file
+```bash
+npm i
+npm run:seed
+npm run start:dev
+```
+
