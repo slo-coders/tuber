@@ -25,7 +25,6 @@ router.post('/login', async (req, res, next) => {
   }
   try {
     //LEFT OFF HERE
-    console.log('We tried');
     const loggedSessionUser = await User.findOne({
       where: {
         email: req.body.email,
