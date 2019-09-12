@@ -4,14 +4,14 @@ const { User } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
   //BEHAVIOR: takes req.session.userId returns user data w/o password and salt
+  //TODO: throws errors about not finding User when no SID present, when wraped in conditional checking for SID, throws errors about unhandled promise rejectiong.
   try {
     //console.log('SESSION get', req.session);
-    //db query below occasionally throws sqlz errs about param 'id' is undefined, think we have a race condition occuring
     const loggedUser = await User.scope('withoutPassword').findOne({
       where: { id: req.session.userId },
     });
-    //console.log(loggedUser)
     res.send(loggedUser);
+    //console.log(loggedUser)
   } catch (err) {
     res.send('please sign in or register');
     next(err);
