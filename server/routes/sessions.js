@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { verifyPassword } = require('../db/utils/hash');
-const { User } = require('../db/models/index');
+const { User, UserSession, Session } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
   try {
@@ -46,10 +46,6 @@ router.post('/login', async (req, res, next) => {
       res.send('Unauthorized user. Please make an account');
     }
 
-    //the golden line of code
-
-    //How do you fix possilbe race conditions
-
     // eslint-disable-next-line require-atomic-updates
     req.session.userId = loggedSessionUser.id;
 
@@ -62,7 +58,78 @@ router.post('/login', async (req, res, next) => {
 router.post('/logout', (req, res) => {
   req.session.destroy(err => console.log(err));
   res.clearCookie('SID');
-  res.send('session loggedout');
+  res.send('session logged out');
+});
+
+//for UserSession functionality
+
+//return all active users
+router.get('/usersession', async (req, res, next) => {
+  try {
+    const activeUsers = await UserSession.findActiveUsersByType();
+    console.log('active users', activeUsers);
+    res.send(activeUsers);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/usersession/:userId', async (req, res, next) => {
+  try {
+    const userSessionFromUser = await Session.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    if (!userSessionFromUser) {
+      res.sendStatus(401);
+    }
+    //combine information from users session
+    const newSessionInfo = {
+      userId: req.body.userId,
+      sid: userSessionFromUser.sid,
+      selectedTopics: req.body.topics,
+      userType: req.body.userType,
+    };
+
+    const createdUserSession = await UserSession.create(newSessionInfo);
+
+    res.send(createdUserSession);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put('/usersession/:userId', async (req, res, next) => {
+  try {
+    const checkSession = await Session.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    if (!checkSession) {
+      res.sendStatus(401);
+    }
+    const updateUser = await UserSession.updateUserSession(req.body);
+    res.send(updateUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete('/usersession/:userId', async (req, res, next) => {
+  try {
+    const checkSession = await Session.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    if (!checkSession) {
+      res.sendStatus(401);
+    } else {
+      checkSession.destroy();
+      res.send('user-session closed');
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

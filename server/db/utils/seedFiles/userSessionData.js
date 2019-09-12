@@ -2,6 +2,7 @@ const userSessionData = [
   {
     userType: 'mentor',
     selectedTopics: ['Simplifying Polynomials'],
+    status: 'matched',
   },
   {
     userType: 'mentee',
@@ -10,6 +11,7 @@ const userSessionData = [
       'Factoring Polynomial',
       'Complex Fractions',
     ],
+    status: 'matched',
   },
   {
     userType: 'mentor',
