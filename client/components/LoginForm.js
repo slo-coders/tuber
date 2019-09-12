@@ -20,16 +20,17 @@ export class LoginForm extends Component {
     this.props.fetchLoggedInThunked();
   }
   componentDidUpdate() {
-    this.props.fetchLoggedInThunked();
+    //this.props.fetchLoggedInThunked();
   }
   onHandle(ev) {
     this.setState({
       [ev.target.name]: ev.target.value,
     });
   }
-  onSubmit(ev) {
+  async onSubmit(ev) {
     ev.preventDefault();
-    this.props.loginThunked(this.state);
+    await this.props.loginThunked(this.state);
+    window.location = '#/profile';
   }
 
   render() {
