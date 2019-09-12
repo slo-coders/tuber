@@ -88,6 +88,7 @@ router.post('/usersession', async (req, res, next) => {
       sid: userSessionFromUser.sid,
       selectedTopics: req.body.selectedTopics.split(','),
       userType: req.body.userType,
+      location: req.body.location,
     };
 
     const createdUserSession = await UserSession.create(newSessionInfo);

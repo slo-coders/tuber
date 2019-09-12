@@ -13,6 +13,10 @@ const UserSession = db.define('user_session', {
     values: ['mentor', 'mentee', 'peer'],
   },
 
+  location: {
+    type: Sequelize.ENUM,
+    values: ['library', 'computer lab', 'cafe', 'dorm lounge'],
+  },
   //Need to figure our how to further validate this, maybe as a class funciton. Mixing DataTypes ARRAY and ENUM is problematic
   selectedTopics: {
     type: Sequelize.ARRAY(Sequelize.STRING),
@@ -67,6 +71,7 @@ UserSession.updateUserSession = async function(userId, userInfo) {
     const updatedUserSession = {
       userType: userInfo.type,
       status: userInfo.status,
+      location: userInfo.location,
       selectedTopics: userInfo.selectedTopics.split(','),
     };
     return await sessionUser.update(updatedUserSession);
