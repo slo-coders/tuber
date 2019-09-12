@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SubmitButton from '../reusables/SubmitButton';
+import Button from '../reusables/Button';
 import { postUserThunk } from '../../actions/userActions';
 import PropTypes from 'prop-types';
 import Input from '../reusables/Input';
@@ -18,11 +18,11 @@ class SignUp extends Component {
       topics: [],
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
-  handleSubmit() {
+  handleClick() {
     this.props.sendUserInfo(this.state);
     this.setState({
       firstName: '',
@@ -101,8 +101,8 @@ class SignUp extends Component {
             ))}
           </div>
           <div className="column is-one-third">
-            <SubmitButton
-              handleSubmit={this.handleSubmit}
+            <Button
+              handleClick={this.handleClick}
               buttonStyle={'is-primary'}
               buttonText={'Submit'}
             />

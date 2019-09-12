@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default function Button(props) {
   return (
     <div className="buttons">
-      <a className={'button ' + props.buttonStyle} onClick={props.handleSubmit}>
+      <a className={'button ' + props.buttonStyle} onClick={props.handleClick}>
         {props.buttonText}
       </a>
     </div>
@@ -14,5 +14,5 @@ export default function Button(props) {
 Button.propTypes = {
   buttonText: PropTypes.string,
   buttonStyle: PropTypes.string,
-  handleSubmit: PropTypes.func,
+  handleClick: PropTypes.func,
 };
