@@ -1,5 +1,6 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
+const convertArray = require('../utils/convertArray');
 
 const UserSession = db.define('user_session', {
   id: {
@@ -12,14 +13,9 @@ const UserSession = db.define('user_session', {
     values: ['mentor', 'mentee', 'peer'],
   },
 
+  //Need to figure our how to further validate this, maybe as a class funciton. Mixing DataTypes ARRAY and ENUM is problematic
   selectedTopics: {
-    type: Sequelize.ARRAY(
-      Sequelize.ENUM([
-        'Simplifying Polynomials',
-        'Factoring Polynomial',
-        'Complex Fractions',
-      ]),
-    ),
+    type: Sequelize.ARRAY(Sequelize.STRING),
   },
 
   selectedCourse: {
@@ -38,22 +34,11 @@ const UserSession = db.define('user_session', {
   },
 });
 
+//Hooks to get convert comma strings into an array for storage
 UserSession.beforeCreate(usersession => {
-  const convertArray = item => {
-    if (Array.isArray(item) === false) {
-      item = [item];
-    }
-    return item;
-  };
   usersession.selectedTopics = convertArray(usersession.selectedTopics);
 });
 UserSession.beforeUpdate(usersession => {
-  const convertArray = item => {
-    if (Array.isArray(item) === false) {
-      item = [item];
-    }
-    return item;
-  };
   usersession.selectedTopics = convertArray(usersession.selectedTopics);
 });
 
@@ -73,16 +58,16 @@ UserSession.beforeUpdate(usersession => {
 //   return newSessionInfo;
 // };
 
-UserSession.updateUserSession = async function(userInfo) {
+UserSession.updateUserSession = async function(userId, userInfo) {
   {
     const sessionUser = await this.findOne({
-      where: { userId: userInfo.userId },
+      where: { userId: userId },
     });
 
     const updatedUserSession = {
       userType: userInfo.type,
       status: userInfo.status,
-      selectedTopics: userInfo.topics.split(', '),
+      selectedTopics: userInfo.selectedTopics.split(','),
     };
     return await sessionUser.update(updatedUserSession);
   }

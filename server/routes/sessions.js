@@ -16,8 +16,6 @@ router.get('/login', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  console.log('SESSION POST', req.session);
-  console.log('SESSION POST BODY', req.body);
   const { email, password } = req.body;
   if (!email || !password) {
     res.status(401).send('Please enter a valid email and password');
@@ -56,7 +54,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.destroy(err => console.log(err));
+  req.session.destroy(err => console.error(err));
   res.clearCookie('SID');
   res.send('session logged out');
 });
@@ -66,18 +64,19 @@ router.post('/logout', (req, res) => {
 //return all active users
 router.get('/usersession', async (req, res, next) => {
   try {
+    //returns actie sessions filtered by userType
     const activeUsers = await UserSession.findActiveUsersByType();
-    console.log('active users', activeUsers);
     res.send(activeUsers);
   } catch (err) {
     next(err);
   }
 });
 
-router.post('/usersession/:userId', async (req, res, next) => {
+router.post('/usersession', async (req, res, next) => {
   try {
+    //need to have a session inorder to create a new UserSession
     const userSessionFromUser = await Session.findOne({
-      where: { userId: req.params.userId },
+      where: { userId: req.body.userId },
     });
 
     if (!userSessionFromUser) {
@@ -87,7 +86,7 @@ router.post('/usersession/:userId', async (req, res, next) => {
     const newSessionInfo = {
       userId: req.body.userId,
       sid: userSessionFromUser.sid,
-      selectedTopics: req.body.topics,
+      selectedTopics: req.body.selectedTopics.split(','),
       userType: req.body.userType,
     };
 
@@ -101,14 +100,24 @@ router.post('/usersession/:userId', async (req, res, next) => {
 
 router.put('/usersession/:userId', async (req, res, next) => {
   try {
-    const checkSession = await Session.findOne({
+    //implement when deployed. can only run one session at a time? Maybe a way to login multiple people through postman???
+    //Want to check for BOTH a session and a UserSession. It is possible to be signed in burt not have an active UserSession
+    // const checkSession = await Session.findOne({
+    //   where: { userId: req.params.userId },
+    // });
+
+    const checkUserSession = await UserSession.findOne({
       where: { userId: req.params.userId },
     });
 
-    if (!checkSession) {
+    if (!checkUserSession) {
+      //add checkSession when deployed
       res.sendStatus(401);
     }
-    const updateUser = await UserSession.updateUserSession(req.body);
+    const updateUser = await UserSession.updateUserSession(
+      req.params.userId,
+      req.body,
+    );
     res.send(updateUser);
   } catch (err) {
     next(err);
@@ -117,16 +126,22 @@ router.put('/usersession/:userId', async (req, res, next) => {
 
 router.delete('/usersession/:userId', async (req, res, next) => {
   try {
-    const checkSession = await Session.findOne({
+    //implement when deployed. Same as above. Can close a User session without fully logging out
+    // const checkSession = await Session.findOne({
+    //   where: { userId: req.params.userId },
+    // });
+
+    const checkUserSession = await UserSession.findOne({
       where: { userId: req.params.userId },
     });
 
-    if (!checkSession) {
+    //add checkSession test when deployed
+    if (!checkUserSession) {
       res.sendStatus(401);
-    } else {
-      checkSession.destroy();
-      res.send('user-session closed');
     }
+
+    checkUserSession.destroy();
+    res.send('user-session closed');
   } catch (err) {
     next(err);
   }
