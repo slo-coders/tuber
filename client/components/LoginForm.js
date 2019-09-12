@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loginThunked, fetchLoggedInThunked } from '../actions/sessionActions';
 import PropTypes from 'prop-types';
 
-// fetchLoggedInThunked import and trigger on component load?
+//save for sever resart
 
 export class LoginForm extends Component{
   constructor(props) {
@@ -17,7 +17,7 @@ export class LoginForm extends Component{
   }
 
   componentDidMount() {
-    //this.props.fetchLoggedInThunked();
+    this.props.fetchLoggedInThunked();
   }
   componentDidUpdate() {
     this.props.fetchLoggedInThunked();
@@ -29,9 +29,6 @@ export class LoginForm extends Component{
   }
   onSubmit(ev) {
     ev.preventDefault();
-    console.log(this.state);
-    console.log(this.props);
-    console.log('I do nothing meanigful so far, attempting to trigger loginThunked');
     this.props.loginThunked(this.state);
   }
 

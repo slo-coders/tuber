@@ -3,11 +3,15 @@ const { verifyPassword } = require('../db/utils/hash');
 const { User } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
+  //BEHAVIOR: takes  returns user data w/o pasword
+  //TODO: modify User model scope to also omit 'salt'
   try {
-    //console.log('SESSION get', req.session);
-    const loggedUser = await User.findOne({
-      where: { userId: req.session.userId },
+    console.log('SESSION get', req.session);
+    //db query below occasionally throws sqlz errs about param 'Id' is undefined
+    const loggedUser = await User.scope('withoutPassword').findOne({
+      where: { id: req.session.userId },
     });
+    console.log(loggedUser)
     res.send(loggedUser);
   } catch (err) {
     res.send('please sign in or register');
@@ -17,19 +21,19 @@ router.get('/login', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
   //console.log('SESSION POST', req.session);
-  console.log('SESSION POST BODY', req.body);
+  //console.log('SESSION POST BODY', req.body);
   const { email, password } = req.body;
   if (!email || !password) {
     res.status(401).send('Please enter a valid email and password');
     return;
   }
   try {
-    //LEFT OFF HERE
     const loggedSessionUser = await User.findOne({
       where: {
         email: req.body.email,
       }
     });
+    //Code below is either not triggering or
     if (!loggedSessionUser) {
       res.sendStatus(401);
     } else if (req.session.userId === loggedSessionUser.id) {

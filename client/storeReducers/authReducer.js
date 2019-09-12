@@ -17,7 +17,6 @@ const authReducer = (state = initialState, action) => {
       return { ...state, authUser: action.payload };
 
     case LOGIN_USER:
-      console.log('LOGIN REDUCER')
       return {
         ...state,
         authUser: action.payload,
