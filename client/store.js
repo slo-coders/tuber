@@ -19,7 +19,7 @@ const reducer = combineReducers({
   courses: courseReducer,
   topics: topicReducer,
   userMeetup: userMeetupReducer,
-  auth: authReducer
+  auth: authReducer,
 });
 
 export default createStore(reducer, applyMiddleware(thunkMiddleware));

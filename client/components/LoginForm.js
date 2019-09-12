@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 
 //save for sever resart
 
-export class LoginForm extends Component{
+export class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       email: '',
-      password: ''
+      password: '',
     };
     this.onHandle = this.onHandle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -33,11 +33,11 @@ export class LoginForm extends Component{
   }
 
   render() {
-    return(
+    return (
       <div className="column is-one-third">
         <form className="LoginForm" onSubmit={this.onSubmit}>
-          <div className='field'>
-            <div className='control'>
+          <div className="field">
+            <div className="control">
               <label> Email </label>
               <input
                 type="email"
@@ -49,8 +49,8 @@ export class LoginForm extends Component{
               />
             </div>
           </div>
-          <div className='field'>
-            <div className='control'>
+          <div className="field">
+            <div className="control">
               <label> Password </label>
               <input
                 type="password"
@@ -62,15 +62,11 @@ export class LoginForm extends Component{
               />
             </div>
           </div>
-          <div className= "buttons">
+          <div className="buttons">
             <button
-              disabled={
-                this.state.email &&
-                this.state.password ?
-                false : true
-              }
-              className= "button is-primary"
-              >
+              disabled={this.state.email && this.state.password ? false : true}
+              className="button is-primary"
+            >
               Log In
             </button>
           </div>
@@ -82,16 +78,16 @@ export class LoginForm extends Component{
 
 LoginForm.defaultProps = {
   loginThunked: loginThunked,
-  fetchLoggedInThunked: fetchLoggedInThunked
+  fetchLoggedInThunked: fetchLoggedInThunked,
 };
 LoginForm.propTypes = {
   loginThunked: PropTypes.func,
-  fetchLoggedInThunked: PropTypes.func
+  fetchLoggedInThunked: PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => ({
-  loginThunked: (userInfo) => dispatch(loginThunked(userInfo)),
-  fetchLoggedInThunked: () => dispatch(fetchLoggedInThunked())
+  loginThunked: userInfo => dispatch(loginThunked(userInfo)),
+  fetchLoggedInThunked: () => dispatch(fetchLoggedInThunked()),
 });
 
 export default connect(
