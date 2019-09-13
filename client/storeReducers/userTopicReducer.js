@@ -3,7 +3,7 @@ import {
   POST_USER_TOPICS_ARR,
   UPDATE_USER_TOPIC,
   DELETE_USER_TOPIC
-} from './actionTypes';
+} from '../actions/actionTypes';
 
 const initialState = {
   userTopics: [],
