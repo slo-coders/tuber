@@ -7,7 +7,7 @@ const { User, UserMeetup, Meetup } = require('../db/index');
 // Routes
 // `/api/users/:userId/topics/:topicId?`
 const passUserId = (req, _res, next) => {
-  req.userId = req.params.userId; 
+  req.userId = req.params.userId;
   next();
 };
 router.use('/:userId/topics', passUserId, require('./userTopics'));
@@ -65,7 +65,7 @@ router
     }
   });
 
- router.get('/:userId/userMeetup', async (req, res, next) => {
+router.get('/:userId/userMeetup', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { id: req.params.userId },

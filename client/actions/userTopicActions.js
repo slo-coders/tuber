@@ -4,7 +4,7 @@ import {
   // GET_USER_TOPIC,
   POST_USER_TOPICS_ARR,
   UPDATE_USER_TOPIC,
-  DELETE_USER_TOPIC
+  DELETE_USER_TOPIC,
 } from './actionTypes';
 
 export const getUserTopicsThunked = userId => async dispatch => {
@@ -27,9 +27,15 @@ export const getUserTopicsThunked = userId => async dispatch => {
   }
 }; */
 
-export const postUserTopicsArrThunked = (userId, userTopicsArr) => async dispatch => {
+export const postUserTopicsArrThunked = (
+  userId,
+  userTopicsArr,
+) => async dispatch => {
   try {
-    const response = await axios.post(`/api/users/${userId}/topics`, userTopicsArr);
+    const response = await axios.post(
+      `/api/users/${userId}/topics`,
+      userTopicsArr,
+    );
     dispatch({ type: POST_USER_TOPICS_ARR, userTopicsArr: response.data });
   } catch (err) {
     console.error(err);
@@ -38,9 +44,7 @@ export const postUserTopicsArrThunked = (userId, userTopicsArr) => async dispatc
 
 export const deleteUserTopicThunked = (userId, topicId) => async dispatch => {
   try {
-    await axios.delete(
-      `/api/users/${userId}/topics/${topicId}`,
-    );
+    await axios.delete(`/api/users/${userId}/topics/${topicId}`);
     dispatch({ type: DELETE_USER_TOPIC, deletedTopicId: topicId });
   } catch (err) {
     console.error(err);

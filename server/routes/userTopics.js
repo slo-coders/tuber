@@ -5,7 +5,7 @@ const router = express.Router();
 const { UserTopic } = require('../db/index');
 
 // Routes
-//`/api/users/:userId/topics 
+//`/api/users/:userId/topics
 router
   .route('/') //NOTE: req.params does not include userId here w/ req.uesrId
   .get(async (req, res, next) => {
@@ -38,7 +38,7 @@ router
 //`/api/users/:userId/topics/:topicId
 router
   .route('/:topicId') //NOTE: req.params nly inlcudes :topicId not userId
-/*   .get(async (req, res, next) => {
+  /*   .get(async (req, res, next) => {
     try {
       const userTopic = await UserTopic.findOne({
         where: { 
@@ -58,7 +58,7 @@ router
       const updatedUserTopic = await UserTopic.updateInfo({
         userId: req.userId,
         topicId: req.params.topicId,
-        proficiencyRating: req.body.proficiencyRating
+        proficiencyRating: req.body.proficiencyRating,
       });
       res.status(202).send(updatedUserTopic);
     } catch (err) {
@@ -68,10 +68,10 @@ router
   .delete(async (req, res, next) => {
     try {
       await UserTopic.destroy({
-        where: { 
+        where: {
           userId: req.userId,
-          topicId: req.params.topicId
-        }
+          topicId: req.params.topicId,
+        },
       });
       res.sendStatus(204);
     } catch (err) {

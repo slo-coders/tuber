@@ -2,7 +2,7 @@ import {
   GET_ALL_USER_TOPICS,
   POST_USER_TOPICS_ARR,
   UPDATE_USER_TOPIC,
-  DELETE_USER_TOPIC
+  DELETE_USER_TOPIC,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -15,10 +15,13 @@ const userTopicsReducer = (state = initialState, action) => {
     case POST_USER_TOPICS_ARR:
       return action.userTopicsArr;
     case UPDATE_USER_TOPIC:
-      return state.map(userTopic => userTopic.id === action.userTopic.id 
-        ? action.userTopic : userTopic);
+      return state.map(userTopic =>
+        userTopic.id === action.userTopic.id ? action.userTopic : userTopic,
+      );
     case DELETE_USER_TOPIC:
-      return state.filter(userTopic => userTopic.topicId !== action.deletedTopicId);
+      return state.filter(
+        userTopic => userTopic.topicId !== action.deletedTopicId,
+      );
     default:
       return state;
   }
