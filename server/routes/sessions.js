@@ -6,11 +6,7 @@ router.get('/login', async (req, res, next) => {
   //BEHAVIOR: takes req.session.userId returns user data w/o password and salt
   //BEHAVIOR: throws errors about not finding User when no SID present
   try {
-<<<<<<< HEAD
     const loggedUser = await User.scope('withoutPassword').findOne({
-=======
-    const loggedUser = await User.findOne({
->>>>>>> dev
       where: { id: req.session.userId },
     });
     res.send(loggedUser);
