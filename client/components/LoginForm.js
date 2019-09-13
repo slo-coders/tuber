@@ -16,12 +16,6 @@ export class LoginForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-    //this.props.fetchLoggedInThunked();
-  }
-  componentDidUpdate() {
-    //this.props.fetchLoggedInThunked();
-  }
   onHandle(ev) {
     this.setState({
       [ev.target.name]: ev.target.value,

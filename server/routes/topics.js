@@ -33,8 +33,7 @@ router.post('/', async (req, res, next) => {
       htmlURL: req.body.htmlURL,
       courseID: req.body.courseID,
     });
-    res.status(201);
-    res.send(newTopic);
+    res.status(201).send(newTopic);
   } catch (err) {
     next(err);
   }
