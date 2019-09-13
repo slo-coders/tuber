@@ -49,7 +49,7 @@ describe('Routes for a new user\'s topic information', () => {
   });
 
   describe('`/api/users/:userId/topics/` route handling a POST request to create an array of userTopics in the UserTopics model', () => {
-    it('responds with the newly created user-topic instances, each with an id', async () => {
+    xit('responds with the newly created user-topic instances, each with an id', async () => {
       const apiRoute = `/api/users/${userId}/topics`;
       const res = await fauxios.post(apiRoute).send(ratedTopicsArr);
       expect(res.status).toEqual(201);
@@ -110,7 +110,7 @@ describe('Routes for a new user\'s topic information', () => {
       .send({
         proficiencyRating: 5
       });
-      // console.log('res.body >>>>>> ', res.body);
+      console.log('res.body from PUT >>>>>> ', res.body);
       expect(res.status).toEqual(202);
       expect(Object.keys(res.body)).toHaveProperty('profiencyRating', 5);
       const res2 = await fauxios.put(`/api/users/${userId}/topics/${topicId}`)
