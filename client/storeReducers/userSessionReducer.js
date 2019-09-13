@@ -5,7 +5,7 @@ const initialState = {
   singleUserInfo: {},
 };
 
-export const userSessionReducer = (state = initialState, action) => {
+const userSessionReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.FETCH_ACTIVE_SESSIONS:
       //returns an object of that has arrays of UserSessions filterd by UserType ('mentor', 'mentee', 'peer')
@@ -23,3 +23,5 @@ export const userSessionReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default userSessionReducer;

@@ -5,6 +5,7 @@ import Home from './containers/Home';
 import Nav from './containers/Nav';
 import UserProfile from './containers/UserProfile';
 import RequestMatch from './containers/RequestMatch';
+import LoginForm from './LoginForm';
 import SignUp from './containers/SignUp';
 import PropTypes from 'prop-types';
 import { listTopicsThunk } from '../actions/topicActions';
@@ -31,6 +32,7 @@ class App extends React.Component {
             RequestMatch
           }
         />
+        <Route exact path="/login" component={LoginForm} />
       </HashRouter>
     );
   }
