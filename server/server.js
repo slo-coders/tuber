@@ -35,28 +35,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/sessions', require('./routes/sessions'));
 
 //PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
-// if (process.env.NODE_ENV !== 'test') {
-//   app.use(async (req, res, next) => {
-//     try {
-//       if (req.session && req.session.userId) {
-//         const sessionUser = await User.findOne({
-//           where: {
-//             id: req.session.userId,
-//           },
-//         });
-//         if (!sessionUser) {
-//           console.log('Please try again');
-//         }
-//         next();
-//       } else {
-//         res.sendStatus(401);
-//         next();
-//       }
-//     } catch (err) {
-//       next(err);
-//     }
-//   });
-// }
+if (process.env.NODE_ENV !== 'test') {
+  app.use(async (req, res, next) => {
+    try {
+      if (req.session && req.session.userId) {
+        const sessionUser = await User.findOne({
+          where: {
+            id: req.session.userId,
+          },
+        });
+        if (!sessionUser) {
+          console.log('Please try again');
+        }
+        next();
+      } else {
+        res.sendStatus(401);
+        next();
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+}
 
 app.use('/api', routes);
 
