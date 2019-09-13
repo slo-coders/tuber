@@ -4,7 +4,7 @@ const { User, UserSession, Session } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
   //BEHAVIOR: takes req.session.userId returns user data w/o password and salt
-  //TODO: throws errors about not finding User when no SID present, when wraped in conditional checking for SID, throws errors about unhandled promise rejectiong.
+  //BEHAVIOR: throws errors about not finding User when no SID present
   try {
     const loggedUser = await User.scope('withoutPassword').findOne({
       where: { id: req.session.userId },
@@ -33,7 +33,6 @@ router.post('/login', async (req, res, next) => {
     });
     if (!loggedSessionUser) {
       res.sendStatus(401);
-      //Thin undefined id is coming from here
     } else if (req.session.userId === loggedSessionUser.id) {
       res.send('Already logged in');
     }
@@ -47,7 +46,7 @@ router.post('/login', async (req, res, next) => {
     if (!verified) {
       res.send('Unauthorized user. Please make an account');
     }
-
+    //set header error originating from line below
     // eslint-disable-next-line require-atomic-updates
     req.session.userId = loggedSessionUser.id;
     res.redirect(301, '#/profile');

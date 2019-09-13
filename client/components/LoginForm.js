@@ -17,7 +17,7 @@ export class LoginForm extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchLoggedInThunked();
+    //this.props.fetchLoggedInThunked();
   }
   componentDidUpdate() {
     //this.props.fetchLoggedInThunked();
