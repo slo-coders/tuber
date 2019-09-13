@@ -52,7 +52,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.destroy(err => console.error(err));
+  req.session.destroy();
   res.clearCookie('SID');
   res.send('session logged out');
 });
