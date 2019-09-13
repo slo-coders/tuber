@@ -4,6 +4,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { userReducer, allUsersReducer } from './storeReducers/userReducer';
 import courseReducer from './storeReducers/courseReducer';
 import topicReducer from './storeReducers/topicReducer';
+import userTopicsReducer from './storeReducers/userTopicsReducer';
 import meetupReducer from './storeReducers/meetupReducers';
 import userMeetupReducer from './storeReducers/userMeetupReducer';
 
@@ -17,6 +18,7 @@ const reducer = combineReducers({
   // potentialParteners: potentialPartnersReducer,
   courses: courseReducer,
   topics: topicReducer,
+  userTopics: userTopicsReducer,
   userMeetup: userMeetupReducer,
 });
 

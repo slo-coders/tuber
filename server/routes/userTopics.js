@@ -5,19 +5,18 @@ const router = express.Router();
 const { UserTopic } = require('../db/index');
 
 // Routes
-//`/api/users/:userId/topics
+//`/api/users/:userId/topics 
 router
-  .route('/:userId/topics')
+  .route('/') //NOTE: req.params does not include userId here w/ req.uesrId
   .get(async (req, res, next) => {
     try {
       const userTopics = await UserTopic.findAll({
-        where: { userId: req.params.userId },
+        where: { userId: req.userId },
       });
-
       if (userTopics) {
         res.send(userTopics);
       } else {
-        res.status(404).end();
+        res.sendStatus(404);
       }
     } catch (err) {
       next(err);
@@ -25,11 +24,13 @@ router
   })
   .post(async (req, res, next) => {
     try {
+      // console.log('req.body in post >>>>> ', req.body);
       const arrOfUserTopics = req.body;
       const newUserTopicsArr = await UserTopic.createArr(
-        req.params.userId,
+        req.userId,
         arrOfUserTopics,
       );
+      // console.log('newUserTopicsArr in POST >>>> ', newUserTopicsArr);
       res.status(201).send(newUserTopicsArr);
     } catch (err) {
       next(err);
@@ -38,13 +39,28 @@ router
 
 //`/api/users/:userId/topics/:topicId
 router
-  .route('/:userId/topics/:topicId')
+  .route('/:topicId') //NOTE: req.params nly inlcudes :topicId not userId
+/*   .get(async (req, res, next) => {
+    try {
+      const userTopic = await UserTopic.findOne({
+        where: { 
+          userId: req.userId,
+          topicId: req.params.topicId
+        }
+      }); 
+      res.send(userTopic);
+    }
+    catch (err) {
+      next(err);
+    }
+  }) */
   .put(async (req, res, next) => {
     try {
-      const updatedUserTopic = await UserTopic.updateInfo(
-        req.params.userId,
-        req.body,
-      );
+      const updatedUserTopic = await UserTopic.updateInfo({
+        ...req.body, //proficiencyRating
+        userId: req.userId,
+        topicId: req.params.topicId
+      });
       res.status(202).send(updatedUserTopic);
     } catch (err) {
       next(err);
@@ -52,7 +68,12 @@ router
   })
   .delete(async (req, res, next) => {
     try {
-      await UserTopic.remove(req.params.userId);
+      await UserTopic.destroy({
+        where: { 
+          userId: req.userId,
+          topicId: req.params.topicId
+        }
+      });
       res.sendStatus(204);
     } catch (err) {
       next(err);

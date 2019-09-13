@@ -34,3 +34,10 @@ export const EDIT_USER = 'EDIT_USER';
 export const GET_MEETUP_DATA = 'GET_MEETUP_DATA';
 export const UPDATE_MEETUP_DATA = 'UPDATE_MEETUP_DATA';
 export const GET_USER_MEETUP_DATA = 'GET_USER_MEETUP_DATA ';
+
+//User-topic actions
+export const GET_ALL_USER_TOPICS = 'GET_ALL_USER_TOPICS';
+// export const GET_USER_TOPIC = 'GET_USER_TOPIC';
+export const POST_USER_TOPICS_ARR = 'POST_USER_TOPICS_ARR';
+export const UPDATE_USER_TOPIC = 'UPDATE_USER_TOPIC';
+export const DELETE_USER_TOPIC = 'DELETE_USER_TOPIC';
