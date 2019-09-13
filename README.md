@@ -1,7 +1,8 @@
 # Tuber
 
 # Create a database
-After installing a PostgreSQL server, create a new databases called *tuber*. 
+
+After installing a PostgreSQL server, create a new databases called _tuber_.
 
 ```bash
 createdb tuber
@@ -10,7 +11,7 @@ createdb tuber
 # createdb.exe tuber
 ```
 >NOTE:
->If testing, create a second database for testing called *tuber-test*.
+>If testing, create a second database for testing called _tuber_test_.
 
 # npm Commands
 Running a few npm commands and scripts is neccesary to launch application.
