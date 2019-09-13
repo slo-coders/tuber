@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('../server/server');
 const { Meetup, db } = require('../server/db/index');
 
+beforeAll(async () => {
+  await db.sync();
+});
+
 describe('`/api/meetups` route handling a GET request', () => {
   it('returns all meetups', async () => {
     const response = await request(app).get('/api/meetups');
@@ -52,4 +56,4 @@ describe('`/api/meetups/:meetupId` route handling a PUT and DELETE request', () 
   });
 });
 
-afterAll(() => db.close());
+afterAll(async () => await db.close());

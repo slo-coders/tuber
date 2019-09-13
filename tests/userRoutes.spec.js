@@ -21,18 +21,22 @@ Object.keys(newUser).forEach(key => {
 
 let newUserId;
 
+beforeAll(async () => {
+  await db.sync();
+});
+
 afterAll(async () => {
   await db.close();
   console.log('DB closed.');
 });
 
 //Tests
-describe('Routes for all users', () => {
+describe('Routes for all users', () => {  
   describe('`/api/users` route handling a GET request', () => {
     it('responds with an array of all available users', async () => {
       const res = await fauxios.get('/api/users');
       expect(res.status).toEqual(200);
-      expect(res.body.length).toEqual(10);
+      expect(res.body.length).toBeGreaterThan(9);
       expect(Object.keys(res.body[0])).toEqual(
         expect.arrayContaining([
           'id',
@@ -45,7 +49,7 @@ describe('Routes for all users', () => {
       expect(res.body.password).toBe(undefined);
     });
   });
-
+  
   describe('`/api/users` route handling a POST request', () => {
     it('responds with new user instance with an id', async () => {
       const res = await fauxios.post('/api/users').send(newUser);
@@ -56,6 +60,7 @@ describe('Routes for all users', () => {
       expect(res.body.password).not.toBe(newUser.password);
     });
   });
+
 });
 
 describe('Routes for a single user', () => {
