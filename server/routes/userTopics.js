@@ -24,13 +24,11 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      // console.log('req.body in post >>>>> ', req.body);
       const arrOfUserTopics = req.body;
       const newUserTopicsArr = await UserTopic.createArr(
         req.userId,
         arrOfUserTopics,
       );
-      // console.log('newUserTopicsArr in POST >>>> ', newUserTopicsArr);
       res.status(201).send(newUserTopicsArr);
     } catch (err) {
       next(err);
@@ -56,10 +54,11 @@ router
   }) */
   .put(async (req, res, next) => {
     try {
+      console.log('req.body in PUT >>> ', req.body);
       const updatedUserTopic = await UserTopic.updateInfo({
-        ...req.body, //proficiencyRating
         userId: req.userId,
-        topicId: req.params.topicId
+        topicId: req.params.topicId,
+        proficiencyRating: req.body.proficiencyRating
       });
       res.status(202).send(updatedUserTopic);
     } catch (err) {

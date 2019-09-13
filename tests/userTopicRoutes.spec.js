@@ -5,7 +5,8 @@ const request = require('supertest'); //client
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
-let userId, topics, currentUserReturned, ratedTopicIdsArr, topicId;
+let userId, topics, currentUserReturned, topicId;
+let ratedTopicsArr = [];
 
 beforeAll(async () => {
   await db.sync();
@@ -29,26 +30,28 @@ describe('Routes for a new user\'s topic information', () => {
 
     //Create UserTopic data for currentUser
     topics = await Topic.findAll();
-  
-    const userTopics = await UserTopic.findAll({where: {userId}});
-    const userTopicsTopicIds = userTopics.map(uTop => uTop.topicId);
-    const start = randIntBtwn(1, topics.length - 1);
-    const end = randIntBtwn(start + 1, topics.length + 1);
-    const newlyRatedTopicIds = topics.slice(start, end)
-    .map(topic => topic.id)
-    .filter(topicId => !userTopicsTopicIds.includes(topicId));
-    ratedTopicIdsArr = newlyRatedTopicIds
-    .map(topicId => ({
-        topicId,
-        proficiencyRating: randIntBtwn(0, 500),
-    }));
-    topicId = topics[0].id;
+
+    do {
+      const userTopics = await UserTopic.findAll({where: {userId}});
+      const userTopicsTopicIds = userTopics.map(uTop => uTop.topicId);
+      const start = randIntBtwn(1, topics.length - 1);
+      const end = randIntBtwn(start + 1, topics.length + 1);
+      const newlyRatedTopicIds = topics.slice(start, end)
+      .map(topic => topic.id)
+      .filter(topicId => !userTopicsTopicIds.includes(topicId));
+      ratedTopicsArr = newlyRatedTopicIds
+      .map(topicId => ({
+          topicId,
+          proficiencyRating: randIntBtwn(0, 500),
+      }));
+      topicId = topics[0].id;
+    } while (!topicId);
   });
 
   describe('`/api/users/:userId/topics/` route handling a POST request to create an array of userTopics in the UserTopics model', () => {
     it('responds with the newly created user-topic instances, each with an id', async () => {
       const apiRoute = `/api/users/${userId}/topics`;
-      const res = await fauxios.post(apiRoute).send(ratedTopicIdsArr);
+      const res = await fauxios.post(apiRoute).send(ratedTopicsArr);
       expect(res.status).toEqual(201);
       expect(Object.keys(res.body[0])).toEqual(
         expect.arrayContaining([
@@ -69,7 +72,6 @@ describe('Routes for a new user\'s topic information', () => {
       expect(Array.isArray(res.body)).toEqual(true);
     });
     it('responds with array of user\'s course topics and corresponding proficiency ratings as a number', async () => {
-      console.log('userId >>>> ', userId);
       const res = await fauxios.get(`/api/users/${userId}/topics`);
       expect(Object.keys(res.body[0])).toEqual(
         expect.arrayContaining([
@@ -108,6 +110,7 @@ describe('Routes for a new user\'s topic information', () => {
       .send({
         proficiencyRating: 5
       });
+      // console.log('res.body >>>>>> ', res.body);
       expect(res.status).toEqual(202);
       expect(Object.keys(res.body)).toHaveProperty('profiencyRating', 5);
       const res2 = await fauxios.put(`/api/users/${userId}/topics/${topicId}`)
