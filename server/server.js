@@ -32,6 +32,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/', express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/sessions', require('./routes/sessions'));
 
 //PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
@@ -59,7 +60,5 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use('/api', routes);
-
-app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
 module.exports = app;
