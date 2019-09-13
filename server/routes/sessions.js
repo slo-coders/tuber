@@ -4,7 +4,6 @@ const { User, UserSession, Session } = require('../db/models/index');
 
 router.get('/login', async (req, res, next) => {
   try {
-    console.log('SESSION get', req.session);
     const loggedUser = await User.findOne({
       where: { id: req.session.userId },
     });
@@ -86,7 +85,7 @@ router.post('/usersession', async (req, res, next) => {
     const newSessionInfo = {
       userId: req.body.userId,
       sid: userSessionFromUser.sid,
-      selectedTopics: req.body.selectedTopics.split(','),
+      selectedTopics: req.body.selectedTopics.split(', '),
       userType: req.body.userType,
       location: req.body.location,
     };
@@ -141,8 +140,14 @@ router.delete('/usersession/:userId', async (req, res, next) => {
       res.sendStatus(401);
     }
 
-    checkUserSession.destroy();
-    res.send('user-session closed');
+    //Check if user has submitted a review.
+    //This will require a form that will put to both the User profeciency on UserTopics model as well as to here for review status updates
+    if (checkUserSession.reviewStatus === 'no review') {
+      res.send('Please review your partners profeciency').end();
+    } else {
+      checkUserSession.destroy();
+      res.send('user-session closed');
+    }
   } catch (err) {
     next(err);
   }

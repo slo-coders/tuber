@@ -36,6 +36,12 @@ const UserSession = db.define('user_session', {
     values: ['waiting', 'matched'],
     defaultValue: 'waiting',
   },
+
+  reviewStatus: {
+    type: Sequelize.ENUM,
+    values: ['review submitted', 'no review'],
+    defaultValue: 'no review',
+  },
 });
 
 //Hooks to get convert comma strings into an array for storage
@@ -72,8 +78,13 @@ UserSession.updateUserSession = async function(userId, userInfo) {
       userType: userInfo.type,
       status: userInfo.status,
       location: userInfo.location,
-      selectedTopics: userInfo.selectedTopics.split(','),
+      selectedTopics:
+        userInfo.selectedTopics === undefined
+          ? sessionUser.selectedTopics
+          : userInfo.selectedTopics.split(','),
+      reviewStatus: userInfo.reviewStatus,
     };
+
     return await sessionUser.update(updatedUserSession);
   }
 };
