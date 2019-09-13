@@ -49,7 +49,6 @@ router.post('/login', async (req, res, next) => {
     //set header error originating from line below
     // eslint-disable-next-line require-atomic-updates
     req.session.userId = loggedSessionUser.id;
-    res.redirect(301, '#/profile');
     res.send('You are logged in');
   } catch (err) {
     next(err);
