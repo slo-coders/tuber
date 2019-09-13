@@ -46,7 +46,7 @@ if (process.env.NODE_ENV !== 'test') {
           },
         });
         if (!sessionUser) {
-          console.log('Please try again');
+          res.send('Please try again');
         }
         next();
       } else {
