@@ -9,6 +9,7 @@ const Home = () => {
       </span>
       <div>The Home component is under construction</div>
       <Link to="/signup">Sign Up</Link>
+      <Link to="/login"> Log In </Link>
     </div>
   );
 };

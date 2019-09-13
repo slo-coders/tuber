@@ -49,7 +49,7 @@ router.put('/:id', async (req, res, next) => {
       dueAt: req.body.dueAt,
       htmlURL: req.body.htmlURL,
     });
-    res.send(targetTopic);
+    res.status(200).send(targetTopic);
   } catch (err) {
     next(err);
   }

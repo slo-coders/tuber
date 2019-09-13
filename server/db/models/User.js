@@ -53,7 +53,7 @@ const User = db.define(
   {
     scopes: {
       withoutPassword: {
-        attributes: { exclude: ['salt', 'password'] },
+        attributes: { exclude: ['password', 'salt'] },
       },
     },
   },

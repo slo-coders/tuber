@@ -1,13 +1,22 @@
 import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
-import Home from './Home';
-import Nav from './Nav';
-import UserProfile from './UserProfile';
-import RequestMatch from './RequestMatch';
-import SignUp from './SignUp/SignUp';
+import { connect } from 'react-redux';
+import Home from './containers/Home';
+import Nav from './containers/Nav';
+import UserProfile from './containers/UserProfile';
+import RequestMatch from './containers/RequestMatch';
+import LoginForm from './containers/LoginForm';
+import SignUp from './containers/SignUp';
+import PropTypes from 'prop-types';
+import { listTopicsThunk } from '../actions/topicActions';
+import { listUsersThunk } from '../actions/userActions';
 
 class App extends React.Component {
-  componentDidMount() {}
+  componentDidMount() {
+    /* will probably move, keeping fetch at high level for now */
+    this.props.listTopics();
+    this.props.listUsers();
+  }
 
   render() {
     return (
@@ -23,9 +32,25 @@ class App extends React.Component {
             RequestMatch
           }
         />
+        <Route exact path="/login" component={LoginForm} />
       </HashRouter>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    listTopics: () => dispatch(listTopicsThunk()),
+    listUsers: () => dispatch(listUsersThunk()),
+  };
+};
+
+App.propTypes = {
+  listTopics: PropTypes.func,
+  listUsers: PropTypes.func,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(App);
