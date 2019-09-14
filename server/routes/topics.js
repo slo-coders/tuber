@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Topic } = require('../db/index.js');
+const { Topic, CourseTopic } = require('../db/index.js');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -59,6 +59,17 @@ router.delete('/:id', async (req, res, next) => {
   try {
     await Topic.destroy({ where: { id: req.params.id } });
     res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/:topicId/courses', async (req, res, next) => {
+  try {
+    const CourseForTopics = await CourseTopic.findAll({
+      where: { topicId: req.params.topicId },
+    });
+    res.send(CourseForTopics);
   } catch (err) {
     next(err);
   }

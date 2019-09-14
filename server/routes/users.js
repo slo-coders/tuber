@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Model
-const { User, UserMeetup, Meetup } = require('../db/index');
+const { User, UserMeetup, Meetup, UserTopic, Topic } = require('../db/index');
 
 // Routes
 // `/api/users/:userId/topics/:topicId?`
@@ -24,7 +24,7 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      const newUser = await User.createNew(req.body);
+      const newUser = await User.scope('withoutPassword').createNew(req.body);
       res.status(201).send(newUser);
     } catch (err) {
       next(err);
@@ -36,9 +36,13 @@ router
   .route('/:userId')
   .get(async (req, res, next) => {
     try {
-      const user = await User.scope('withoutPassword').findByPk(
-        req.params.userId,
-      );
+      const user = await User.scope('withoutPassword').findOne({
+        where: { id: req.params.userId },
+        include: [
+          { model: Meetup, through: { model: UserMeetup } },
+          { model: Topic, through: { model: UserTopic } },
+        ],
+      });
       if (user) {
         res.send(user);
       } else {
@@ -64,12 +68,15 @@ router
       next(err);
     }
   });
-
-router.get('/:userId/userMeetup', async (req, res, next) => {
+//Gets all meetupinformation for a user.
+router.get('/:userId/meetups', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { id: req.params.userId },
-      include: [{ model: Meetup, through: { model: UserMeetup } }],
+      include: [
+        { model: Meetup, through: { model: UserMeetup } }, //status
+        { model: Topic, through: { model: UserTopic } }, //topic
+      ],
     });
     res.send(user);
   } catch (err) {
@@ -77,18 +84,7 @@ router.get('/:userId/userMeetup', async (req, res, next) => {
   }
 });
 
-router.get('/:userId/userMeetup/:meetupId', async (req, res, next) => {
-  try {
-    const userMeetup = await UserMeetup.findAll({
-      where: { meetupId: req.params.meetupId },
-    });
-    res.send(userMeetup);
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.put('/:userId/userMeetup/:meetupId', async (req, res, next) => {
+router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
   try {
     const updatedUserMeetup = await UserMeetup.updateUserMeetup(
       req.params.userId,

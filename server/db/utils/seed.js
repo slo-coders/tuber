@@ -2,10 +2,12 @@ const {
   db,
   User,
   Course,
+  CourseTopic,
   Topic,
   UserTopic,
   Meetup,
   UserMeetup,
+  MeetupTopic,
   // Session,
   // UserSession,
 } = require('../index');
@@ -45,6 +47,17 @@ const seed = async () => {
       //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
       //CourseTopic.associate('96', 'Limits');
       const topicsReturned = await Topic.findAll();
+      const courseReturned = await Course.findAll();
+
+      // Seed CourseTopic
+      await Promise.all(
+        topicsReturned.map(topic =>
+          CourseTopic.create({
+            courseId: courseReturned[randIntBtwn(0, 2)].id,
+            topicId: topic.id,
+          }),
+        ),
+      );
 
       //Seed UserTopic
       usersReturned.forEach(async user => {
@@ -73,6 +86,16 @@ const seed = async () => {
             userId: usersReturned[i].id,
             meetupId: meetupsReturned[i % 2].id,
             comments: user.comments,
+          }),
+        ),
+      );
+
+      //Seed MeeupTopic
+      await Promise.all(
+        meetupsReturned.slice(0, 2).map((meet, i) =>
+          MeetupTopic.create({
+            meetupId: meet.id,
+            topicId: topicsReturned[i].id,
           }),
         ),
       );
