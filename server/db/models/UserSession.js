@@ -8,6 +8,7 @@ const UserSession = db.define('user_session', {
     defaultValue: db.Sequelize.UUIDV4,
     primaryKey: true,
   },
+
   userType: {
     type: Sequelize.ENUM,
     values: ['mentor', 'mentee', 'peer'],
