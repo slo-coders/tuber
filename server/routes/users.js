@@ -68,7 +68,7 @@ router
       next(err);
     }
   });
-
+//Gets all meetupinformation for a user.
 router.get('/:userId/meetups', async (req, res, next) => {
   try {
     const user = await User.findOne({

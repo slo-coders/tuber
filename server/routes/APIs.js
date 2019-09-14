@@ -24,7 +24,7 @@ const checkUser = async (req, res, next) => {
   }
 };
 
-// router.all(checkUser); //check if this protects all routes
+router.all(checkUser); //check if this protects all routes
 router.use('/users', require('./users'));
 router.use('/courses', require('./courses'));
 router.use('/topics', require('./topics'));
