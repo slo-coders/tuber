@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loginThunked, fetchLoggedInThunked } from '../../actions/sessionActions';
+import {
+  loginThunked,
+  fetchLoggedInThunked,
+} from '../../actions/sessionActions';
 import PropTypes from 'prop-types';
 
 //save for sever resart

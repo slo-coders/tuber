@@ -100,8 +100,8 @@ const seed = async () => {
     }
   } catch (error) {
     console.error('Could not seed database:', error);
-    db.close();
   }
+  await db.close();
 };
 
 module.exports = seed;

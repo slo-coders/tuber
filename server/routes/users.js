@@ -6,7 +6,11 @@ const { User, UserMeetup, Meetup } = require('../db/index');
 
 // Routes
 // `/api/users/:userId/topics/:topicId?`
-router.all('/:userId/topics', require('./userTopics'));
+const passUserId = (req, _res, next) => {
+  req.userId = req.params.userId;
+  next();
+};
+router.use('/:userId/topics', passUserId, require('./userTopics'));
 
 //`/api/users`
 router
