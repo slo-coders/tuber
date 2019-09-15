@@ -1,0 +1,46 @@
+/* test theme #1 */
+$yellow: hsl(54, 87%, 84%);
+$darkBlue: hsl(210, 58%, 21%);
+$turquoise: hsl(190, 48%, 39%);
+$rose: hsl(0, 45%, 63%);
+$peach: hsl(14, 93%, 80%);
+$lightBlue: hsl(181, 31%, 79%);
+
+body {
+  background-color: $darkBlue;
+  height: 100vh;
+  width: 100vw;
+}
+
+.turquoise {
+  color: $turquoise;
+}
+
+hr.turquoise {
+  color: $turquoise;
+}
+
+.vertical1 { 
+  border-left: 2px solid #415D43; 
+  height: 500px; 
+  position:absolute; 
+  left: 5%; 
+} 
+
+.vertical2 { 
+  border-left: 2px dotted #A5CC6b; 
+  height: 600px; 
+  position:absolute; 
+  left: 6%; 
+} 
+
+.vertical3 { 
+  border-left: 2px solid #704c5e; 
+  height: 400px; 
+  position:absolute; 
+  left: 7%; 
+} 
+
+::placeholder {
+  color: white;
+}
