@@ -1,27 +1,26 @@
 const userMeetupData = [
   {
-    // userType: 'mentor',
-    // softSkillsRating: 250,
+    userType: 'mentor',
+
     // proficiencyRating: 500,
-    // comments: 'Worked on some math problems for upcoming quiz',
+    comments: 'Worked on some math problems for upcoming quiz',
   },
   {
-    // userType: 'mentee',
-    // softSkillsRating: 200,
+    userType: 'mentee',
+
     // proficiencyRating: 400,
-    // comments: 'Did homework',
+    comments: 'Did homework',
   },
   {
-    // userType: 'peer',
-    // softSkillsRating: 250,
+    userType: 'peer',
+
     // proficiencyRating: 250,
-    // comments: 'Worked on research project',
+    comments: 'Worked on research project',
   },
   {
-    // userType: 'peer',
-    // softSkillsRating: 150,
+    userType: 'peer',
     // proficiencyRating: 350,
-    // comments: 'Worked on research project',
+    comments: 'Worked on research project',
   },
 ];
 

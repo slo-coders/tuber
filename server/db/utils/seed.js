@@ -9,14 +9,14 @@ const {
   UserMeetup,
   MeetupTopic,
   // Session,
-  // UserSession,
+  UserSession,
 } = require('../index');
 const users = require('./seedFiles/userData');
 const randIntBtwn = require('./randIntBtwn');
 const meetupsData = require('./seedFiles/meetupData');
 const coursesData = require('./seedFiles/courseData');
 const userMeetUpData = require('./seedFiles/userMeetupData');
-// const userSessionData = require('./seedFiles/userSessionData');
+const userSessionData = require('./seedFiles/userSessionData');
 const path = require('path');
 const fs = require('fs');
 // const uuid = require('./uuid');
@@ -80,7 +80,6 @@ const seed = async () => {
         userMeetUpData.map((user, i) =>
           UserMeetup.create({
             meetupType: user.userType,
-            softSkillsRating: user.softSkillsRating,
             userType: user.userType,
             proficiencyRating: user.proficiencyRating,
             userId: usersReturned[i].id,
@@ -115,7 +114,7 @@ const seed = async () => {
       //       status: i % 2 !== 0 ? 'matched' : 'waiting',
       //     });
       //   }),
-      // );
+      // );``
 
       console.log('Seeded DB.');
     } else {

@@ -22,14 +22,12 @@ Meetup.belongsToMany(Topic, {
 // CourseTopic associations
 Course.belongsToMany(Topic, {
   through: 'course_topic',
-  as: 'course',
   foreignKey: 'courseId',
   otherKey: 'topicId',
 });
 
 Topic.belongsToMany(Course, {
   through: 'course_topic',
-  as: 'topic',
   foreignKey: 'topicId',
   otherKey: 'courseId',
 });

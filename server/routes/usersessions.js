@@ -1,5 +1,12 @@
 const router = require('express').Router();
-const { Session, UserSession } = require('../db/index');
+const {
+  User,
+  Course,
+  CourseTopic,
+  UserSession,
+  Topic,
+  UserTopic,
+} = require('../db/index');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -11,11 +18,25 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const activeUserSession = await UserSession.findOne({
+      where: { userId: req.params.userId },
+    });
+    res.send(activeUserSession);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post('/', async (req, res, next) => {
   try {
     //need to have a session inorder to create a new UserSession
-    const userSessionFromUser = await Session.findOne({
-      where: { userId: req.body.userId },
+    const userSessionFromUser = await User.findOne({
+      where: {
+        id: req.body.userId,
+      },
+      include: [{ model: Topic, through: { model: UserTopic } }],
     });
 
     if (!userSessionFromUser) {
@@ -24,11 +45,22 @@ router.post('/', async (req, res, next) => {
 
     const newSessionInfo = {
       userId: req.body.userId,
-      sid: userSessionFromUser.sid,
-      selectedTopics: req.body.selectedTopics.split(', '),
       userType: req.body.userType,
       location: req.body.location,
+      userTopics: userSessionFromUser.topics.map(topic => topic.id), //for mentors
     };
+
+    if (req.body.courseId && req.body.userType === 'mentor') {
+      const selectedCourseTopics = await Course.findOne({
+        where: { id: req.body.courseId },
+        include: [{ model: Topic, through: { model: CourseTopic } }],
+      });
+      newSessionInfo.selectedTopics = selectedCourseTopics.topics.map(
+        topic => topic.id,
+      );
+    } else if (req.body.topicId && req.body.userType !== 'mentor') {
+      newSessionInfo.selectedTopics = [req.body.topicId];
+    }
 
     const createdUserSession = await UserSession.create(newSessionInfo);
 
