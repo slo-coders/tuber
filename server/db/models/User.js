@@ -82,9 +82,14 @@ User.beforeValidate(studentSubmitted => {
 User.updateInfo = async function(userId, updatesObj) {
   const user = await this.findByPk(userId);
   const updatedStudent = { ...user, ...updatesObj };
-  return await user.update(updatedStudent, {
+  const result = await user.update(updatedStudent, {
     fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
   });
+  console.log(result);
+  delete result.password; ///////////how to remove password from instance
+  delete result.salt;
+  console.log(result);
+  return result;
 };
 
 User.createNew = async function(userObj) {

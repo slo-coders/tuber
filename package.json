@@ -20,7 +20,7 @@
     "start-watch": "nodemon server/index.js --ignore public --ignore client",
     "start:dev": "npm run bulma-watch & npm run css-watch & npm run build-watch & NODE_ENV='development' npm run start-watch",
     "start:sam": "env NODE_ENV='development' npm run build-watch & env NODE_ENV='development' npm run start-watch",
-    "test": "npm run seed:test & NODE_ENV='test' jest",
+    "test": "npm run seed:test && NODE_ENV='test' jest",
     "test-watch": "npm run test -- --watchAll",
     "lint": "node_modules/.bin/eslint client server",
     "test:sam": "env NODE_ENV='test' jest",

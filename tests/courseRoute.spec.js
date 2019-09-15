@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('../server/server');
 const { Course, db } = require('../server/db/index');
 
+beforeAll(async () => {
+  await db.sync();
+});
+
 describe('`/api/courses` route handling a GET request', () => {
   it('returns all available courses', async () => {
     const response = await request(app).get('/api/courses');
@@ -51,4 +55,4 @@ describe('`/api/courses/:id` route handling a PUT and DELETE request', () => {
   });
 });
 
-afterAll(() => db.close());
+afterAll(async () => await db.close());

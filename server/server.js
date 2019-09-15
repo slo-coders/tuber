@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
-const routes = require('./routes/index');
-const { db, User } = require('./db/index');
+const routes = require('./routes/APIs');
+const { db } = require('./db/index');
 const session = require('express-session');
 const createSequelizeStore = require('connect-session-sequelize');
 const SequelizeStore = createSequelizeStore(session.Store);
@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'Salt and Sanctuary',
+    secret: process.env.SESSION_SECRET || 'Pass the salt and sanctuary',
     cookie: { maxAge: 3 * 60 * 60 * 1000 },
     resave: false,
     saveUninitialized: false,
@@ -31,34 +31,8 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/sessions', require('./routes/sessions'));
-
-//PAYWALL --> THIS WILL PROBABLY BE MOVED AROUND
-if (process.env.NODE_ENV !== 'test') {
-  app.use(async (req, res, next) => {
-    try {
-      if (req.session && req.session.userId) {
-        const sessionUser = await User.findOne({
-          where: {
-            id: req.session.userId,
-          },
-        });
-        if (!sessionUser) {
-          res.send('Please try again');
-        }
-        next();
-      } else {
-        res.sendStatus(401);
-        next();
-      }
-    } catch (err) {
-      next(err);
-    }
-  });
-}
-
 app.use('/api', routes);
 
 module.exports = app;

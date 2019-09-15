@@ -23,9 +23,6 @@ const Meetup = db.define('meetup', {
   meetupConfirmed: {
     type: Sequelize.BOOLEAN,
   },
-  courseTopic: {
-    type: Sequelize.STRING,
-  },
 });
 
 module.exports = Meetup;

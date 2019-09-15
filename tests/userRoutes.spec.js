@@ -21,10 +21,10 @@ Object.keys(newUser).forEach(key => {
 
 let newUserId;
 
-//Hooks
-/* beforeAll(async () => {
-  await seed();
-}); */
+beforeAll(async () => {
+  await db.sync();
+});
+
 afterAll(async () => {
   await db.close();
   console.log('DB closed.');
@@ -36,7 +36,7 @@ describe('Routes for all users', () => {
     it('responds with an array of all available users', async () => {
       const res = await fauxios.get('/api/users');
       expect(res.status).toEqual(200);
-      expect(res.body.length).toEqual(10);
+      expect(res.body.length).toBeGreaterThan(9);
       expect(Object.keys(res.body[0])).toEqual(
         expect.arrayContaining([
           'id',
@@ -109,7 +109,7 @@ describe('Routes for a single user', () => {
       expect(res.status).toEqual(202);
       expect(res.body.imageUrl).toEqual(imageUrl);
     });
-    it('prevents updates to user\'s id', async () => {
+    it("prevents updates to user's id", async () => {
       const userId = '504c85d7-5dab-4196-99b4-b03a41877359';
       const res = await fauxios.put(`/api/users/${newUserId}`).send({ userId });
       expect(res.body.id).not.toBe(userId);
@@ -127,32 +127,32 @@ describe('Routes for a single user', () => {
   });
 });
 
-describe('`/api/users/:userId/userMeetup` route which returns dataset meetup and user-meetup information for a particular single user', () => {
+describe('`/api/users/:userId/meetups` route which returns dataset meetup and user-meetup information for a particular single user', () => {
   it('returns a user with a meetups property', async () => {
     const users = await UserMeetup.findAll();
     const response = await request(app).get(
-      `/api/users/${users[0].userId}/userMeetup`,
+      `/api/users/${users[0].userId}/meetups`,
     );
     expect(response.status).toEqual(200);
     expect(response.body).toHaveProperty('meetups');
   });
 });
 
-describe('`/api/users/:userId/userMeetup/:meetupId` route returns an array of users for a user-meetup', () => {
-  it('fetches user-meetup info based on a specific user ID', async () => {
-    const users = await UserMeetup.findAll();
+// test is obsolete, route no long exists
+// describe('`/api/users/:userId/meetups/:meetupId` route returns an array of users for a user-meetup', () => {
+//   it('fetches user-meetup info based on a specific user ID', async () => {
+//     const users = await UserMeetup.findAll();
+//     const response = await request(app).get(
+//       `/api/users/${users[0].id}/meetups/${users[0].meetupId}`,
+//     );
+//     expect(response.status).toEqual(200);
+//     expect(response.body.length).toEqual(2);
+//     expect(response.body[0]).toHaveProperty('userMeetupId');
+//     expect(response.body[1]).toHaveProperty('proficiencyRating');
+//   });
+// });
 
-    const response = await request(app).get(
-      `/api/users/${users[0].id}/userMeetup/${users[0].meetupId}`,
-    );
-    expect(response.status).toEqual(200);
-    expect(response.body.length).toEqual(2);
-    expect(response.body[0]).toHaveProperty('userMeetupId');
-    expect(response.body[1]).toHaveProperty('proficiencyRating');
-  });
-});
-
-describe('`/api/users/:userId/userMeetup/:meetupId` route to handle PUT request to update user status', () => {
+describe('`/api/users/:userId/meetups/:meetupId` route to handle PUT request to update user status', () => {
   it('updates user and partner info', async () => {
     const users = await UserMeetup.findAll();
 
@@ -166,7 +166,7 @@ describe('`/api/users/:userId/userMeetup/:meetupId` route to handle PUT request 
     };
 
     const response = await request(app)
-      .put(`/api/users/${users[0].userId}/userMeetup/${users[0].meetupId}`)
+      .put(`/api/users/${users[0].userId}/meetups/${users[0].meetupId}`)
       .send(
         await UserMeetup.updateUserMeetup(
           users[0].userId,

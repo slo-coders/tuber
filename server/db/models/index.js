@@ -7,18 +7,28 @@ const Meetup = require('./Meetup');
 const UserMeetup = require('./UserMeetup');
 const Session = require('./Session');
 const UserSession = require('./UserSession');
+const MeetupTopic = require('./MeetupTopic');
 
 //Associations
+
+//MeetupTopic associations
+
+Meetup.belongsToMany(Topic, {
+  through: 'meetup_topic',
+  foreignKey: 'meetupId',
+  otherKey: 'topicId',
+});
+
 // CourseTopic associations
 Course.belongsToMany(Topic, {
-  through: 'coursetopic',
+  through: 'course_topic',
   as: 'course',
   foreignKey: 'courseId',
   otherKey: 'topicId',
 });
 
 Topic.belongsToMany(Course, {
-  through: 'coursetopic',
+  through: 'course_topic',
   as: 'topic',
   foreignKey: 'topicId',
   otherKey: 'courseId',
@@ -73,4 +83,5 @@ module.exports = {
   UserMeetup,
   Session,
   UserSession,
+  MeetupTopic,
 };

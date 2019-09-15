@@ -5,9 +5,6 @@ import { LogoutThunked } from '../../actions/sessionActions';
 import PropTypes from 'prop-types';
 import Button from '../reusables/Button';
 
-
-
-
 export class Nav extends React.Component {
   constructor() {
     super();
@@ -17,7 +14,7 @@ export class Nav extends React.Component {
   logout(ev) {
     ev.preventDefault();
     this.props.LogoutThunked();
-    window.location ='/#home';
+    window.location = '/#home';
   }
 
   render() {
@@ -39,9 +36,9 @@ export class Nav extends React.Component {
             </Link>
             <div className="navbar-item">
               <Button
-              handleClick={this.logout}
-              buttonStyle={'is-primary'}
-              buttonText={'Logout'}
+                handleClick={this.logout}
+                buttonStyle={'is-primary'}
+                buttonText={'Logout'}
               />
             </div>
           </div>
@@ -52,14 +49,14 @@ export class Nav extends React.Component {
 }
 
 Nav.defaultProps = {
-  LogoutThunked: PropTypes.func
+  LogoutThunked: PropTypes.func,
 };
 Nav.propTypes = {
   LogoutThunked: PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => ({
-  LogoutThunked: () => dispatch(LogoutThunked())
+  LogoutThunked: () => dispatch(LogoutThunked()),
 });
 
 export default connect(
