@@ -1,7 +1,7 @@
 const faker = require('faker');
 
 //Generate Dummy User Data
-const num = 10;
+const num = 100;
 const emails = {};
 let users = Array(num).fill({});
 

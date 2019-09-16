@@ -1,12 +1,12 @@
 const meetupsData = [
   {
-    meetupType: 'M:M',
+    meetupType: 'P:P',
     location: 'Library',
     matchedAt: new Date(),
     meetupEnded: new Date(),
   },
   {
-    meetupType: 'M:M',
+    meetupType: 'P:P',
     location: 'Library',
     matchedAt: new Date(),
     meetupEnded: new Date(),
@@ -14,6 +14,12 @@ const meetupsData = [
   {
     meetupType: 'M:M',
     location: 'Coffee Shop',
+    matchedAt: new Date(),
+    meetupEnded: new Date(),
+  },
+  {
+    meetupType: 'M:M',
+    location: 'Computer Lab',
     matchedAt: new Date(),
     meetupEnded: new Date(),
   },

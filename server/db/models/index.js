@@ -59,17 +59,7 @@ Meetup.belongsToMany(User, {
 });
 
 //UserSession associations
-Session.belongsToMany(User, {
-  through: UserSession,
-  foreignKey: 'sid',
-  otherKey: 'userId',
-});
-
-User.belongsToMany(Session, {
-  through: UserSession,
-  foreignKey: 'userId',
-  otherKey: 'sid',
-});
+User.hasOne(UserSession, { foreignKey: 'userId' });
 
 module.exports = {
   User,

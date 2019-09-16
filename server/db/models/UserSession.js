@@ -9,9 +9,9 @@ const UserSession = db.define('user_session', {
     primaryKey: true,
   },
 
-  userTopics: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
-  },
+  // userTopics: {
+  //   type: Sequelize.ARRAY(Sequelize.STRING),
+  // },
 
   userType: {
     type: Sequelize.ENUM,
@@ -43,10 +43,10 @@ const UserSession = db.define('user_session', {
 
 //Hooks to get convert comma strings into an array for storage
 UserSession.beforeCreate(usersession => {
-  usersession.selectedTopic = convertArray(usersession.selectedTopic);
+  usersession.selectedTopics = convertArray(usersession.selectedTopics);
 });
 UserSession.beforeUpdate(usersession => {
-  usersession.selectedTopic = convertArray(usersession.selectedTopic);
+  usersession.selectedTopics = convertArray(usersession.selectedTopics);
 });
 
 //Should exist only in UserMeetup
