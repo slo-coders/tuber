@@ -6,7 +6,11 @@ const {
   UserSession,
   Topic,
   UserTopic,
+  UserMeetup,
+  Meetup,
 } = require('../db/index');
+
+const getMentorAsync = require('../db/utils/matchFunc');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -64,6 +68,45 @@ router.post('/', async (req, res, next) => {
 
     const createdUserSession = await UserSession.create(newSessionInfo);
 
+    //SKIPPING Confirmations
+    //Match a user to a mentor
+    getMentorAsync().then(async obj => {
+      let mentees = Object.keys(obj);
+      // CREATE Meetup instance with meetupType, location, and timeMatched
+      while (mentees.length) {
+        console.log('Mentees array length', mentees.length);
+        const menteeId = mentees.shift();
+        if (obj[menteeId][0]) {
+          console.log('menteeId >>> ', menteeId);
+          const { location } = UserSession.findOne({
+            where: { userId: menteeId },
+          });
+
+          const meetup = await Meetup.create({
+            meetupType: 'M:M',
+            location,
+          });
+          // CREATE 2 UserMeetup instances with 2 userIds
+          UserMeetup.create({
+            //mentee getting added first
+            meetupId: meetup.id,
+            userId: menteeId,
+            proficiencyRating:
+          });
+          UserMeetup.create({
+            //mentor getting added second
+            meetupId: meetup.id,
+            userId: obj[menteeId][0] ? obj[menteeId][0].mentorUserId : '',
+            //proficiencyRating: obj[menteeId][rating]
+          });
+        }
+        // CREATE MeetupTopic instace with topicId/menteeSelectedTopic from UserSession
+        //MeetupTopic.create({
+        //
+        //})
+        // DESTROY UserSession instance
+      }
+    });
     res.send(createdUserSession);
   } catch (err) {
     next(err);

@@ -3,12 +3,10 @@ const Sequelize = require('sequelize');
 
 //GET mentor, mentee, peer lists from UserSession
 
-let returnedUsers;
+const getMentorsAsync = async () => {
+  const mentorsForEachMentee = new Map();
 
-const getMentors = async () => {
-  const mentorsForEachMentee = {};
-
-  returnedUsers = await UserSession.findAll();
+  const returnedUsers = await UserSession.findAll();
 
   const returnedMentors = returnedUsers
     .filter(user => user.userType === 'mentor')
@@ -20,82 +18,79 @@ const getMentors = async () => {
   //   .filter(user => user.userType === 'peer')
   //   .sort((a, b) => a.createdAt - b.createdAt);
 
-  returnedMentees.map(async mentee => {
-    // Mentee's UserTopic instance based on mentees selected topic in UserSession
-    let menteeUserTopicInstance = await UserTopic.findOne({
-      where: {
-        userId: mentee.userId, //breaks if selected topic Id is allowed to go through and mentee hasnt given them any rating
-        topicId: mentee.selectedTopics[0],
-      },
-    });
-
-    if (menteeUserTopicInstance) {
-      // console.log('MENTEE >>>>>>>>>>>>>>>>>>', {
-      //   userId: menteeUserTopicInstance.userId,
-      //   rating: menteeUserTopicInstance.proficiencyRating,
-      // });
-
-      // Mentors' UserTopic instances based on mentees chosen topic
-      // Filter by menteed seletected topic
-      const mentorWannabesForTopic = returnedMentors.filter(
-        async (mentor, j) => {
-          return mentor.selectedTopics.includes(mentee.selectedTopics[0]);
+  let menteeUserTopicInstance;
+  await Promise.all(
+    returnedMentees.map(async mentee => {
+      // Mentee's UserTopic instance based on mentees selected topic in UserSession
+      menteeUserTopicInstance = await UserTopic.findOne({
+        where: {
+          userId: mentee.userId, //breaks if selected topic Id is allowed to go through and mentee hasnt given them any rating
+          topicId: mentee.selectedTopics[0],
         },
-      );
-      /* console.log(
-          `Number of wannabe mentors for topic ${mentee.selectedTopics[0]}: `,
-          mentorWannabesForTopic.length,
-        ); */
+      });
 
-      // Filter by proficiencyRating comparisons
-      const potentialMentors = await Promise.all(
-        mentorWannabesForTopic.map(async (wannabe, k) => {
-          //returns only mentors with higher profencies than mentees'
-          const possibleMentorUserTopicInstance = await UserTopic.findOne({
-            where: {
-              userId: wannabe.userId, //breaks if selected topic Id is allowed to go through and mentee hasnt given them any rating
-              topicId: mentee.selectedTopics[0],
-              proficiencyRating: {
-                [Sequelize.Op.gt]:
-                  menteeUserTopicInstance.proficiencyRating + 50,
+      if (menteeUserTopicInstance) {
+        // Mentors' UserTopic instances based on mentees chosen topic
+        // Filter by menteed seletected topic
+        const mentorWannabesForTopic = returnedMentors.filter(
+          async (mentor, j) => {
+            return mentor.selectedTopics.includes(mentee.selectedTopics[0]);
+          },
+        );
+
+        // Filter by proficiencyRating comparisons
+        const potentialMentors = await Promise.all(
+          mentorWannabesForTopic.map(async wannabe => {
+            //returns only mentors with higher profencies than mentees'
+            const possibleMentorUserTopicInstance = await UserTopic.findOne({
+              where: {
+                userId: wannabe.userId, //breaks if selected topic Id is allowed to go through and mentee hasnt given them any rating
+                topicId: mentee.selectedTopics[0],
+                proficiencyRating: {
+                  [Sequelize.Op.gt]:
+                    menteeUserTopicInstance.proficiencyRating + 50,
+                },
               },
-            },
-          });
+            });
 
-          if (possibleMentorUserTopicInstance) {
-            // console.log(
-            //   `Mentee ${i}'s Possible Mentor ${k} w/ rating >>>>>`,
-            //   possibleMentorUserTopicInstance.userId,
-            //   possibleMentorUserTopicInstance.proficiencyRating,
-            // );
-            return { wannabe, ...possibleMentorUserTopicInstance };
-          }
-          return null;
-        }),
-      );
+            if (possibleMentorUserTopicInstance) {
+              return { wannabe, ...possibleMentorUserTopicInstance };
+            }
+            return null;
+          }),
+        );
+        // console.log('MEETEE INSTANCE', mentee);
+        //building object of mentee keys and array of mentor values
+        // mentorsForEachMentee[mentee.userId] = potentialMentors
 
-      //building object of mentee keys and array of mentor values
-      mentorsForEachMentee[mentee.userId] = potentialMentors
-        .filter(mentor => mentor)
-        .map(mentor => ({
-          mentorUserId: mentor.dataValues.userId,
-          rating: mentor.dataValues.proficiencyRating,
-        }));
+        mentorsForEachMentee.set(
+          {
+            menteeId: mentee.userId,
+            // menteeProficiencyRating:
+            //   menteeUserTopicInstance.dataValues.proficiencyRating,
+          },
+          potentialMentors
+            .filter(mentor => mentor)
+            .map(mentor => ({
+              mentorUserId: mentor.dataValues.userId,
+              rating: mentor.dataValues.proficiencyRating,
+            })),
+        );
 
-      console.log(
-        `Array of possible mentors for mentee >>> ${mentee.userId}`,
-        mentorsForEachMentee[mentee.userId].length,
-      );
-
-      // return mentorsForEachMentee;
-    } else {
-      return null;
-    }
-  });
+        return potentialMentors;
+      } else {
+        return null;
+      }
+    }),
+  );
+  console.log('MENTAL: ', mentorsForEachMentee);
   return mentorsForEachMentee;
 };
 
-const logIt = () => {
-  getMentors().then(dic => console.log(dic));
-};
-logIt();
+getMentorsAsync().then(obj => console.log('Mentors for mentees: ', obj));
+
+module.exports = getMentorsAsync;
+
+//Next steps
+/*Interate though keys --> key and the first element of the value (matched mentor) --> UserMeetp.create()
+ */

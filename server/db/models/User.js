@@ -85,10 +85,10 @@ User.updateInfo = async function(userId, updatesObj) {
   const result = await user.update(updatedStudent, {
     fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
   });
-  console.log(result);
+  // console.log(result);
   delete result.password; ///////////how to remove password from instance
   delete result.salt;
-  console.log(result);
+  // console.log(result);
   return result;
 };
 

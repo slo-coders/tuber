@@ -148,7 +148,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
     //calculate average for user with new proficiencyRating:
     //// const newProficiencyRating = 0.1*(partner.proficiencyRating) + 0.9*(user.proficiencyRating + UserMeetups.getMostRecent().reduce((a,b) => a + b, 0))
     //PUT newProficiencyRating into /api/user/${partenerBeingRated.id}/topics/:topicId (i.e., UserTopic model)
-    res.send(findTopicFromUserSession);
+    res.send(userMeetupUpdate);
   } catch (err) {
     next(err);
   }
