@@ -69,7 +69,7 @@ router.post('/', async (req, res, next) => {
     }
 
     const createdUserSession = await UserSession.create(newSessionInfo);
-
+    let currentUserSession = createdUserSession;
     /////////ABOVE IS GENENERATED FROM THE FORM/////////////
 
     //SKIPPING Confirmations
@@ -109,7 +109,9 @@ router.post('/', async (req, res, next) => {
               meetupId: meetup.id,
               userId: req.body.userId,
               proficiencyRating: menteeUserTopicInstance.proficiencyRating,
+              userType: 'mentee',
             });
+            console.log('MEETUP MENTEE', uMeetupMentee);
 
             // Mentor/Peer2
             const { mentorId, rating } = obj[req.body.userId][0];
@@ -117,7 +119,9 @@ router.post('/', async (req, res, next) => {
               meetupId: meetup.id,
               userId: mentorId,
               proficiencyRating: rating,
+              userType: 'mentor',
             });
+            console.log('MEETUP MENTOR', uMeetupMentor);
 
             // CREATE MeetupTopic instace with topicId/menteeSelectedTopic from UserSession
             MeetupTopic.create({
@@ -126,15 +130,25 @@ router.post('/', async (req, res, next) => {
             });
 
             // DESTROY UserSession instance
-            uMeetupMentee.destroy();
-            uMeetupMentor.destroy();
+            //session from mentee
+            const mentorUserSession = UserSession.findOne({
+              where: { userId: mentorId },
+            });
+            mentorUserSession.destroy();
+
+            //Session from user
+            const menteeUserSession = UserSession.findOne({
+              where: { userId: req.body.userId },
+            });
+            menteeUserSession.destroy();
           }
         }
 
         // RE-RUN getMentors to eliminate mentor from various arrays
         getMentorAsync();
       });
-    } else if (req.body.userType === 'mentor') {
+    }
+    if (req.body.userType === 'mentor') {
       getMenteesAsync().then(async obj => {
         // CREATE Meetup instance with meetupType, location, and timeMatched
         if (obj[req.body.userId][0]) {
@@ -159,16 +173,19 @@ router.post('/', async (req, res, next) => {
             const uMeetupMentee = await UserMeetup.create({
               meetupId: meetup.id,
               userId: req.body.userId,
+              userType: 'mentor',
               proficiencyRating: mentorUserTopicInstance.proficiencyRating,
             });
-
+            console.log('MEETUP Mentee', uMeetupMentee);
             // Mentee/Peer2
             const { menteeId, rating } = obj[req.body.userId][0];
             const uMeetupMentor = await UserMeetup.create({
               meetupId: meetup.id,
               userId: menteeId,
+              userType: 'mentee',
               proficiencyRating: rating,
             });
+            console.log('MEETUP MENTOR', uMeetupMentor);
 
             // CREATE MeetupTopic instace with topicId/menteeSelectedTopic from UserSession
             MeetupTopic.create({
@@ -177,6 +194,8 @@ router.post('/', async (req, res, next) => {
             });
 
             // DESTROY UserSession instance
+
+            //////////// THIS IS DESTROYING THE USER_MEETUP NOT THE USER SESSION
             uMeetupMentee.destroy();
             uMeetupMentor.destroy();
           }
@@ -186,7 +205,7 @@ router.post('/', async (req, res, next) => {
         getMenteesAsync();
       });
     }
-    res.send(createdUserSession);
+    res.send(currentUserSession);
   } catch (err) {
     next(err);
   }

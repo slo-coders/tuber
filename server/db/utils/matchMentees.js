@@ -70,7 +70,7 @@ const getMenteesAsync = async () => {
       }
     }),
   );
-  console.log('POSSIBLE mentees', menteesForAllMentors);
+  // console.log('POSSIBLE mentees', menteesForAllMentors);
   return menteesForAllMentors;
 };
 
