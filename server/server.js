@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const routes = require('./routes/APIs');
+const morgan = require('morgan');
 const { db } = require('./db/index');
 const session = require('express-session');
 const createSequelizeStore = require('connect-session-sequelize');
@@ -9,6 +10,8 @@ const SequelizeStore = createSequelizeStore(session.Store);
 require('dotenv').config();
 
 const app = express();
+
+app.use(morgan('dev'));
 
 app.use(
   session({
