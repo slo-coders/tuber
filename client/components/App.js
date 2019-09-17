@@ -10,18 +10,20 @@ import SignUp from './containers/SignUp/SignUp';
 import PropTypes from 'prop-types';
 import { listTopicsThunk } from '../actions/topicActions';
 import { listUsersThunk } from '../actions/userActions';
+import { fetchLoggedInThunked } from '../actions/sessionActions';
 
 class App extends React.Component {
   componentDidMount() {
     /* will probably move, keeping fetch at high level for now */
     this.props.listTopics();
     this.props.listUsers();
+    this.props.getUser();
   }
 
   render() {
     return (
       <HashRouter>
-        <Route path="/" component={Nav} />
+        <Route path="/" component={() => <Nav {...this.props} />} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/profile" component={UserProfile} />
         <Route exact path="/signup" component={SignUp} />
@@ -42,12 +44,14 @@ const mapDispatchToProps = dispatch => {
   return {
     listTopics: () => dispatch(listTopicsThunk()),
     listUsers: () => dispatch(listUsersThunk()),
+    getUser: () => dispatch(fetchLoggedInThunked()),
   };
 };
 
 App.propTypes = {
   listTopics: PropTypes.func,
   listUsers: PropTypes.func,
+  getUser: PropTypes.func,
 };
 
 export default connect(
