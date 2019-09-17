@@ -74,6 +74,6 @@ const getMenteesAsync = async () => {
   return menteesForAllMentors;
 };
 
-getMenteesAsync().then(obj => console.log('Mentees: ', obj));
+//getMenteesAsync().then(obj => console.log('Mentees: ', obj));
 
 module.exports = getMenteesAsync;

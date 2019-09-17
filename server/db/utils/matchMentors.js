@@ -136,8 +136,7 @@ const getMentorsAsync = async () => {
   return mentorsForAllMentees;
 };
 
-// getMentorsAsync();
-getMentorsAsync().then(() => console.log('Mentors for mentees: '));
+// getMentorsAsync().then(() => console.log('Mentors for mentees: '));
 
 module.exports = getMentorsAsync;
 
