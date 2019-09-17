@@ -23,7 +23,7 @@ class App extends React.Component {
   render() {
     return (
       <HashRouter>
-        <Route path="/" component={()=><Nav {...this.props} />} />
+        <Route path="/" component={() => <Nav {...this.props} />} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/profile" component={UserProfile} />
         <Route exact path="/signup" component={SignUp} />
@@ -44,14 +44,14 @@ const mapDispatchToProps = dispatch => {
   return {
     listTopics: () => dispatch(listTopicsThunk()),
     listUsers: () => dispatch(listUsersThunk()),
-    getUser: () => dispatch(fetchLoggedInThunked())
+    getUser: () => dispatch(fetchLoggedInThunked()),
   };
 };
 
 App.propTypes = {
   listTopics: PropTypes.func,
   listUsers: PropTypes.func,
-  getUser: PropTypes.func
+  getUser: PropTypes.func,
 };
 
 export default connect(
