@@ -1,5 +1,6 @@
 [
   {
+    "id": "15cff6c2-2662-4bd4-a3a8-dffd5e1d2abf",
     "title": "Simplifying Polynomials",
     "description": "I am in desperate need of help. How does one simplify polynomials?",
     "dueDateRequired": true,
@@ -7,6 +8,7 @@
     "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
   },
   {
+    "id": "1d9af49c-9ee6-4b56-ae9c-478296ec2479",
     "title": "Factoring Polynomial",
     "description": "Coffee is on me. How does one factor polynomials?",
     "dueDateRequired": true,
@@ -14,6 +16,7 @@
     "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
   },
   {
+    "id": "4c363db0-f4d7-4960-a520-af013853cc71",
     "title": "Complex Fractions",
     "description": "Lost 2/3rds of my brain cells trying to learn this myself. anyone availble to help?",
     "dueDateRequired": false,
@@ -21,6 +24,7 @@
     "htmlURL": "http://www.cabrillo.edu/~amiller/Math%202/m4studyguide.pdf"
   },
   {
+    "id": "999960fa-73a6-49a2-9ed9-432f76ef5008",
     "title": "Limits",
     "description": "Take to the limit! Really, idk what I'm doing.",
     "dueDateRequired": false,
@@ -28,6 +32,7 @@
     "htmlURL": "http://tutorial.math.lamar.edu/Classes/CalcI/TheLimit.aspx"
   },
   {
+    "id": "9dbe544d-5eaa-4bf7-b4cf-b210c1135047",
     "title": "Differentiation",
     "description": "What's the difference?",
     "dueDateRequired": true,
@@ -35,6 +40,7 @@
     "htmlURL": "http://tutorial.math.lamar.edu/Classes/CalcI/Differentials.aspx"
   },
   {
+    "id": "aa10dc08-67c9-4a86-af44-c1919c5b4cc4",
     "title": "Continuity",
     "description": "I am continously struggling to answer this type of question. A little help would be appreciated.",
     "dueDateRequired": false,
@@ -42,6 +48,7 @@
     "htmlURL": "http://tutorial.math.lamar.edu/Classes/CalcI/Continuity.aspx"
   },
   {
+    "id": "b41b2ee1-a68e-49fc-bac3-0542988fefa2",
     "title": "Orthogonal Functions",
     "description": "I don't know how to even pronounce this one. HELP",
     "dueDateRequired": false,
@@ -49,6 +56,7 @@
     "htmlURL": "http://mathworld.wolfram.com/OrthogonalFunctions.html"
   },
   {
+    "id": "efdf7273-4735-4d58-8e57-ea09d1ca14df",
     "title": "Legendre Polynomial",
     "description": "It's going to be LEGEND . . . wait for it . . . DARY!",
     "dueDateRequired": true,
