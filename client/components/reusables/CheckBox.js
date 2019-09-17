@@ -5,7 +5,8 @@ export default function CheckBox(props) {
   return (
     <label className="checkbox">
       <input
-        value={props.checkboxItem}
+        value={props.checkboxValue}
+        name={props.checkboxItem}
         type="checkbox"
         onChange={props.handleCheckboxChange}
       />
@@ -17,5 +18,6 @@ export default function CheckBox(props) {
 CheckBox.propTypes = {
   key: PropTypes.string,
   checkboxItem: PropTypes.string,
+  checkboxValue: PropTypes.string,
   handleCheckboxChange: PropTypes.func,
 };

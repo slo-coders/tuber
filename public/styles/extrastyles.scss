@@ -1,46 +1,48 @@
-/* test theme #1 */
+/* saved colors */
 $yellow: hsl(54, 87%, 84%);
 $darkBlue: hsl(210, 58%, 21%);
 $turquoise: hsl(190, 48%, 39%);
 $rose: hsl(0, 45%, 63%);
 $peach: hsl(14, 93%, 80%);
 $lightBlue: hsl(181, 31%, 79%);
+$periwinkle:  #6464c8;
+$limeGreen: #c7ea46;
+$lightGrey: #E8E8E8;
+$mediumGrey: #A9A9A9;
 
+/* temporary theme */
+$background: $lightGrey;
+$link: $mediumGrey;
+$linkHover: $rose;
+
+/* css classes */
 body {
-  background-color: $darkBlue;
+  background-color: $background;
   height: 100vh;
   width: 100vw;
 }
 
-.turquoise {
-  color: $turquoise;
+a {
+  color: $link;
 }
 
-hr.turquoise {
-  color: $turquoise;
+a:hover {
+  color: $linkHover;
 }
 
-.vertical1 { 
-  border-left: 2px solid #415D43; 
-  height: 500px; 
-  position:absolute; 
-  left: 5%; 
-} 
+a>svg{
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
 
-.vertical2 { 
-  border-left: 2px dotted #A5CC6b; 
-  height: 600px; 
-  position:absolute; 
-  left: 6%; 
-} 
 
-.vertical3 { 
-  border-left: 2px solid #704c5e; 
-  height: 400px; 
-  position:absolute; 
-  left: 7%; 
-} 
+/* CSS Transition group animations */
+.componentFadeIn-appear {
+  opacity: 0.01;
+}
 
-::placeholder {
-  color: white;
+.componentFadeIn-appear.componentFadeIn-appear-active {
+  opacity: 1;
+  transition: opacity 600ms ease-in;
 }
