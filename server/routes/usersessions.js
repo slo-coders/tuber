@@ -69,35 +69,37 @@ router.post('/', async (req, res, next) => {
     const createdUserSession = await UserSession.create(newSessionInfo);
 
     //SKIPPING Confirmations
-    //Match a user to a mentor
+    //Match 2 Users from Map returned by getMentorAsync
     getMentorAsync().then(async obj => {
       let mentees = Object.keys(obj);
       // CREATE Meetup instance with meetupType, location, and timeMatched
       while (mentees.length) {
         console.log('Mentees array length', mentees.length);
-        const menteeId = mentees.shift();
-        if (obj[menteeId][0]) {
-          console.log('menteeId >>> ', menteeId);
+        const mentee = mentees.shift();
+        if (obj[mentee][0]) {
+          console.log('mentee >>> ', mentee);
           const { location } = UserSession.findOne({
-            where: { userId: menteeId },
+            where: { userId: mentee },
           });
 
           const meetup = await Meetup.create({
             meetupType: 'M:M',
             location,
           });
-          // CREATE 2 UserMeetup instances with 2 userIds
+          // CREATE 2 UserMeetup instances with 2 userIds (mentee and mentor)
+          // Mentee/Peer1
           UserMeetup.create({
-            //mentee getting added first
             meetupId: meetup.id,
-            userId: menteeId,
-            proficiencyRating:
+            userId: mentee.menteeId,
+            proficiencyRating: mentee.rating,
           });
+          // Mentor/Peer2
           UserMeetup.create({
-            //mentor getting added second
             meetupId: meetup.id,
-            userId: obj[menteeId][0] ? obj[menteeId][0].mentorUserId : '',
-            //proficiencyRating: obj[menteeId][rating]
+            //TODO: change "selectFirstMentor w/ 0" idea for a better algo that 
+            //considers skipping if other mentee's possible mentors lists
+            userId: obj[mentee][0] ? obj[mentee][0].mentorUserId : '', 
+            //proficiencyRating: obj[mentee][rating]
           });
         }
         // CREATE MeetupTopic instace with topicId/menteeSelectedTopic from UserSession

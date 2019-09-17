@@ -62,17 +62,16 @@ const getMentorsAsync = async () => {
         // console.log('MEETEE INSTANCE', mentee);
         //building object of mentee keys and array of mentor values
         // mentorsForEachMentee[mentee.userId] = potentialMentors
-
+        // Map from mentee obj ({menteeId, rating}) to array of mentors ([] or [{mentorUs}])
         mentorsForEachMentee.set(
           {
             menteeId: mentee.userId,
-            // menteeProficiencyRating:
-            //   menteeUserTopicInstance.dataValues.proficiencyRating,
+            rating: menteeUserTopicInstance.dataValues.proficiencyRating,
           },
           potentialMentors
             .filter(mentor => mentor)
             .map(mentor => ({
-              mentorUserId: mentor.dataValues.userId,
+              mentorId: mentor.dataValues.userId,
               rating: mentor.dataValues.proficiencyRating,
             })),
         );
@@ -83,6 +82,7 @@ const getMentorsAsync = async () => {
       }
     }),
   );
+
   console.log('MENTAL: ', mentorsForEachMentee);
   return mentorsForEachMentee;
 };
