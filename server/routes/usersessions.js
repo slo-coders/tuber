@@ -78,12 +78,12 @@ router.post('/', async (req, res, next) => {
         const mentee = mentees.shift();
         if (obj[mentee][0]) {
           console.log('mentee >>> ', mentee);
-          const { location } = UserSession.findOne({
+          const { location } = UserSession.findOne({ //Location starts as null
             where: { userId: mentee },
           });
 
           const meetup = await Meetup.create({
-            meetupType: 'M:M',
+            meetupType: mentee.userType ? `mentee.userType[0]:mentee.userType[0]` : 'ERROR',
             location,
           });
           // CREATE 2 UserMeetup instances with 2 userIds (mentee and mentor)
@@ -99,7 +99,7 @@ router.post('/', async (req, res, next) => {
             //TODO: change "selectFirstMentor w/ 0" idea for a better algo that 
             //considers skipping if other mentee's possible mentors lists
             userId: obj[mentee][0] ? obj[mentee][0].mentorUserId : '', 
-            //proficiencyRating: obj[mentee][rating]
+            proficiencyRating: obj[mentee][0].rating
           });
         }
         // CREATE MeetupTopic instace with topicId/menteeSelectedTopic from UserSession
@@ -107,6 +107,7 @@ router.post('/', async (req, res, next) => {
         //
         //})
         // DESTROY UserSession instance
+        // RE-RUN getMentors
       }
     });
     res.send(createdUserSession);

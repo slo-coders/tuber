@@ -66,6 +66,7 @@ const getMentorsAsync = async () => {
         mentorsForEachMentee.set(
           {
             menteeId: mentee.userId,
+            userType: mentee.userType,
             rating: menteeUserTopicInstance.dataValues.proficiencyRating,
           },
           potentialMentors
