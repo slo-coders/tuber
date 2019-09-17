@@ -19,7 +19,18 @@ export class Nav extends React.Component {
 
   render() {
     return (
-      <nav className="navbar">
+      <nav className="navbar is-transparent">
+        <div className="navbar-brand">
+          <div
+            className="navbar-burger burger"
+            data-target="navbarExampleTransparentExample"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
         <div className="navbar-menu">
           <div className="navbar-start">
             <Link className="navbar-item" to="/home">
@@ -37,7 +48,7 @@ export class Nav extends React.Component {
             <div className="navbar-item">
               <Button
                 handleClick={this.logout}
-                buttonStyle={'is-primary'}
+                buttonStyle={'is-primary is-small'}
                 buttonText={'Logout'}
               />
             </div>
