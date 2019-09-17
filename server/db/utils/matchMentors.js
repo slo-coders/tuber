@@ -4,7 +4,8 @@ const Sequelize = require('sequelize');
 //GET mentor, mentee, peer lists from UserSession
 
 const getMentorsAsync = async () => {
-  const mentorsForEachMentee = new Map();
+  const mentorsForAllMentees = {};
+  // const mentorsForAllMentees = new Map();
 
   const returnedUsers = await UserSession.findAll();
 
@@ -17,12 +18,56 @@ const getMentorsAsync = async () => {
   // const returnedPeers = returnedUsers
   //   .filter(user => user.userType === 'peer')
   //   .sort((a, b) => a.createdAt - b.createdAt);
+  // console.log('RETURNED MENTORS', returnedMentors);
+  /*
+  const possMentorsUTopInstanz = await Promise.all(
+    returnedMentees.map(async menteeUSessInstance => {
+      const possibleMentors =
+        returnedMentors.filter(async mentorUSessInstance => {
+          // try {
+          const menteeUserTopicInstance = await UserTopic.findOne({
+            //instnace or null
+            where: { userId: menteeUSessInstance.userId },
+          });
+          const mentorUserTopicInstance = await UserTopic.findOne({
+            where: { userId: mentorUSessInstance.userId },
+          });
+          // console.log(
+          //   'mentorUserTopicInstance>>>>>>>',
+          //   menteeUserTopicInstance.dataValues,
+          // );
+          if (menteeUserTopicInstance && mentorUserTopicInstance) {
+            return (
+              mentorUSessInstance.selectedTopics.includes(
+                menteeUSessInstance.selectedTopics[0],
+              ) &&
+              menteeUserTopicInstance.proficiencyRating + 50 <=
+                mentorUserTopicInstance.proficiencyRating
+            );
+          }
+          return false;
+          // } catch (err) {
+          //   console.error(err);
+          // }
+        }
+      );
+      return possibleMentors;
+    }),
+  );
+  // console.log('DIRTY LENGTH', possMentorsUTopInstanz);
 
-  let menteeUserTopicInstance;
+  const possibleMentorsCleaned = possMentorsUTopInstanz.map(mentor => ({
+    mentorId: mentor.dataValues.userId,
+    rating: mentor.dataValues.proficiencyRating,
+  }));
+  console.log('cleaned', possibleMentorsCleaned);
+  return possibleMentorsCleaned;
+  */
+
   await Promise.all(
     returnedMentees.map(async mentee => {
       // Mentee's UserTopic instance based on mentees selected topic in UserSession
-      menteeUserTopicInstance = await UserTopic.findOne({
+      const menteeUserTopicInstance = await UserTopic.findOne({
         where: {
           userId: mentee.userId, //breaks if selected topic Id is allowed to go through and mentee hasnt given them any rating
           topicId: mentee.selectedTopics[0],
@@ -44,7 +89,7 @@ const getMentorsAsync = async () => {
             //returns only mentors with higher profencies than mentees'
             const possibleMentorUserTopicInstance = await UserTopic.findOne({
               where: {
-                userId: wannabe.userId, //breaks if selected topic Id is allowed to go through and mentee hasnt given them any rating
+                userId: wannabe.userId,
                 topicId: mentee.selectedTopics[0],
                 proficiencyRating: {
                   [Sequelize.Op.gt]:
@@ -59,11 +104,15 @@ const getMentorsAsync = async () => {
             return null;
           }),
         );
-        // console.log('MEETEE INSTANCE', mentee);
-        //building object of mentee keys and array of mentor values
-        // mentorsForEachMentee[mentee.userId] = potentialMentors
-        // Map from mentee obj ({menteeId, rating}) to array of mentors ([] or [{mentorUs}])
-        mentorsForEachMentee.set(
+
+        mentorsForAllMentees[mentee.userId] = potentialMentors
+          .filter(mentor => mentor)
+          .map(mentor => ({
+            mentorId: mentor.dataValues.userId,
+            rating: mentor.dataValues.proficiencyRating,
+          }));
+        /*         // Map from mentee ({menteeId, rating}) to array of mentors ([] or [{mentorUs}])
+        mentorsForAllMentees.set(
           {
             menteeId: mentee.userId,
             userType: mentee.userType,
@@ -75,7 +124,7 @@ const getMentorsAsync = async () => {
               mentorId: mentor.dataValues.userId,
               rating: mentor.dataValues.proficiencyRating,
             })),
-        );
+        ); */
 
         return potentialMentors;
       } else {
@@ -83,12 +132,12 @@ const getMentorsAsync = async () => {
       }
     }),
   );
-
-  console.log('MENTAL: ', mentorsForEachMentee);
-  return mentorsForEachMentee;
+  // console.log('POSSIBLE MENTORE', mentorsForAllMentees);
+  return mentorsForAllMentees;
 };
 
-getMentorsAsync().then(obj => console.log('Mentors for mentees: ', obj));
+// getMentorsAsync();
+getMentorsAsync().then(() => console.log('Mentors for mentees: '));
 
 module.exports = getMentorsAsync;
 

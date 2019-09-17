@@ -63,8 +63,8 @@ const seed = async () => {
 
       //Seed UserTopic
       usersReturned.forEach(async user => {
-        const start = randIntBtwn(0, topicsReturned.length - 1);
-        const end = randIntBtwn(start, topicsReturned.length);
+        const start = randIntBtwn(0, topicsReturned.length - 2);
+        const end = randIntBtwn(start + 1, topicsReturned.length);
         const ratedTopics = topicsReturned.slice(start, end).map(topic => ({
           userId: user.id,
           topicId: topic.id,
@@ -83,7 +83,9 @@ const seed = async () => {
         ),
       );
 
-      // Seed UserSession
+      const userTopicsReturned = await UserTopic.findAll();
+
+      // Seed UserSession (Users should have a UserTopic rating so create UserSessions from UserTopics)
       await Promise.all(
         usersReturned.map((user, i) =>
           UserSession.create({
@@ -91,11 +93,13 @@ const seed = async () => {
             location: ['library', 'computer lab', 'cafe', 'dorm lounge'][i % 4],
             selectedTopics:
               ['mentee', 'mentor', 'peer'][i % 3] === 'mentor'
-                ? [
-                    topicsReturned[i % topicsReturned.length].id,
-                    topicsReturned[(i + 1) % topicsReturned.length].id,
-                  ]
-                : [topicsReturned[i % topicsReturned.length].id],
+                ? userTopicsReturned
+                    .filter(uTopInst => uTopInst.userId === user.id)
+                    .map(uTopInst => uTopInst.topicId)
+                : userTopicsReturned
+                    .filter(uTopInst => uTopInst.userId === user.id)
+                    .map(uTopInst => uTopInst.topicId)
+                    .slice(0, 1),
             userId: user.id,
           }),
         ),
