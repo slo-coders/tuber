@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import CourseSelect from './CourseSelect';
 
 class RequestMatch extends Component {
   constructor() {
@@ -14,6 +15,7 @@ class RequestMatch extends Component {
           <i className="fas fa-exclamation-triangle"></i>
         </span>
         <h4>The Request Match component is under construction.</h4>
+      <CourseSelect/>
       </div>
     );
   }
