@@ -3,7 +3,7 @@ import { HashRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Home from './containers/Home';
 import Nav from './containers/Nav';
-import UserProfile from './containers/UserProfile';
+import UserProfile from './containers/UserProfile/UserProfile';
 import RequestMatch from './containers/RequestMatch/RequestMatch';
 import LoginForm from './containers/LoginForm';
 import SignUp from './containers/SignUp/SignUp';
