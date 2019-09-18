@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CourseSelect from './CourseSelect';
+import { listCoursesThunk } from '../../../actions/courseActions';
+import PropTypes from 'prop-types';
 
-class RequestMatch extends Component {
-  constructor() {
-    super();
+
+export class RequestMatch extends Component {
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
+  componentDidMount() {
+    this.props.getCourses();
+  }
+
   render() {
+    console.log(this.props)
     return (
       <div>
         <span className="icon has-text-warning">
@@ -21,7 +29,18 @@ class RequestMatch extends Component {
   }
 }
 
+RequestMatch.defaultProps = {
+  getCourses: PropTypes.func,
+};
+RequestMatch.propTypes = {
+  getCourses: PropTypes.func,
+};
+
+const mapDispatchToProps = dispatch => ({
+  getCourses: () => dispatch(listCoursesThunk())
+});
+
 export default connect(
   null,
-  null,
+  mapDispatchToProps,
 )(RequestMatch);
