@@ -6,11 +6,13 @@ import PropTypes from 'prop-types';
 
 export default function Star(props) {
   return (
-      <i className={props.starType}/>
+    <a value={props.value}>
+      <FontAwesomeIcon icon={props.filled ? fasStar : farStar} />
+    </a>
   );
 }
 
 Star.propTypes = {
-  starType: PropTypes.string,
+  value: PropTypes.string,
   filled: PropTypes.string,
 };

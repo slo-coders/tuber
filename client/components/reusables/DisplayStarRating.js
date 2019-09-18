@@ -4,25 +4,25 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStarHalfAlt as faStarHalfAlt } from '@fortawesome/fontawesome-free-solid';
 
-export default class StarRating extends Component {
+export default class DisplayStarRating extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      star100: false,
       star50: false,
-      star200: false,
+      star100: false,
       star150: false,
-      star300: false,
+      star200: false,
       star250: false,
-      star400: false,
+      star300: false,
       star350: false,
-      star500: false,
+      star400: false,
       star450: false,
+      star500: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(e) {
+  handleClick() {
     e.preventDefault;
     this.props.handleStarClick(e, this.props.topic);
 
@@ -47,6 +47,7 @@ export default class StarRating extends Component {
               this.setState({
                 star500: !this.state.star500,
               });
+              
             }
           }
         }
@@ -72,7 +73,7 @@ export default class StarRating extends Component {
   }
 }
 
-StarRating.propTypes = {
+DisplayStarRating.propTypes = {
   topic: PropTypes.string,
   handleStarClick: PropTypes.func,
 };
