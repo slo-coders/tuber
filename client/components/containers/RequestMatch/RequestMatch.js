@@ -16,14 +16,14 @@ export class RequestMatch extends Component {
   }
 
   render() {
-    console.log(this.state)
+    console.log(this.props);
     return (
       <div>
         <span className="icon has-text-warning">
           <i className="fas fa-exclamation-triangle"></i>
         </span>
         <h4>The Request Match component is under construction.</h4>
-      <CourseSelect/>
+      <CourseSelect courses={this.props.courses} />
       </div>
     );
   }
@@ -36,11 +36,14 @@ RequestMatch.propTypes = {
   getCourses: PropTypes.func,
 };
 
+const mapStateToProps = state => ({
+  courses: state.courses.courses
+});
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk())
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(RequestMatch);
