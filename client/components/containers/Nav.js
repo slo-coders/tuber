@@ -38,6 +38,7 @@ export class Nav extends React.Component {
             <span></span>
           </div>
         </div>
+
         {this.props.user.authUser.id ? (
           <div className="navbar-menu">
             <div className="navbar-start">
