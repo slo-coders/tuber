@@ -5,7 +5,6 @@ import CourseSelect from './CourseSelect';
 import { listCoursesThunk } from '../../../actions/courseActions';
 import PropTypes from 'prop-types';
 
-
 class RequestMatch extends Component {
   constructor() {
     super();
@@ -24,7 +23,7 @@ class RequestMatch extends Component {
   }
   handleCourseChoice(e) {
     this.setState({
-      course: e.target.getAttribute('value')
+      course: e.target.getAttribute('value'),
     });
   }
 
@@ -43,7 +42,7 @@ class RequestMatch extends Component {
     }
     if (this.state.role) {
       return (
-        <div className='section'>
+        <div className="section">
           <CourseSelect
             courses={this.props.courses}
             handleCourseChoice={this.handleCourseChoice}
@@ -56,18 +55,18 @@ class RequestMatch extends Component {
 
 RequestMatch.defaultProps = {
   getCourses: PropTypes.func,
-  courses: PropTypes.array
+  courses: PropTypes.array,
 };
 RequestMatch.propTypes = {
   getCourses: PropTypes.func,
-  courses: PropTypes.array
+  courses: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
-  courses: state.courses.courses
+  courses: state.courses.courses,
 });
 const mapDispatchToProps = dispatch => ({
-  getCourses: () => dispatch(listCoursesThunk())
+  getCourses: () => dispatch(listCoursesThunk()),
 });
 
 export default connect(
