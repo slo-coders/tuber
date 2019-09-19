@@ -8,7 +8,6 @@ const {
   UserTopic,
 } = require('../db/index');
 
-// const getPossibleParnersAsync = require('../db/utils/getPossiblePartners');
 const matchToPartner = require('../db/utils/matchWithPartner');
 
 router.get('/', async (req, res, next) => {
