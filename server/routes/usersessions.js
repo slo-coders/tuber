@@ -1,5 +1,14 @@
 const router = require('express').Router();
-const { Session, UserSession } = require('../db/index');
+const {
+  User,
+  Course,
+  CourseTopic,
+  UserSession,
+  Topic,
+  UserTopic,
+} = require('../db/index');
+
+const matchToPartner = require('../db/utils/matchWithPartner');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -11,28 +20,90 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const activeUserSession = await UserSession.findOne({
+      where: { userId: req.params.userId },
+    });
+    res.send(activeUserSession);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post('/', async (req, res, next) => {
   try {
-    //need to have a session inorder to create a new UserSession
-    const userSessionFromUser = await Session.findOne({
-      where: { userId: req.body.userId },
+    const { userId, userType, location, courseId, topicId } = req.body;
+    /* GET User instance with Topic info for topicsId from UserTopic*/
+    const userInstance = await User.findOne({
+      where: {
+        id: userId,
+      },
+      include: [{ model: Topic, through: { model: UserTopic } }],
     });
 
-    if (!userSessionFromUser) {
+    if (!userInstance) {
       res.sendStatus(401);
     }
 
+    /* CREATE UserSession instance */
     const newSessionInfo = {
-      userId: req.body.userId,
-      sid: userSessionFromUser.sid,
-      selectedTopics: req.body.selectedTopics.split(', '),
-      userType: req.body.userType,
-      location: req.body.location,
+      userId: userId,
+      userType: userType,
+      location: location,
+      userTopics: userInstance.topics.map(topic => topic.id),
     };
 
-    const createdUserSession = await UserSession.create(newSessionInfo);
+    //- mentors select a courseId and Topic info from topicIds in CourseTopic are pulled
+    if (courseId && userType === 'mentor') {
+      const selectedCourseWithTopics = await Course.findOne({
+        where: { id: courseId },
+        include: [{ model: Topic, through: { model: CourseTopic } }],
+      });
+      const allTopicIdsInCourse = selectedCourseWithTopics.topics.map(
+        topic => topic.id,
+      );
+      const ratedTopicIds = userInstance.topics.map(topic => topic.id);
+      newSessionInfo.selectedTopics = allTopicIdsInCourse.filter(topicId =>
+        ratedTopicIds.includes(topicId),
+      );
+    }
+    //- mentees/peers select a single topicId item for an array
+    else if (topicId && userType !== 'mentor') {
+      newSessionInfo.selectedTopics = [topicId];
+    }
 
-    res.send(createdUserSession);
+    const userSession = await UserSession.create(newSessionInfo);
+
+    /* Check UserSessions for possible partners with whom to create a Meetup */
+    //TODO: change "FIFO" idea for better algo that
+    //considers skipping mentor to maximize number of meetups
+    if (userType === 'mentee' || userType === 'mentor' || userType === 'peer') {
+      const matchedUserMeetupInfo = await matchToPartner(
+        userId,
+        userType,
+        location,
+        userSession.selectedTopics,
+      );
+
+      //TODO:
+      //CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USER
+      //IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, but DO NOT DELETE userSession
+
+      // DESTROY mentee's recently created UserSession instance
+      userSession.destroy();
+
+      // DESTROY mentor's pre-existing UserSession instance
+      const partnerUserSession = await UserSession.findOne({
+        where: { userId: matchedUserMeetupInfo.partner.userId },
+      });
+      await partnerUserSession.destroy();
+
+      // RESPOND with UserMeetup info
+      res.status(201).send(matchedUserMeetupInfo);
+    } else {
+      res.send(userSession);
+    }
   } catch (err) {
     next(err);
   }

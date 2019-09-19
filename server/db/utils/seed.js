@@ -6,22 +6,19 @@ const {
   Topic,
   UserTopic,
   Meetup,
-  UserMeetup,
+  // UserMeetup,
   MeetupTopic,
-  // Session,
-  // UserSession,
+  UserSession,
 } = require('../index');
 const users = require('./seedFiles/userData');
 const randIntBtwn = require('./randIntBtwn');
 const meetupsData = require('./seedFiles/meetupData');
 const coursesData = require('./seedFiles/courseData');
-const userMeetUpData = require('./seedFiles/userMeetupData');
+// const userMeetUpData = require('./seedFiles/userMeetupData');
 // const userSessionData = require('./seedFiles/userSessionData');
 const path = require('path');
 const fs = require('fs');
 // const uuid = require('./uuid');
-
-let usersReturned;
 
 // Sync to DB then Seed Dummy Data
 const seed = async () => {
@@ -30,12 +27,13 @@ const seed = async () => {
       await db.sync({ force: true });
       console.log('Synced DB.');
 
+      //SEED MAIN TABLES
+
       //Seed User
       // await User.bulkCreate(users); //BulkCreate threw uniqueness error
       await Promise.all(users.map(user => User.create(user)));
-      usersReturned = await User.findAll();
 
-      //Seed Course
+      //Seed Courses
       await Promise.all(coursesData.map(course => Course.create(course)));
 
       //Seed Topic
@@ -43,9 +41,13 @@ const seed = async () => {
       let data = fs.readFileSync(src, 'utf8');
       let topics = JSON.parse(data);
       await Promise.all(topics.map(topic => Topic.create(topic)));
-      //CourseTopic associations made
-      //creates entry with courseId, topicId, courseTopicId - param1: courseCode, param2: topic title
-      //CourseTopic.associate('96', 'Limits');
+
+      //Seed Meetup
+      await Promise.all(meetupsData.map(m => Meetup.create(m)));
+
+      //return intances of main tables
+      const usersReturned = await User.findAll();
+      const meetupsReturned = await Meetup.findAll();
       const topicsReturned = await Topic.findAll();
       const courseReturned = await Course.findAll();
 
@@ -61,8 +63,8 @@ const seed = async () => {
 
       //Seed UserTopic
       usersReturned.forEach(async user => {
-        const start = randIntBtwn(0, topicsReturned.length - 1);
-        const end = randIntBtwn(start, topicsReturned.length + 1);
+        const start = randIntBtwn(0, topicsReturned.length - 2);
+        const end = randIntBtwn(start + 1, topicsReturned.length);
         const ratedTopics = topicsReturned.slice(start, end).map(topic => ({
           userId: user.id,
           topicId: topic.id,
@@ -71,28 +73,9 @@ const seed = async () => {
         await Promise.all(ratedTopics.map(uTop => UserTopic.create(uTop)));
       });
 
-      //Seed Meetup
-      await Promise.all(meetupsData.map(m => Meetup.create(m)));
-      const meetupsReturned = await Meetup.findAll();
-
-      //Seed UserMeetup
+      //Seed MeetupTopic
       await Promise.all(
-        userMeetUpData.map((user, i) =>
-          UserMeetup.create({
-            meetupType: user.userType,
-            softSkillsRating: user.softSkillsRating,
-            userType: user.userType,
-            proficiencyRating: user.proficiencyRating,
-            userId: usersReturned[i].id,
-            meetupId: meetupsReturned[i % 2].id,
-            comments: user.comments,
-          }),
-        ),
-      );
-
-      //Seed MeeupTopic
-      await Promise.all(
-        meetupsReturned.slice(0, 2).map((meet, i) =>
+        meetupsReturned.map((meet, i) =>
           MeetupTopic.create({
             meetupId: meet.id,
             topicId: topicsReturned[i].id,
@@ -100,31 +83,47 @@ const seed = async () => {
         ),
       );
 
-      // await Promise.all(
-      //   usersReturned.map(user => {
-      //     Session.create({ userId: user.id, sid: uuid() });
-      //   }),
-      // );
+      const userTopicsReturned = await UserTopic.findAll();
 
-      // await Promise.all(
-      //   userSessionData.map((user, i) => {
-      //     UserSession.create({
-      //       userType: user.userType,
-      //       selectedTopics: user.selectedTopics,
-      //       userId: usersReturned[i].id,
-      //       status: i % 2 !== 0 ? 'matched' : 'waiting',
-      //     });
-      //   }),
-      // );
-
+      // Seed UserSession (Users should have a UserTopic rating so create UserSessions from UserTopics)
+      // let userSessionReturned = await Promise.all(
+      await Promise.all(
+        usersReturned.map((user, i) => 
+          //Create userSession
+          UserSession.create({
+            userType: ['mentee', 'mentor', 'peer'][i % 3],
+            location: ['library', 'computer lab', 'cafe', 'dorm lounge'][i % 4],
+            selectedTopics:
+            ['mentee', 'mentor', 'peer'][i % 3] === 'mentor'
+                ? userTopicsReturned
+                .filter(uTopInst => uTopInst.userId === user.id)
+                .map(uTopInst => uTopInst.topicId)
+                : userTopicsReturned
+                .filter(uTopInst => uTopInst.userId === user.id)
+                .map(uTopInst => uTopInst.topicId)
+                .slice(0, 1),
+                userId: user.id,
+          })
+        )
+      );
+            
+/*       // Updated user with userSessionId
+      await Promise.all(
+        usersReturned.map((user, i) => 
+          user.update({
+            userSessionId: userSessionReturned[i].id
+          })
+        )
+      ); */
+      
       console.log('Seeded DB.');
     } else {
       throw 'Error: Trying to seed in production environment.';
     }
   } catch (error) {
-    console.error('Could not seed database:', error);
+    console.error('Could not seed database: ', error);
   }
-  await db.close();
+  // await db.close();
 };
 
 module.exports = seed;

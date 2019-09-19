@@ -22,14 +22,12 @@ Meetup.belongsToMany(Topic, {
 // CourseTopic associations
 Course.belongsToMany(Topic, {
   through: 'course_topic',
-  as: 'course',
   foreignKey: 'courseId',
   otherKey: 'topicId',
 });
 
 Topic.belongsToMany(Course, {
   through: 'course_topic',
-  as: 'topic',
   foreignKey: 'topicId',
   otherKey: 'courseId',
 });
@@ -61,17 +59,7 @@ Meetup.belongsToMany(User, {
 });
 
 //UserSession associations
-Session.belongsToMany(User, {
-  through: UserSession,
-  foreignKey: 'sid',
-  otherKey: 'userId',
-});
-
-User.belongsToMany(Session, {
-  through: UserSession,
-  foreignKey: 'userId',
-  otherKey: 'sid',
-});
+User.hasOne(UserSession, { foreignKey: 'userId' });
 
 module.exports = {
   User,

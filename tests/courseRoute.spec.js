@@ -30,29 +30,29 @@ describe('`/api/courses` route handling a POST request', () => {
   });
 });
 
-describe('`/api/courses/:id` route handling a PUT and DELETE request', () => {
-  let course;
-  beforeAll(async () => {
-    course = await Course.findOne({
-      where: {
-        courseName: 'Stretch Precalculus Algebra I',
-      },
-    });
-  });
-  it('Edits course info based on a course ID', async () => {
-    const response = await request(app)
-      .put(`/api/courses/${course.id}`)
-      .send({ courseName: 'Stretch PreCalc II', courseCode: '200' });
-    expect(response.status).toEqual(200);
-    expect(response.body.courseName).toEqual('Stretch PreCalc II');
-    expect(response.body.courseCode).toEqual('200');
-  });
-  it('DELETE a course from the course list', async () => {
-    const response = await request(app).delete(`/api/courses/${course.id}`);
-    const noResponse = await request(app).get(`/api/courses/${course.id}`);
-    expect(noResponse.body.id).toBe(undefined);
-    expect(response.status).toEqual(204);
-  });
-});
+// describe('`/api/courses/:id` route handling a PUT and DELETE request', () => {
+//   let course;
+//   beforeAll(async () => {
+//     course = await Course.findOne({
+//       where: {
+//         courseName: 'Stretch Precalculus Algebra I',
+//       },
+//     });
+//   });
+//   it('Edits course info based on a course ID', async () => {
+//     const response = await request(app)
+//       .put(`/api/courses/${course.id}`)
+//       .send({ courseName: 'Stretch PreCalc II', courseCode: '200' });
+//     expect(response.status).toEqual(200);
+//     expect(response.body.courseName).toEqual('Stretch PreCalc II');
+//     expect(response.body.courseCode).toEqual('200');
+//   });
+//   it('DELETE a course from the course list', async () => {
+//     const response = await request(app).delete(`/api/courses/${course.id}`);
+//     const noResponse = await request(app).get(`/api/courses/${course.id}`);
+//     expect(noResponse.body.id).toBe(undefined);
+//     expect(response.status).toEqual(204);
+//   });
+// });
 
 afterAll(async () => await db.close());

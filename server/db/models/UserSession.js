@@ -9,9 +9,14 @@ const UserSession = db.define('user_session', {
     primaryKey: true,
   },
 
+  // userTopics: {
+  //   type: Sequelize.ARRAY(Sequelize.STRING),
+  // },
+
   userType: {
     type: Sequelize.ENUM,
     values: ['mentor', 'mentee', 'peer'],
+    allowNull: false,
   },
 
   location: {
@@ -21,15 +26,6 @@ const UserSession = db.define('user_session', {
   //Need to figure our how to further validate this, maybe as a class funciton. Mixing DataTypes ARRAY and ENUM is problematic
   selectedTopics: {
     type: Sequelize.ARRAY(Sequelize.STRING),
-  },
-
-  selectedCourse: {
-    type: Sequelize.ENUM,
-    values: [
-      'Intermediate Algebra',
-      'Calculus 1',
-      'Partial Differential Equations',
-    ],
   },
 
   status: {
@@ -53,42 +49,27 @@ UserSession.beforeUpdate(usersession => {
   usersession.selectedTopics = convertArray(usersession.selectedTopics);
 });
 
-// Class methods
-// UserSession.postUserSession = async function(userId, topics, userType) {
-//   const userSessionFromUser = await Session.findOne({
-//     where: { userId: userId },
-//   });
+//Should exist only in UserMeetup
+// UserSession.updateUserSession = async function(userId, userInfo) {
+//   {
+//     const sessionUser = await this.findOne({
+//       where: { userId: userId },
+//     });
 
-//   const newSessionInfo = {
-//     userId,
-//     sid: userSessionFromUser.sid,
-//     selectedTopics: topics,
-//     userType,
-//   };
+//     const updatedUserSession = {
+//       userType: userInfo.type,
+//       status: userInfo.status,
+//       location: userInfo.location,
+//       selectedTopic:
+//         userInfo.topicId === undefined
+//           ? sessionUser.selectedTopic
+//           : userInfo.selectedTopic.split(','),
+//       reviewStatus: userInfo.reviewStatus,
+//     };
 
-//   return newSessionInfo;
+//     return await sessionUser.update(updatedUserSession);
+//   }
 // };
-
-UserSession.updateUserSession = async function(userId, userInfo) {
-  {
-    const sessionUser = await this.findOne({
-      where: { userId: userId },
-    });
-
-    const updatedUserSession = {
-      userType: userInfo.type,
-      status: userInfo.status,
-      location: userInfo.location,
-      selectedTopics:
-        userInfo.selectedTopics === undefined
-          ? sessionUser.selectedTopics
-          : userInfo.selectedTopics.split(','),
-      reviewStatus: userInfo.reviewStatus,
-    };
-
-    return await sessionUser.update(updatedUserSession);
-  }
-};
 
 UserSession.findActiveUsersByType = async function() {
   const allSessions = await this.findAll({ where: { status: 'waiting' } });

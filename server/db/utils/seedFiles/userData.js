@@ -1,9 +1,9 @@
 const faker = require('faker');
 
 //Generate Dummy User Data
-const num = 10;
+const num = 350;
 const emails = {};
-let users = Array(num).fill({});
+let users = Array(num-1).fill({});
 
 do {
   users = users
@@ -32,6 +32,16 @@ do {
         return true;
       }
     });
-} while (users.length < num);
+} while (users.length < num-1);
+
+users.push({
+  id: '099deee1-850f-4b86-91e3-ad93315f3a69',
+  firstName: 'Hugo',
+  lastName: 'Campos',
+  email: 'hugo@slo.edu',
+  imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
+  password: 'test',
+  salt: null,
+});
 
 module.exports = users;
