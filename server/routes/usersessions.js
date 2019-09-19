@@ -6,9 +6,6 @@ const {
   UserSession,
   Topic,
   UserTopic,
-  UserMeetup,
-  Meetup,
-  MeetupTopic,
 } = require('../db/index');
 
 // const getPossibleParnersAsync = require('../db/utils/getPossiblePartners');
@@ -37,7 +34,7 @@ router.get('/:userId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {userId, userType, location, courseId, topicId} = req.body;
+    const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
     const userInstance = await User.findOne({
       where: {
@@ -59,7 +56,7 @@ router.post('/', async (req, res, next) => {
     };
 
     //- mentors select a courseId and Topic info from topicIds in CourseTopic are pulled
-    if (courseId && userType === 'mentor') { 
+    if (courseId && userType === 'mentor') {
       const selectedCourseWithTopics = await Course.findOne({
         where: { id: courseId },
         include: [{ model: Topic, through: { model: CourseTopic } }],
@@ -68,8 +65,10 @@ router.post('/', async (req, res, next) => {
         topic => topic.id,
       );
       const ratedTopicIds = userInstance.topics.map(topic => topic.id);
-      newSessionInfo.selectedTopics = allTopicIdsInCourse.filter(topicId => ratedTopicIds.includes(topicId));
-    } 
+      newSessionInfo.selectedTopics = allTopicIdsInCourse.filter(topicId =>
+        ratedTopicIds.includes(topicId),
+      );
+    }
     //- mentees/peers select a single topicId item for an array
     else if (topicId && userType !== 'mentor') {
       newSessionInfo.selectedTopics = [topicId];
@@ -77,85 +76,33 @@ router.post('/', async (req, res, next) => {
 
     const userSession = await UserSession.create(newSessionInfo);
 
-
     /* Check UserSessions for possible partners with whom to create a Meetup */
     //TODO: change "FIFO" idea for better algo that
     //considers skipping mentor to maximize number of meetups
     if (userType === 'mentee' || userType === 'mentor' || userType === 'peer') {
+      const matchedUserMeetupInfo = await matchToPartner(
+        userId,
+        userType,
+        location,
+        userSession.selectedTopics,
+      );
 
+      //TODO:
+      //CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USER
+      //IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, but DO NOT DELETE userSession
 
-    //   getPossibleParnersAsync(userId, userType).then(async possibleMentorForMentees => {
-    //     /* CREATE Meetup instance with user's meetupType, location, and timeMatched*/
-    //     if (possibleMentorForMentees[userId].length) {//Mentor? Mentee? Needs to be mentee! to search
-    //       const meetup = await Meetup.create({
-    //         location,
-    //         meetupType:
-    //           userType === 'mentee' || userType === 'mentor'
-    //           ? 'M:M'
-    //           : 'P:P',
+      // DESTROY mentee's recently created UserSession instance
+      userSession.destroy();
 
-    //       });
-            
-    //       /* CREATE 2 UserMeetup instances with 2 userIds (mentee and mentor)*/
-    //       // Find mentee UserTopic instance (w/ proficiencyRating)
-    //       const menteeUserTopicInstance = await UserTopic.findOne({
-    //         where: {
-    //           userId,
-    //           topicId,
-    //         },
-    //       });
-    //       // CREATE Mentee UserMeetup
-    //       const uMeetupMentee = await UserMeetup.create({
-    //         userId,
-    //         userType: 'mentee',
-    //         meetupId: meetup.id,
-    //         proficiencyRating: menteeUserTopicInstance.proficiencyRating, ///HERE
-    //       });
-          
-    //       // CREATE Mentor UserMeetup
-    //       const { userId: partnerId, rating } = possibleMentorForMentees[userId][0]; //HERE TOO
-    //       const uMeetupMentor = await UserMeetup.create({ //HERE FOR PEERS
-    //         userId: partnerId,
-    //         userType: 'mentor',
-    //         meetupId: meetup.id,
-    //         proficiencyRating: rating,
-    //       });
-            
-    //       // CREATE MeetupTopic instace with topicId from Mentee's req.body
-    //       MeetupTopic.create({
-    //         meetupId: meetup.id,
-    //         topicId,
-    //       });
-      await matchToPartner(userId, userType, location, userSession.selectedTopics);
+      // DESTROY mentor's pre-existing UserSession instance
+      const partnerUserSession = await UserSession.findOne({
+        where: { userId: matchedUserMeetupInfo.partner.userId },
+      });
+      await partnerUserSession.destroy();
 
-      //     //TODO:
-      //     //CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USER
-      //     //IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, but DO NOT DELETE userSession
-
-      //     // DESTROY mentee's recently created UserSession instance
-      //     userSession.destroy();
-
-      //     // DESTROY mentor's pre-existing UserSession instance
-      //     const mentorUserSession = await UserSession.findOne({
-      //       where: { userId: partnerId },
-      //     });
-      //     await mentorUserSession.destroy();
-
-      //     //RESPOND with UserMeetup info
-      //     res.status(201).send({mentee: uMeetupMentee, mentor: uMeetupMentor});
-      //   }
-      //   else {
-      //     res.send(userSession);
-      //   }
-
-      //   // RE-RUN getMentors to delete mentee from keys in object, and 
-      //   // delete mentors from possibleMentors arrays for other users/mentees
-      //   //getMentorAsync();
-      //   getPossibleParnersAsync(userId, userType);
-      // });
-      res.send('i did the table things');
-    }
-    else {
+      // RESPOND with UserMeetup info
+      res.status(201).send(matchedUserMeetupInfo);
+    } else {
       res.send(userSession);
     }
   } catch (err) {
