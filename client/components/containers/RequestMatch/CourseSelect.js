@@ -1,8 +1,9 @@
 import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
+import Proptypes from 'prop-types';
 
 const CourseSelect = (props) => {
-  let courseList = props.courses
+  let courseList = props.courses;
   return (
     <CSSTransitionGroup
     transitionAppear={true}
@@ -15,17 +16,19 @@ const CourseSelect = (props) => {
         {courseList.map( course => {
           return(
             <div key={course.id} className='section'>
-              <div className='container'>
-                <div className='level'>
-                  <div className='section'>
-                    <div>
-                      MAT{course.courseCode}
+              <a onClick={props.handleCourseChoice}>
+                <div className='container'>
+                  <div className='level'>
+                    <div className='section'>
+                      <div>
+                        MAT{course.courseCode}
+                      </div>
+                      {course.courseName}
                     </div>
-                    {course.courseName}
                   </div>
                 </div>
-              </div>
-            </div>
+              </a>
+            </div >
           );
         })}
       </div>
@@ -33,5 +36,13 @@ const CourseSelect = (props) => {
   );
 };
 
+CourseSelect.defaultProps = {
+  courses: Proptypes.array,
+  handleCourseChoice: Proptypes.func
+};
+CourseSelect.propTypes = {
+  courses: Proptypes.array,
+  handleCourseChoice: Proptypes.func
+};
 
 export default CourseSelect;

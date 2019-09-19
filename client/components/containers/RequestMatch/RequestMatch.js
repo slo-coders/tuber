@@ -1,14 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ChooseRole from './ChooseRole';
 import CourseSelect from './CourseSelect';
 import { listCoursesThunk } from '../../../actions/courseActions';
 import PropTypes from 'prop-types';
 
 
-export class RequestMatch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+class RequestMatch extends Component {
+  constructor() {
+    super();
+    this.state = {
+      role: '',
+      course: '',
+    };
+    this.handleRoleChoice = this.handleRoleChoice.bind(this);
+    this.handleCourseChoice = this.handleCourseChoice.bind(this);
+  }
+
+  handleRoleChoice(e) {
+    this.setState({
+      role: e.target.getAttribute('value'),
+    });
+  }
+  handleCourseChoice(e) {
+    console.log(e.target);
+    this.setState({
+      course: e.target.getAttribute('value')
+    });
+    console.log(this.state);
   }
 
   componentDidMount() {
@@ -16,24 +35,34 @@ export class RequestMatch extends Component {
   }
 
   render() {
-    console.log(this.props);
-    return (
-      <div>
-        <span className="icon has-text-warning">
-          <i className="fas fa-exclamation-triangle"></i>
-        </span>
-        <h4>The Request Match component is under construction.</h4>
-      <CourseSelect courses={this.props.courses} />
-      </div>
-    );
+    console.log(this.state);
+    if (!this.state.role) {
+      return (
+        <div className="section">
+          <ChooseRole handleRoleChoice={this.handleRoleChoice} />
+        </div>
+      );
+    }
+    if (this.state.role) {
+      return (
+        <div className='section'>
+          <CourseSelect
+            courses={this.props.courses}
+            handleCourseChoice={this.handleCourseChoice}
+          />
+        </div>
+      );
+    }
   }
 }
 
 RequestMatch.defaultProps = {
   getCourses: PropTypes.func,
+  courses: PropTypes.array
 };
 RequestMatch.propTypes = {
   getCourses: PropTypes.func,
+  courses: PropTypes.array
 };
 
 const mapStateToProps = state => ({
