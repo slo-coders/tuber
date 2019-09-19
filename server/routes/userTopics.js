@@ -41,11 +41,11 @@ router
   /*   .get(async (req, res, next) => {
     try {
       const userTopic = await UserTopic.findOne({
-        where: { 
+        where: {
           userId: req.userId,
           topicId: req.params.topicId
         }
-      }); 
+      });
       res.send(userTopic);
     }
     catch (err) {
@@ -54,7 +54,6 @@ router
   }) */
   .put(async (req, res, next) => {
     try {
-      console.log('req.body in PUT >>> ', req.body);
       const updatedUserTopic = await UserTopic.updateInfo({
         userId: req.userId,
         topicId: req.params.topicId,

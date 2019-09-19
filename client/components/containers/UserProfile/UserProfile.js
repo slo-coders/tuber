@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchLoggedInThunked } from '../../actions/sessionActions';
-import { CSSTransitionGroup } from 'react-transition-group';
+import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
+import TopicDisplay from './TopicDisplay';
+import UserInfoDisplay from './UserInfoDisplay';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -15,22 +16,18 @@ class UserProfile extends Component {
   }
 
   render() {
-    return (
-      <CSSTransitionGroup
-        transitionAppear={true}
-        transitionName="componentFadeIn"
-        transitionAppearTimeout={9000}
-        transitionLeaveTimeout={9000}
-        transitionEnterTimeout={9000}
-      >
-        <div>
-          <span className="icon has-text-warning">
-            <i className="fas fa-exclamation-triangle"></i>
-          </span>
-          <h4 className="turquoise">{this.props.user.authUser.firstName}</h4>
+    const { user } = this.props;
+    if (user) {
+      return (
+        <div className="section">
+          {user.authUser.imageUrl ? (
+            <UserInfoDisplay userInfo={user.authUser} />
+          ) : null}
+
+          {user.authUser.id ? <TopicDisplay userId={user.authUser.id} /> : null}
         </div>
-      </CSSTransitionGroup>
-    );
+      );
+    }
   }
 }
 

@@ -14,9 +14,6 @@ const Meetup = db.define('meetup', {
   location: {
     type: Sequelize.STRING,
   },
-  matchedAt: {
-    type: Sequelize.DATE,
-  },
   meetupEnded: {
     type: Sequelize.DATE,
   },

@@ -1,45 +1,43 @@
 const userSessionData = [
   {
-    userType: 'mentor',
-    selectedTopics: ['Simplifying Polynomials'],
+    userType: 'mentee',
     status: 'matched',
   },
   {
     userType: 'mentee',
-    selectedTopics: [
-      'Simplifying Polynomials',
-      'Factoring Polynomial',
-      'Complex Fractions',
-    ],
+    status: 'matched',
+  },
+  {
+    userType: 'mentee',
+    status: 'matched',
+  },
+  {
+    userType: 'mentee',
     status: 'matched',
   },
   {
     userType: 'mentor',
-    selectedTopics: ['Limits'],
-  },
-  {
-    userType: 'mentee',
-    selectedTopics: ['Differentiation', 'Continuity', 'Limits'],
+    status: 'matched',
   },
   {
     userType: 'mentor',
-    selectedTopics: ['Continuity'],
+    status: 'matched',
   },
   {
-    userType: 'mentee',
-    selectedTopics: [
-      'Continuity',
-      'Orthogonal Functions',
-      'Legendre Polynomial',
-    ],
+    userType: 'mentor',
+    status: 'matched',
   },
   {
-    userType: 'peer',
-    selectedTopics: ['Limits'],
+    userType: 'mentor',
+    status: 'matched',
   },
   {
     userType: 'peer',
-    selectedTopics: ['Limits'],
+    status: 'matched',
+  },
+  {
+    userType: 'peer',
+    status: 'matched',
   },
 ];
 

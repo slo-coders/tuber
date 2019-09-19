@@ -12,7 +12,7 @@ const UserMeetup = db.define('user_meetup', {
     type: Sequelize.ENUM,
     values: ['mentor', 'mentee', 'peer'],
   },
-
+  /*
   softSkillsRating: {
     type: Sequelize.INTEGER,
     validate: {
@@ -20,7 +20,7 @@ const UserMeetup = db.define('user_meetup', {
       min: 0,
     },
   },
-
+ */
   proficiencyRating: {
     type: Sequelize.INTEGER,
     validate: {
@@ -49,7 +49,7 @@ UserMeetup.updateUserMeetup = async function(userId, meetupId, req) {
   });
 
   const updatePartnerStats = await partnerStats[0].update({
-    softSkillsRating: req.body.softSkillsRating,
+    // softSkillsRating: req.body.softSkillsRating,
     proficiencyRating: req.body.proficiencyRating,
   });
 

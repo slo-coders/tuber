@@ -20,7 +20,7 @@ router.get('/:meetupId', async (req, res, next) => {
     const meetupInstance = await Meetup.findOne({
       where: { id: req.params.meetupId },
       include: [
-        { model: User, though: UserMeetup },
+        { model: User, through: UserMeetup },
         { model: Topic, through: { model: MeetupTopic } },
       ],
     });

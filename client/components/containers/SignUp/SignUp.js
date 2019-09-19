@@ -82,6 +82,7 @@ class SignUp extends Component {
       });
     } else {
       this.setState({
+        // needs to be updated with Object.assign
         topics: this.state.topics.filter(topic => topic !== e.target.value),
       });
     }

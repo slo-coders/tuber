@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Star from './Star';
+import ClickableStar from './ClickableStar';
 import PropTypes from 'prop-types';
 
 export default class StarRating extends Component {
@@ -7,10 +7,15 @@ export default class StarRating extends Component {
     super(props);
     this.state = {
       star100: false,
+      star50: false,
       star200: false,
+      star150: false,
       star300: false,
+      star250: false,
       star400: false,
+      star350: false,
       star500: false,
+      star450: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -50,11 +55,36 @@ export default class StarRating extends Component {
   render() {
     return (
       <span onClick={this.handleClick} id={this.props.topic}>
-        <Star filled={this.state.star100} value={100} name={this.props.topic} />
-        <Star filled={this.state.star200} value={200} name={this.props.topic} />
-        <Star filled={this.state.star300} value={300} name={this.props.topic} />
-        <Star filled={this.state.star400} value={400} name={this.props.topic} />
-        <Star filled={this.state.star500} value={500} name={this.props.topic} />
+        <ClickableStar
+          filled={this.state.star100}
+          value={100}
+          name={this.props.topic}
+        />
+        <i className={this.state.star50 ? 'fas fa-star-half-alt' : ''} />
+        <ClickableStar
+          filled={this.state.star200}
+          value={200}
+          name={this.props.topic}
+        />
+        <i className={this.state.star150 ? 'fas fa-star-half-alt' : ''} />
+        <ClickableStar
+          filled={this.state.star300}
+          value={300}
+          name={this.props.topic}
+        />
+        <i className={this.state.star250 ? 'fas fa-star-half-alt' : ''} />
+        <ClickableStar
+          filled={this.state.star400}
+          value={400}
+          name={this.props.topic}
+        />
+        <i className={this.state.star350 ? 'fas fa-star-half-alt' : ''} />
+        <ClickableStar
+          filled={this.state.star500}
+          value={500}
+          name={this.props.topic}
+        />
+        <i className={this.state.star450 ? 'fas fa-star-half-alt' : ''} />
       </span>
     );
   }
