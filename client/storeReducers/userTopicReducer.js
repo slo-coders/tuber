@@ -13,7 +13,7 @@ const userTopicsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_USER_TOPICS:
     case POST_USER_TOPICS_ARR:
-      return action.userTopicsArr;
+      return { ...state, userTopics: action.userTopicsArr };
     case UPDATE_USER_TOPIC:
       return state.map(userTopic =>
         userTopic.id === action.userTopic.id ? action.userTopic : userTopic,
