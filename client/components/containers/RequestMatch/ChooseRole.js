@@ -4,6 +4,11 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
 export default function ChooseRole(props) {
+  const buttons = [
+    { id: 1, value: 'mentor', buttonText: 'Mentor' },
+    { id: 2, value: 'mentee', buttonText: 'Mentee' },
+    { id: 3, value: 'peer', buttonText: 'Peer' },
+  ];
   return (
     <CSSTransitionGroup
       transitionAppear={true}
@@ -14,24 +19,15 @@ export default function ChooseRole(props) {
     >
       <div className="container">
         <div className="level">
-          <Button
-            value={'mentor'}
-            buttonStyle="is-large is-primary"
-            buttonText="Mentor"
-            handleClick={props.handleRoleChoice}
-          />
-          <Button
-            value={'peer'}
-            buttonStyle="is-large is-primary"
-            buttonText="Peer"
-            handleClick={props.handleRoleChoice}
-          />
-          <Button
-            value={'mentee'}
-            buttonStyle="is-large is-primary"
-            buttonText="Mentee"
-            handleClick={props.handleRoleChoice}
-          />
+          {buttons.map(info => (
+            <Button
+              key={info.id}
+              value={info.value}
+              buttonStyle="is-large is-primary"
+              buttonText={info.buttonText}
+              handleClick={props.handleRoleChoice}
+            />
+          ))}
         </div>
       </div>
     </CSSTransitionGroup>
