@@ -115,20 +115,20 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
     //can get topidIc w/ meetupId
 
     //UserSession -> topidId = UserMeetup.topics[0].id -> UserTopic.profeciency
-    const findTopicFromUserSession = await UserSession.findOne({
-      where: {
-        userId: partner.userId,
-      },
-    });
+    // const findTopicFromUserSession = await UserSession.findOne({
+    //   where: {
+    //     userId: partner.userId,
+    //   },
+    // });
 
-    //updated partner profeciency info
-    const meetupInfo = await User.findOne({
-      where: { id: partner.userId },
-      include: [
-        { model: Meetup, through: { model: UserMeetup } }, //status
-        { model: Topic, through: { model: UserTopic } }, //topic
-      ],
-    });
+    // //updated partner profeciency info
+    // const meetupInfo = await User.findOne({
+    //   where: { id: partner.userId },
+    //   include: [
+    //     { model: Meetup, through: { model: UserMeetup } }, //status
+    //     { model: Topic, through: { model: UserTopic } }, //topic
+    //   ],
+    // });
 
     // const runningTopicProfeciency = await UserMeetup.findAll({
     //   where: {
