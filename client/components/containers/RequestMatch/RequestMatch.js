@@ -23,11 +23,9 @@ class RequestMatch extends Component {
     });
   }
   handleCourseChoice(e) {
-    console.log(e.target);
     this.setState({
       course: e.target.getAttribute('value')
     });
-    console.log(this.state);
   }
 
   componentDidMount() {

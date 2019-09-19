@@ -15,20 +15,20 @@ const CourseSelect = (props) => {
       <div className='columns'>
         {courseList.map( course => {
           return(
-            <div key={course.id} className='section'>
-              <a onClick={props.handleCourseChoice}>
-                <div className='container'>
-                  <div className='level'>
-                    <div className='section'>
-                      <div>
+            <a key={course.id} onClick={props.handleCourseChoice}>
+              <div value={course.courseName} className='section'>
+                <div value={course.courseName} className='container'>
+                  <div value={course.courseName} className='level'>
+                    <div value={course.courseName} className='section'>
+                      <div value={course.courseName}>
                         MAT{course.courseCode}
                       </div>
                       {course.courseName}
                     </div>
                   </div>
                 </div>
-              </a>
-            </div >
+              </div >
+            </a>
           );
         })}
       </div>
