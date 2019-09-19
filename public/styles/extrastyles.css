@@ -1,0 +1,26 @@
+/* saved colors */
+/* temporary theme */
+/* css classes */
+body {
+  background-color: #E8E8E8;
+  height: 100vh;
+  width: 100vw; }
+
+a {
+  color: #A9A9A9; }
+
+a:hover {
+  color: #cb7676; }
+
+a > svg {
+  width: 10px;
+  height: 10px;
+  pointer-events: none; }
+
+/* CSS Transition group animations */
+.componentFadeIn-appear {
+  opacity: 0.01; }
+
+.componentFadeIn-appear.componentFadeIn-appear-active {
+  opacity: 1;
+  transition: opacity 600ms ease-in; }

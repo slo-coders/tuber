@@ -3,6 +3,12 @@ export const FETCH_LOGGED_USER = 'FETCH_LOGGED_USER';
 export const LOGIN_USER = 'LOGIN_USER ';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
+//User-session actions
+export const FETCH_ACTIVE_SESSIONS = 'FETCH_USER_SESSIONS';
+export const CREATE_USER_SESSION = 'CREATE_USER_SESSION';
+export const CHANGE_USER_SESSION = 'CHANGE_USER_SESSION';
+export const CLOSE_USER_SESSION = 'CLOSE_USER_SESSION';
+
 //Course actions
 export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';
@@ -34,3 +40,10 @@ export const EDIT_USER = 'EDIT_USER';
 export const GET_MEETUP_DATA = 'GET_MEETUP_DATA';
 export const UPDATE_MEETUP_DATA = 'UPDATE_MEETUP_DATA';
 export const GET_USER_MEETUP_DATA = 'GET_USER_MEETUP_DATA ';
+
+//User-topic actions
+export const GET_ALL_USER_TOPICS = 'GET_ALL_USER_TOPICS';
+// export const GET_USER_TOPIC = 'GET_USER_TOPIC';
+export const POST_USER_TOPICS_ARR = 'POST_USER_TOPICS_ARR';
+export const UPDATE_USER_TOPIC = 'UPDATE_USER_TOPIC';
+export const DELETE_USER_TOPIC = 'DELETE_USER_TOPIC';

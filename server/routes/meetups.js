@@ -1,5 +1,11 @@
 const router = require('express').Router();
-const { Meetup } = require('../db/index.js');
+const {
+  Meetup,
+  UserMeetup,
+  User,
+  Topic,
+  MeetupTopic,
+} = require('../db/index.js');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -11,7 +17,13 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:meetupId', async (req, res, next) => {
   try {
-    const meetupInstance = await Meetup.findByPk(req.params.meetupId);
+    const meetupInstance = await Meetup.findOne({
+      where: { id: req.params.meetupId },
+      include: [
+        { model: User, through: UserMeetup },
+        { model: Topic, through: { model: MeetupTopic } },
+      ],
+    });
     res.send(meetupInstance);
   } catch (err) {
     next(err);

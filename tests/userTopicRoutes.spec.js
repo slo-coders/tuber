@@ -5,74 +5,88 @@ const request = require('supertest'); //client
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app
 
-let userId, topics;
+let userId, topics, currentUserReturned, topicId;
+let ratedTopicsArr = [];
 
+beforeAll(async () => {
+  await db.sync();
+});
+
+afterAll(async () => {
+  await db.close();
+  console.log('DB closed.');
+});
 
 //Tests
-describe('Routes for a new user\'s topic information', () => {
-  //Hooks
+describe("Routes for a new user's topic information", () => {
   beforeAll(async () => {
-    const currentUser = {
-      firstName: 'Hugo',
-      lastName: 'Campos',
-      email: 'emailhugocampos@gmail.com', //needs to be unique relative to other test-created users
-      imageUrl: 'https://avatars.dicebear.com/v2/bottts/012.svg',
-      password: 'test'
-    };
-
-    //Getting dummy User id from User table in seeded db 
-    const currentUserReturned = await User.create(currentUser);
+    //Create dummy User id from User table
+    const currentUser = await User.findAll({
+      limit: 1,
+      order: [['createdAt', 'DESC']],
+    });
+    currentUserReturned = currentUser[0];
     userId = currentUserReturned.id;
-  });
 
-  afterAll(async () => {
-    await User.findByPk(userId).destroy();
-    await db.close();
-    console.log('DB closed.');
-  });
-  
+    //Create UserTopic data for currentUser
+    topics = await Topic.findAll();
 
-  describe('`/api/user/:userId/topics/` route handling a POST request to create an array of userTopics in the UserTopics model', () => {
-    it('responds with the newly created user-topic instances, each with an id', async () => {      
-      //Get Topic data from Topic table
-      topics = await Topic.findAll();
-      //Get UserTopic data for currentUser
-      const userTopics = await UserTopic.findAll({where: {userId}});
-      const userTopicsIds = userTopics.map(uTop => uTop.id);
-      const start = randIntBtwn(0, topics.length - 1);
+    do {
+      const userTopics = await UserTopic.findAll({ where: { userId } });
+      const userTopicsTopicIds = userTopics.map(uTop => uTop.topicId);
+      const start = randIntBtwn(1, topics.length - 1);
       const end = randIntBtwn(start + 1, topics.length + 1);
-      const newlyRatedTopicIds = topics.slice(start, end)
-      .map(topic => topic.id)
-      .filter(topicId => !userTopicsIds.includes(topicId));
-      const ratedTopicsArr = newlyRatedTopicIds
-      .map(topicId => ({
-          topicId,
-          proficiencyRating: randIntBtwn(0, 500),
+      const newlyRatedTopicIds = topics
+        .slice(start, end)
+        .map(topic => topic.id)
+        .filter(topicId => !userTopicsTopicIds.includes(topicId));
+      ratedTopicsArr = newlyRatedTopicIds.map(topicId => ({
+        topicId,
+        proficiencyRating: randIntBtwn(0, 500),
       }));
+      topicId = topics[0].id;
+    } while (!topicId);
+  });
 
-      const res = await fauxios.post(`/api/users/${userId}/topics`).send(ratedTopicsArr);
+  describe('`/api/users/:userId/topics/` route handling a POST request to create an array of userTopics in the UserTopics model', () => {
+    xit('responds with the newly created user-topic instances, each with an id', async () => {
+      const apiRoute = `/api/users/${userId}/topics`;
+      const res = await fauxios.post(apiRoute).send(ratedTopicsArr);
       expect(res.status).toEqual(201);
       expect(Object.keys(res.body[0])).toEqual(
         expect.arrayContaining([
           'id',
           'userId',
           'topicId',
-          'proficiencyRating'
+          'proficiencyRating',
         ]),
       );
       expect(res.body[0]).toHaveProperty('userId', userId);
     });
   });
 
-  describe('`/api/user/:userId/topics/` route handling GET request', () => {
+  describe('`/api/users/:userId/topics/` route handling GET request', () => {
     it('responds with an array', async () => {
       const res = await fauxios.get(`/api/users/${userId}/topics`);
       expect(res.status).toEqual(200);
       expect(Array.isArray(res.body)).toEqual(true);
     });
-    it('responds with array of user\'s course topics and corresponding proficiency ratings as a number', async () => {
+    xit("responds with array of user's course topics and corresponding proficiency ratings as a number", async () => {
       const res = await fauxios.get(`/api/users/${userId}/topics`);
       expect(Object.keys(res.body[0])).toEqual(
+        expect.arrayContaining(['id', 'userId', 'topics']),
+      );
+      expect(res.body[0]).toHaveProperty('userId', userId);
+      expect(typeof res.body[0].proficiencyRating === 'number').toEqual(true);
+    });
+  });
+
+  /* describe('`/api/users/:userId/topics/:topicId` route handling GET request', () => {
+    xit('responds with a single instance of a UserTopic, including proficiencyRating',
+    async () => {
+      const res = await fauxios.get(`/api/users/${userId}/topics/${topicId}`);
+      expect(res.status).toEqual(200);
+      expect(Object.keys(res.body)).toEqual(
         expect.arrayContaining([
           'id',
           'userId',
@@ -80,8 +94,29 @@ describe('Routes for a new user\'s topic information', () => {
           'proficiencyRating'
         ])
       );
-      expect(res.body[0]).toHaveProperty('userId', userId);
-      expect(typeof res.body[0].proficiencyRating === 'number').toEqual(true);
+    });
+  }); */
+
+  describe('`/api/users/:userId/topics/:topicId` route handling PUT request', () => {
+    xit('responds with an updated instance of a UserTopic that includes a new proficiencyRating', async () => {
+      //Get one userTopicId
+      const res = await fauxios
+        .put(`/api/users/${userId}/topics/${topicId}`)
+        .send({
+          proficiencyRating: 5,
+        });
+      console.log('res.body from PUT >>>>>> ', res.body);
+      expect(res.status).toEqual(202);
+      expect(Object.keys(res.body)).toHaveProperty('profiencyRating', 5);
+      const res2 = await fauxios
+        .put(`/api/users/${userId}/topics/${topicId}`)
+        .send({
+          proficiencyRating: 2.5,
+        });
+      expect(res2.status).toEqual(202);
+      expect(Object.keys(res2.body)).toHaveProperty('profiencyRating', 2.5);
+      expect(Object.keys(res2.body)).toHaveProperty('userId', userId);
+      expect(Object.keys(res2.body)).toHaveProperty('topicId', topicId);
     });
   });
 });
