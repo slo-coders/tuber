@@ -88,26 +88,26 @@ const seed = async () => {
       // Seed UserSession (Users should have a UserTopic rating so create UserSessions from UserTopics)
       // let userSessionReturned = await Promise.all(
       await Promise.all(
-        usersReturned.map((user, i) => 
+        usersReturned.map((user, i) =>
           //Create userSession
           UserSession.create({
             userType: ['mentee', 'mentor', 'peer'][i % 3],
             location: ['library', 'computer lab', 'cafe', 'dorm lounge'][i % 4],
             selectedTopics:
-            ['mentee', 'mentor', 'peer'][i % 3] === 'mentor'
+              ['mentee', 'mentor', 'peer'][i % 3] === 'mentor'
                 ? userTopicsReturned
-                .filter(uTopInst => uTopInst.userId === user.id)
-                .map(uTopInst => uTopInst.topicId)
+                    .filter(uTopInst => uTopInst.userId === user.id)
+                    .map(uTopInst => uTopInst.topicId)
                 : userTopicsReturned
-                .filter(uTopInst => uTopInst.userId === user.id)
-                .map(uTopInst => uTopInst.topicId)
-                .slice(0, 1),
-                userId: user.id,
-          })
-        )
+                    .filter(uTopInst => uTopInst.userId === user.id)
+                    .map(uTopInst => uTopInst.topicId)
+                    .slice(0, 1),
+            userId: user.id,
+          }),
+        ),
       );
-            
-/*       // Updated user with userSessionId
+
+      /*       // Updated user with userSessionId
       await Promise.all(
         usersReturned.map((user, i) => 
           user.update({
@@ -115,7 +115,7 @@ const seed = async () => {
           })
         )
       ); */
-      
+
       console.log('Seeded DB.');
     } else {
       throw 'Error: Trying to seed in production environment.';

@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ChooseRole from './ChooseRole';
 
 class RequestMatch extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      role: '',
+    };
+    this.handleRoleChoice = this.handleRoleChoice.bind(this);
+  }
+
+  handleRoleChoice(e) {
+    this.setState({
+      role: e.target.getAttribute('value'),
+    });
   }
 
   render() {
     return (
-      <div>
-        <span className="icon has-text-warning">
-          <i className="fas fa-exclamation-triangle"></i>
-        </span>
-        <h4>The Request Match component is under construction.</h4>
+      <div className="section">
+        <ChooseRole handleRoleChoice={this.handleRoleChoice} />
       </div>
     );
   }

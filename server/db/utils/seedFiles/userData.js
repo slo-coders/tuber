@@ -3,7 +3,7 @@ const faker = require('faker');
 //Generate Dummy User Data
 const num = 350;
 const emails = {};
-let users = Array(num-1).fill({});
+let users = Array(num - 1).fill({});
 
 do {
   users = users
@@ -32,7 +32,7 @@ do {
         return true;
       }
     });
-} while (users.length < num-1);
+} while (users.length < num - 1);
 
 users.push({
   id: '099deee1-850f-4b86-91e3-ad93315f3a69',
