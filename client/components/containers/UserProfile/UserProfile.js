@@ -42,7 +42,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 UserProfile.propTypes = {
-  user: PropTypes.string,
+  user: PropTypes.object,
   getLoggedInUser: PropTypes.func,
 };
 

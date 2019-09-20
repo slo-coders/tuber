@@ -26,7 +26,6 @@ export class Nav extends React.Component {
   }
 
   render() {
-    //console.log(this.props.user.authUser);
     return (
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
@@ -39,6 +38,7 @@ export class Nav extends React.Component {
             <span></span>
           </div>
         </div>
+
         {this.props.user.authUser.id ? (
           <div className="navbar-menu">
             <div className="navbar-start">
@@ -88,8 +88,8 @@ Nav.propTypes = {
   LogoutThunked: PropTypes.func,
   getUser: PropTypes.func,
   user: PropTypes.object,
-  authUser: PropTypes.object,
-  id: PropTypes.string,
+  authUser: PropTypes.func,
+  id: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

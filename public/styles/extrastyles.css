@@ -17,6 +17,10 @@ a > svg {
   height: 10px;
   pointer-events: none; }
 
+/* CSS className stylings */
+.tile {
+  background-color: #4a4a4a; }
+
 /* CSS Transition group animations */
 .componentFadeIn-appear {
   opacity: 0.01; }
