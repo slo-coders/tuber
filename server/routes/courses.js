@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Course, CourseTopic } = require('../db/index.js');
+const { Course, Topic, CourseTopic } = require('../db/index.js');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -57,8 +57,9 @@ router.delete('/:courseId', async (req, res, next) => {
 //Return all topics in a course
 router.get('/:courseId/topics', async (req, res, next) => {
   try {
-    const topicsForCourse = await CourseTopic.findAll({
-      where: { courseId: req.params.courseId },
+    const topicsForCourse = await Course.findAll({
+      where: { id: req.params.courseId },
+      include: [{ model: Topic, attributes: ['title', 'id'] }],
     });
     res.send(topicsForCourse);
   } catch (err) {
