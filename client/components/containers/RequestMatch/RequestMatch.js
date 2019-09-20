@@ -51,9 +51,7 @@ class RequestMatch extends Component {
       );
     }
     if (this.state.role && this.state.course) {
-      return (
-        <div> Topic Select</div>
-      );
+      return <div> Topic Select</div>;
     }
   }
 }

@@ -44,7 +44,7 @@ export class LoginForm extends Component {
                 handleInputChange={this.onHandle}
                 name={'email'}
                 value={this.state.email}
-                placeholder={"Email"}
+                placeholder={'Email'}
                 icon={'envelope'}
               />
             </div>
@@ -57,7 +57,7 @@ export class LoginForm extends Component {
                 handleInputChange={this.onHandle}
                 name={'password'}
                 value={this.state.password}
-                placeholder={"Password"}
+                placeholder={'Password'}
                 icon={'key'}
               />
             </div>
@@ -69,11 +69,8 @@ export class LoginForm extends Component {
             >
               Log In
             </button>
-            <hr/>
-            <Link
-              className='button'
-              to ='/signup'
-            >
+            <hr />
+            <Link className="button" to="/signup">
               Sign Up
             </Link>
           </div>

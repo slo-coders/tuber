@@ -19,15 +19,7 @@ a > svg {
 
 /* CSS className stylings */
 .tile {
-  background-color: #4a4a4a;
-}
-.button-box_login {
-  display: flex;
-  flex-direction: column;
-}
-
-/* CSS id stylings */
-
+  background-color: #4a4a4a; }
 
 /* CSS Transition group animations */
 .componentFadeIn-appear {
