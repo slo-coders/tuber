@@ -17,10 +17,11 @@ const io = require('socket.io')(3001);
 
 // app.use(morgan('dev'));
 
+//move sockets to adter sessions?
+
 //will give each user a new socket
 //all socket logic will go in this function
 //Note, socket has a unique id (socket.id) that can be used to differentiate users
-
 io.on('connection', socket => {
   console.log('NEW USER LOGGED IN');
   socket.emit('return-message', 'Hellow from server socket');
@@ -38,9 +39,6 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     //delete user[socket.id] or similar
   });
-
-  //another example
-  // socket.on('match-made');
 });
 
 app.use(
