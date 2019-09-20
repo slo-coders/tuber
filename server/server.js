@@ -28,10 +28,12 @@ io.on('connection', socket => {
   //will listen for input from the client for instance of 'send-chat-message'
   socket.on('send-chat-message', message => {
     console.log(message);
-    //will send message to everyone on server exceot for the sender
+    //will send message to everyone on server except for the sender
     //Will want to make this more specific for user and partner. possibly need to set up a room
     socket.broadcast.emit('chat-message', message);
   });
+
+  socket.on('partner-found', () => {});
 
   socket.on('disconnect', () => {
     //delete user[socket.id] or similar

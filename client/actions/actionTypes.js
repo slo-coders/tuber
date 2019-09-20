@@ -5,6 +5,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 
 //socket actions
 export const RECEIVED_MESSAGE = 'RECEIVED_MESSAGE';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
 
 //User-session actions
 export const FETCH_ACTIVE_SESSIONS = 'FETCH_USER_SESSIONS';
