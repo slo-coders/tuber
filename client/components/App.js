@@ -5,7 +5,6 @@ import Home from './containers/Home';
 import Nav from './containers/Nav';
 import UserProfile from './containers/UserProfile/UserProfile';
 import RequestMatch from './containers/RequestMatch/RequestMatch';
-import LoginForm from './containers/LoginForm';
 import SignUp from './containers/SignUp/SignUp';
 import PropTypes from 'prop-types';
 import { listTopicsThunk } from '../actions/topicActions';
@@ -24,7 +23,7 @@ class App extends React.Component {
     return (
       <HashRouter>
         <Route path="/" component={() => <Nav {...this.props} />} />
-        <Route exact path="/home" component={Home} />
+        <Route exact path="/home" component={() => <Home />} />
         <Route exact path="/profile" component={UserProfile} />
         <Route exact path="/signup" component={SignUp} />
         <Route
@@ -34,7 +33,6 @@ class App extends React.Component {
             RequestMatch
           }
         />
-        <Route exact path="/login" component={LoginForm} />
       </HashRouter>
     );
   }

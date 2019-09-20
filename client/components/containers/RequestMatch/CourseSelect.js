@@ -15,12 +15,19 @@ const CourseSelect = props => {
       <div className="tile is-ancestor">
         {courseList.map(course => {
           return (
-            <a value={course.courseName} key={course.id} onClick={props.handleCourseChoice}>
+            <a
+              value={course.courseName}
+              key={course.id}
+              onClick={props.handleCourseChoice}
+            >
               <div value={course.courseName} className="section">
                 <div value={course.courseName} className="container">
                   <div value={course.courseName} className="level">
-                    <div value={course.courseName} className='tile is-parent is-vertical is-4'>
-                      <div value={course.courseName} className='tile is-child'>
+                    <div
+                      value={course.courseName}
+                      className="tile is-parent is-vertical is-4"
+                    >
+                      <div value={course.courseName} className="tile is-child">
                         MAT{course.courseCode}
                         {course.courseName}
                       </div>

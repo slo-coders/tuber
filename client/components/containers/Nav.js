@@ -50,7 +50,7 @@ export class Nav extends React.Component {
               </Link>
               <Link
                 className="navbar-item"
-                to="/request_match" /* path will eventually depend on match   status, this is a placeholder */
+                to="/request_match" /* path will eventually depend on match status, this is a placeholder */
               >
                 Matches
               </Link>
