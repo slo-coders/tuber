@@ -108,8 +108,8 @@
     "heroku": "^7.29.0",
     "lint": "^0.7.0",
     "pg": "^7.12.1",
-    "request": "^2.88.0",
     "react-transition-group": "^1.2.1",
+    "request": "^2.88.0",
     "sequelize": "^5.18.1"
   }
 }
