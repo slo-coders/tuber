@@ -6,6 +6,7 @@ import {
 } from '../../actions/sessionActions';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Input from '../reusables/Input';
 
 //save for sever restart
 
@@ -38,26 +39,26 @@ export class LoginForm extends Component {
           <div className="field">
             <div className="control">
               <label> Email </label>
-              <input
-                type="email"
-                onChange={this.onHandle}
-                name="email"
+              <Input
+                type={'email'}
+                handleInputChange={this.onHandle}
+                name={'email'}
                 value={this.state.email}
-                placeholder="Email"
-                className="input"
+                placeholder={"Email"}
+                icon={'envelope'}
               />
             </div>
           </div>
           <div className="field">
             <div className="control">
               <label> Password </label>
-              <input
-                type="password"
-                onChange={this.onHandle}
-                name="password"
+              <Input
+                type={'password'}
+                handleInputChange={this.onHandle}
+                name={'password'}
                 value={this.state.password}
-                placeholder="Password"
-                className="input"
+                placeholder={"Password"}
+                icon={'key'}
               />
             </div>
           </div>
