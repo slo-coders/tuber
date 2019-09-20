@@ -5,8 +5,9 @@ import {
   fetchLoggedInThunked,
 } from '../../actions/sessionActions';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-//save for sever resart
+//save for sever restart
 
 export class LoginForm extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export class LoginForm extends Component {
 
   render() {
     return (
-      <div className="column is-one-third">
+      <div className="column is-half is-center">
         <form className="LoginForm" onSubmit={this.onSubmit}>
           <div className="field">
             <div className="control">
@@ -60,13 +61,20 @@ export class LoginForm extends Component {
               />
             </div>
           </div>
-          <div className="buttons">
+          <div className="button-box_login">
             <button
               disabled={this.state.email && this.state.password ? false : true}
               className="button is-primary"
             >
               Log In
             </button>
+            <hr/>
+            <Link
+              className='button'
+              to ='/signup'
+            >
+              Sign Up
+            </Link>
           </div>
         </form>
       </div>
