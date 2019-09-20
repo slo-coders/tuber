@@ -28,6 +28,7 @@ class TopicDisplay extends Component {
     }
 
     if (userTopics) {
+      console.log(userTopics);
       return (
         <CSSTransitionGroup
           transitionAppear={true}
@@ -37,13 +38,16 @@ class TopicDisplay extends Component {
           transitionEnterTimeout={9000}
         >
           <div className="column is-two-thirds">
-            {userTopics.map(topic => (
+            {userTopics[0].topics.map(topic => (
               <div key={topic.id} className="level">
-                <h5>{topic.id}</h5>
+                <h5>{topic.title}</h5>
                 <span>
                   {'  Current Rating: '}
-                  <DisplayStarRating score={topic.proficiencyRating} />
-                  {'  ' + this.ratingToDecimal(topic.proficiencyRating)}
+                  <DisplayStarRating
+                    score={topic.user_topic.proficiencyRating}
+                  />
+                  {'  ' +
+                    this.ratingToDecimal(topic.user_topic.proficiencyRating)}
                 </span>
               </div>
             ))}
