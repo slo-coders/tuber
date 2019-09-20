@@ -3,6 +3,9 @@ export const FETCH_LOGGED_USER = 'FETCH_LOGGED_USER';
 export const LOGIN_USER = 'LOGIN_USER ';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
+//socket actions
+export const RECEIVED_MESSAGE = 'RECEIVED_MESSAGE';
+
 //User-session actions
 export const FETCH_ACTIVE_SESSIONS = 'FETCH_USER_SESSIONS';
 export const CREATE_USER_SESSION = 'CREATE_USER_SESSION';

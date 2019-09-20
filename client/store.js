@@ -9,11 +9,11 @@ import meetupReducer from './storeReducers/meetupReducers';
 import userMeetupReducer from './storeReducers/userMeetupReducer';
 import authReducer from './storeReducers/authReducer';
 import userSessionReducer from './storeReducers/userSessionReducer';
+import socketReducer from './storeReducers/socketReducer';
 
 const thunkMiddleware = require('redux-thunk').default;
 
 const reducer = combineReducers({
-  /*add approperate reducers here */
   user: userReducer,
   allUsers: allUsersReducer,
   meetups: meetupReducer,
@@ -24,6 +24,7 @@ const reducer = combineReducers({
   userMeetup: userMeetupReducer,
   auth: authReducer,
   userSession: userSessionReducer,
+  socket: socketReducer,
 });
 
 export default createStore(reducer, applyMiddleware(thunkMiddleware));
