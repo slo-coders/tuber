@@ -4,7 +4,6 @@ const router = express.Router();
 // Model
 const {
   User,
-  UserSession,
   UserMeetup,
   Meetup,
   UserTopic,
