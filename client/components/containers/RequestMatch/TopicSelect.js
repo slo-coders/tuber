@@ -3,6 +3,7 @@ import { singleCourseTopicsThunk } from '../../../actions/courseActions';
 import { connect } from 'react-redux';
 import Button from '../../reusables/Button';
 import CheckBox from '../../reusables/CheckBox';
+import PropTypes from 'prop-types';
 
 class TopicSelect extends Component {
   componentDidMount() {
@@ -14,12 +15,11 @@ class TopicSelect extends Component {
       <div>
         {this.props.courses[0]
           ? this.props.courses[0].topics.map(topic => (
-              <div>
-                <CheckBox 
-                checkboxValue={topic.id}
-                checkboxItem={topic.title}
-                handleCheckboxChange={this.props.handleTopicChoice}
-                
+              <div key={topic.id}>
+                <CheckBox
+                  checkboxValue={topic.id}
+                  checkboxItem={topic.title}
+                  handleCheckboxChange={this.props.handleTopicChoice}
                 />
               </div>
             ))
@@ -34,6 +34,16 @@ class TopicSelect extends Component {
     );
   }
 }
+
+TopicSelect.propTypes = {
+  courses: PropTypes.object,
+  courseId: PropTypes.string,
+  singleCourseTopicsThunk: PropTypes.func,
+  handleTopicChoice: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  topicId: PropTypes.string,
+  key: PropTypes.string,
+};
 
 const mapStateToProps = state => ({
   courses: state.courses.singleCourseWithTopics,

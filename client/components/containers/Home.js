@@ -28,23 +28,23 @@ export class Home extends React.Component {
     }
     return (
       <Fragment>
-      <CSSTransitionGroup
-        transitionAppear={true}
-        transitionName="componentFadeIn"
-        transitionAppearTimeout={9000}
-        transitionLeaveTimeout={9000}
-        transitionEnterTimeout={9000}
-      >
-        <div className="section">
-          <div className="container">
-            <div className="level">
-              <div className="column">
-                <LoginForm />
+        <CSSTransitionGroup
+          transitionAppear={true}
+          transitionName="componentFadeIn"
+          transitionAppearTimeout={9000}
+          transitionLeaveTimeout={9000}
+          transitionEnterTimeout={9000}
+        >
+          <div className="section">
+            <div className="container">
+              <div className="level">
+                <div className="column">
+                  <LoginForm />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </CSSTransitionGroup>
+        </CSSTransitionGroup>
       </Fragment>
     );
   }

@@ -12,7 +12,6 @@ export const listTopicsThunk = () => async dispatch => {
   try {
     const response = await axios.get('/api/topics');
     dispatch({ type: FETCH_TOPIC_ALL, payload: response.data });
-    console.log('response thunk', response.data)
   } catch (err) {
     console.error(err);
   }
@@ -21,7 +20,6 @@ export const listTopicsThunk = () => async dispatch => {
 export const singleTopicThunk = topicId => async dispatch => {
   try {
     const response = await axios.get(`/api/topics/${topicId}`);
-    console.log(response);
     dispatch({ type: FETCH_TOPIC, payload: response.data });
   } catch (e) {
     console.error(e);

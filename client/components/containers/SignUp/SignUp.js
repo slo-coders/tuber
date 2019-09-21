@@ -33,10 +33,10 @@ class SignUp extends Component {
 
   handleSubmit() {
     // Still needs to be set up to get new user ID
-    this.props.postTopics(
-      '7c9a127d-fa4f-428f-a2eb-da9e8943ef59',
-      this.state.topicsWithRatings,
-    );
+    // this.props.postTopics(
+    //   '7c9a127d-fa4f-428f-a2eb-da9e8943ef59',
+    //   this.state.topicsWithRatings,
+    // );
     this.setState({
       showRatings: false,
       redirect: true,

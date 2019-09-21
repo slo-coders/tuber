@@ -59,10 +59,7 @@ class RequestMatch extends Component {
         </div>
       );
     }
-    if (
-      this.state.userType &&
-      this.state.courseId
-    ) {
+    if (this.state.userType && this.state.courseId) {
       return (
         <TopicSelect
           courseId={this.state.courseId}
@@ -90,6 +87,9 @@ RequestMatch.defaultProps = {
   courses: PropTypes.array,
 };
 RequestMatch.propTypes = {
+  getLoggedInUser: PropTypes.func,
+  createUserSessionThunk: PropTypes.func,
+  user: PropTypes.object,
   getCourses: PropTypes.func,
   courses: PropTypes.array,
 };

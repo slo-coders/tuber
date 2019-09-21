@@ -95,7 +95,9 @@ const mapDispatchToProps = dispatch => ({
   fetchLoggedInThunked: () => dispatch(fetchLoggedInThunked()),
 });
 
-export default  withRouter(connect(
-  null,
-  mapDispatchToProps,
-)(LoginForm))
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps,
+  )(LoginForm),
+);
