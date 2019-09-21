@@ -8,7 +8,7 @@ const {
   UserTopic,
 } = require('../db/index');
 
-const matchToPartner = require('../db/utils/matchWithPartner');
+const matchToPartner = require('../db/utils/matchToPartner');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -31,8 +31,12 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
+<<<<<<< HEAD
 router.post('/', async (req, res, next) => {
   const { io } = require('../server');
+=======
+router.post('/', async (req, res) => {
+>>>>>>> dev
   try {
     const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
@@ -75,55 +79,71 @@ router.post('/', async (req, res, next) => {
     }
 
     const userSession = await UserSession.create(newSessionInfo);
+    let matchedUserMeetupInfo;
 
     /* Check UserSessions for possible partners with whom to create a Meetup */
     //TODO: change "FIFO" idea for better algo that
     //considers skipping mentor to maximize number of meetups
-    if (userType === 'mentee' || userType === 'mentor' || userType === 'peer') {
-      const matchedUserMeetupInfo = await matchToPartner(
-        userId,
-        userType,
-        location,
-        userSession.selectedTopics,
-      );
+    try {
+      if (
+        userType === 'mentee' ||
+        userType === 'mentor' ||
+        userType === 'peer'
+      ) {
+        matchedUserMeetupInfo = await matchToPartner(
+          userId,
+          userType,
+          location,
+          userSession.selectedTopics,
+        );
 
-      if (matchedUserMeetupInfo && userSession) {
-        console.log('IN MATCH CONDITIONS', matchedUserMeetupInfo);
 
-        //have two partners
+        if (matchedUserMeetupInfo && userSession) {
+          console.log('IN MATCH CONDITIONS', matchedUserMeetupInfo);
 
-        io.on('matched', socket => {
-          console.log('In the match socket:', socket);
+          //have two partners
 
-          //will listen for input from the client for instance of 'send-chat-message'
-          // socket.on('chat-message', message => {
-          //   console.log('Message from client: ' + message);
-          //will send message to everyone on server except for the sender
-          //Will want to make this more specific for user and partner. possibly need to set up a room
-          // socket.broadcast.emit('chat-message', message);
+          io.on('matched', socket => {
+            console.log('In the match socket:', socket);
+
+            //will listen for input from the client for instance of 'send-chat-message'
+            // socket.on('chat-message', message => {
+            //   console.log('Message from client: ' + message);
+            //will send message to everyone on server except for the sender
+            //Will want to make this more specific for user and partner. possibly need to set up a room
+            // socket.broadcast.emit('chat-message', message);
+          });
+        }
+
+        /* //TODO:
+        CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USERSESSION
+        IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array,
+        but DO NOT DELETE userSession; creating them again would change createdAt and put them at
+        the end of the sorted array of users
+         */
+
+        // DESTROY mentee's recently created UserSession instance
+        userSession.destroy();
+
+        // DESTROY mentor's pre-existing UserSession instance
+        const partnerUserSession = await UserSession.findOne({
+          where: { userId: matchedUserMeetupInfo.partner.userId },
         });
+        await partnerUserSession.destroy();
+
+        // RESPOND with UserMeetup info
+        res.status(201).send(matchedUserMeetupInfo);
+      } else {
+        res.send(userSession);
       }
-
-      //TODO:
-      //CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USER
-      //IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, but DO NOT DELETE userSession
-
-      // DESTROY mentee's recently created UserSession instance
-      userSession.destroy();
-
-      // DESTROY mentor's pre-existing UserSession instance
-      const partnerUserSession = await UserSession.findOne({
-        where: { userId: matchedUserMeetupInfo.partner.userId },
-      });
-      await partnerUserSession.destroy();
-
-      // RESPOND with UserMeetup info
-      res.status(201).send(matchedUserMeetupInfo);
-    } else {
+    } catch {
       res.send(userSession);
     }
   } catch (err) {
-    next(err);
+    res.send(
+      'Failed POST; could not findOne instance of UserSession matching this userId.',
+    );
+    // next(err);
   }
 });
 
@@ -141,19 +161,22 @@ router.put('/:userId', async (req, res, next) => {
 
     if (!checkUserSession) {
       //add checkSession when deployed
+      res.send(
+        'Failed PUT; could not findOne instance of UserSession matching this userId.',
+      );
       res.sendStatus(401);
     }
-    const updateUser = await UserSession.updateUserSession(
+    const updatedUser = await UserSession.updateUserSession(
       req.params.userId,
       req.body,
     );
-    res.send(updateUser);
+    res.send(updatedUser);
   } catch (err) {
     next(err);
   }
 });
 
-//Returns user session by userId
+//Returns user sessions by userId
 router.delete('/:userId', async (req, res, next) => {
   try {
     //implement when deployed. Same as above. Can close a User session without fully logging out
@@ -172,12 +195,13 @@ router.delete('/:userId', async (req, res, next) => {
 
     //Check if user has submitted a review.
     //This will require a form that will put to both the User profeciency on UserTopics model as well as to here for review status updates
-    if (checkUserSession.reviewStatus === 'no review') {
-      res.send('Please review your partners profeciency').end();
-    } else {
-      checkUserSession.destroy();
-      res.send('user-session closed');
-    }
+    //
+    // if (checkUserSession.reviewStatus === 'no review') {
+    //   res.send('Please review your partners profeciency').end();
+    // } else {
+    //   checkUserSession.destroy();
+    //   res.send('user-session closed');
+    // }
   } catch (err) {
     next(err);
   }
