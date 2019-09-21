@@ -27,7 +27,6 @@ export class LoginForm extends Component {
     });
   }
   async onSubmit(ev) {
-    console.log(this.props);
     ev.preventDefault();
     await this.props.loginThunked(this.state);
     window.location = '#/profile';
