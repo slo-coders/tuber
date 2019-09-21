@@ -44,7 +44,8 @@ const findAMatch = async (
         userId: reqUserId,
         userType: reqUserType,
         meetupId: meetup.id,
-        proficiencyRating: requetorsUserTopicInstance.proficiencyRating,
+        //UserMeetup should NOT include 'aveProfRating' from UserTopic
+        //proficiencyRating: requetorsUserTopicInstance.proficiencyRating,
       });
 
       // CREATE Partner UserMeetup
@@ -52,24 +53,25 @@ const findAMatch = async (
       const {
         userId: partnerId,
         userType: partnerType,
-        selectedTopics,
+        // selectedTopics,
       } = partner;
-      const partnerProfRating =
+      /* const partnerProfRating =
         partnerType === 'mentor'
           ? selectedTopics.filter(
               utiObj => utiObj.topicId === requetorsUserTopicInstance.topicId,
             )[0].proficiencyRating
-          : selectedTopics[0].proficiencyRating;
+          : selectedTopics[0].proficiencyRating; */
 
       partnerUserMeetupInstance = await UserMeetup.create({
         userId: partnerId,
         userType: partnerType,
         meetupId: meetup.id,
-        proficiencyRating: partnerProfRating,
+        //UserMeetup should NOT include 'aveProfRating' from UserTopic
+        //proficiencyRating: partnerProfRating,
       });
 
       // CREATE MeetupTopic instace with topicId from requestor's UserTopic
-      MeetupTopic.create({
+      await MeetupTopic.create({
         meetupId: meetup.id,
         topicId: requetorsUserTopicInstance.topicId,
       });
