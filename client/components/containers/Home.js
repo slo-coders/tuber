@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import LoginForm from './LoginForm';
 import PropTypes from 'prop-types';
@@ -27,6 +27,7 @@ export class Home extends React.Component {
       );
     }
     return (
+      <Fragment>
       <CSSTransitionGroup
         transitionAppear={true}
         transitionName="componentFadeIn"
@@ -44,6 +45,7 @@ export class Home extends React.Component {
           </div>
         </div>
       </CSSTransitionGroup>
+      </Fragment>
     );
   }
 }

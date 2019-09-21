@@ -5,7 +5,7 @@ import {
   fetchLoggedInThunked,
 } from '../../actions/sessionActions';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Input from '../reusables/Input';
 
 //save for sever restart
@@ -27,6 +27,7 @@ export class LoginForm extends Component {
     });
   }
   async onSubmit(ev) {
+    console.log(this.props);
     ev.preventDefault();
     await this.props.loginThunked(this.state);
     window.location = '#/profile';
@@ -94,7 +95,7 @@ const mapDispatchToProps = dispatch => ({
   fetchLoggedInThunked: () => dispatch(fetchLoggedInThunked()),
 });
 
-export default connect(
+export default  withRouter(connect(
   null,
   mapDispatchToProps,
-)(LoginForm);
+)(LoginForm))

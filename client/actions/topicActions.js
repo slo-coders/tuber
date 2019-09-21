@@ -12,6 +12,7 @@ export const listTopicsThunk = () => async dispatch => {
   try {
     const response = await axios.get('/api/topics');
     dispatch({ type: FETCH_TOPIC_ALL, payload: response.data });
+    console.log('response thunk', response.data)
   } catch (err) {
     console.error(err);
   }

@@ -4,7 +4,7 @@ import ChooseRole from './ChooseRole';
 import CourseSelect from './CourseSelect';
 import TopicSelect from './TopicSelect';
 import { listCoursesThunk } from '../../../actions/courseActions';
-import {createUserSessionThunk} from '../../../actions/userSessionActions';
+import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
 
@@ -16,6 +16,8 @@ class RequestMatch extends Component {
       courseId: '',
       topicId: '',
       location: 'library',
+      userId: '',
+      disabled: true,
     };
     this.handleRoleChoice = this.handleRoleChoice.bind(this);
     this.handleCourseChoice = this.handleCourseChoice.bind(this);
@@ -37,21 +39,20 @@ class RequestMatch extends Component {
   handleTopicChoice(e) {
     this.setState({
       topicId: e.target.getAttribute('value'),
+      userId: this.props.user.authUser.id,
     });
   }
 
   handleSubmit() {
-    console.log('user', this.props.user.authUser.id)
-    this.props.createUserSessionThunk(this.props.user.authUser.id, this.state );
+    this.props.createUserSessionThunk(this.state);
   }
 
   componentDidMount() {
-    this.props.getCourses();
     this.props.getLoggedInUser();
+    this.props.getCourses();
   }
 
   render() {
-    console.log(this.state);
     if (!this.state.userType) {
       return (
         <div className="section">
@@ -59,8 +60,18 @@ class RequestMatch extends Component {
         </div>
       );
     }
-    if (this.state.userType && this.state.courseId) {
-      return <TopicSelect courseId={this.state.courseId} handleSubmit={this.handleSubmit} handleTopicChoice={this.handleTopicChoice} />;
+    if (
+      this.state.userType &&
+      this.state.courseId
+    ) {
+      return (
+        <TopicSelect
+          courseId={this.state.courseId}
+          handleSubmit={this.handleSubmit}
+          handleTopicChoice={this.handleTopicChoice}
+          {...this.state}
+        />
+      );
     }
     if (this.state.userType) {
       return (
@@ -92,7 +103,8 @@ const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
   // singleCourseThunk: courseId => dispatch(singleCourseThunk),
   getLoggedInUser: () => dispatch(fetchLoggedInThunked()),
-  createUserSessionThunk : (userId, userData) => dispatch(createUserSessionThunk(userId, userData))
+  createUserSessionThunk: userData =>
+    dispatch(createUserSessionThunk(userData)),
 });
 
 export default connect(
