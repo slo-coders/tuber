@@ -106,7 +106,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
       newPartnerProfRating,
     );
     
-    const {partnerMeetupInfo, personalMeetupInfo} = userMeetupUpdate;
+    const {partnerMeetupInfo} = userMeetupUpdate;
 
     if(newPartnerProfRating && partnerMeetupInfo.proficiencyRating) {
       //GET the meetup's topicId
@@ -135,7 +135,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
       const alpha = 0.1;
 
       //Calculate new running average
-      const newAveProfRating = alpha*newPartnerProfRating + (1 - alpha)*prevRunningAveTopicProfeciency;
+      const newAveProfRating = Math.round(alpha*newPartnerProfRating + (1 - alpha)*prevRunningAveTopicProfeciency);
 
       //Update newAveProfRating in UserTopic table
       await UserTopic.update({
