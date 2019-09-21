@@ -5,15 +5,15 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  userMeetup: [],
-  userMeetupdata: {},
+  userMeetupsArray: [],
+  userMeetupSelected: {},
 };
 
 const userMeetupReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_MEETUP_DATA:
-      return action.payload;
-    case GET_USER_MEETUP_DATA:
+    case GET_MEETUP_DATA: //GETs all meeup data with a userId
+      return { ...state, userMeetupsArray: action.payload.meetups };
+    case GET_USER_MEETUP_DATA: //Gets one meetup with a userId and meetupId
       return action.payload;
     case UPDATE_MEETUP_DATA:
       return action.payload;

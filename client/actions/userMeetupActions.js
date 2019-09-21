@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as action from './actionTypes';
 
+//gets all meetups for a user
 export const getUserMeetupDataThunked = userId => async dispatch => {
   try {
     const response = await axios.get(`/api/users/${userId}/meetups/`);
@@ -10,6 +11,7 @@ export const getUserMeetupDataThunked = userId => async dispatch => {
   }
 };
 
+//gets a single meetup for a specific user
 export const getMeetupDataThunked = (userId, meetupId) => async dispatch => {
   try {
     const response = await axios.get(

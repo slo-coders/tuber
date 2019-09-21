@@ -25,11 +25,34 @@ class Chatroom extends React.Component {
       this.updateMessages(data);
     });
   }
+
+  //need to get meetupId
   componentDidMount() {
-    socket.emit('room', {
-      room: 'main-room',
-    });
-    console.log('componentDidMount: room');
+    this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+
+    if (this.props.userMeetup.userMeetup[0] !== undefined) {
+      socket.emit('room', {
+        room: this.props.userMeetup.userMeetup[0].id,
+      });
+    }
+  }
+
+  // else {
+  //   socket.emit('room', {
+  //     room: this.props.userMeetup.userMeetup[0].id,
+  //   });
+  // }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.user.authUser.id !== this.props.user.authUser.id ||
+      this.props.userMeetup.userMeetup === undefined
+    ) {
+      this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+      socket.emit('room', {
+        room: this.props.userMeetup.userMeetup[0].id,
+      });
+    }
   }
 
   componentWillUnmount() {
