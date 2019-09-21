@@ -12,7 +12,7 @@ const UserMeetup = db.define('user_meetup', {
     type: Sequelize.ENUM,
     values: ['mentor', 'mentee', 'peer'],
   },
-  /*
+  /* DELETE ?
   softSkillsRating: {
     type: Sequelize.INTEGER,
     validate: {
@@ -28,31 +28,46 @@ const UserMeetup = db.define('user_meetup', {
       min: 0,
     },
   },
+
   userConfirmation: {
     type: Sequelize.BOOLEAN,
   },
 
-  comments: {
-    type: Sequelize.TEXT,
+  status: {
+    type: Sequelize.ENUM,
+    values: ['pending confirmation', 'matched', 'pending review', 'completed'],
+    defaultValue: 'pending confirmation',
   },
+
+  /*  DELETE THIS? 
+    comments: {
+    type: Sequelize.TEXT,
+  }, */
 });
 
-UserMeetup.updateUserMeetup = async function(userId, meetupId, req) {
+UserMeetup.ratePartnerUserMeetup = async function(
+  userId,
+  meetupId,
+  newPartnerProfRating,
+) {
   const userMeetup = await this.findAll({
     where: { meetupId },
   });
-  const partnerStats = userMeetup.filter(el => el.userId !== userId);
-  const personalStats = userMeetup.filter(el => el.userId === userId);
-  const updatePersonalStats = await personalStats[0].update({
-    userType: req.body.userType,
-    comments: req.body.comments,
+  const partnerUserMeetupInst = userMeetup.filter(el => el.userId !== userId);
+  const personalUserMeetupInst = userMeetup.filter(el => el.userId === userId);
+
+  const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update({
+    status: 'completed',
   });
 
-  const updatePartnerStats = await partnerStats[0].update({
-    // softSkillsRating: req.body.softSkillsRating,
-    proficiencyRating: req.body.proficiencyRating,
+  const updatedPartnerUserMeetup = await partnerUserMeetupInst[0].update({
+    // softSkillsRating: newPartnerSoftSkillsRating,
+    proficiencyRating: newPartnerProfRating,
   });
 
-  return [updatePartnerStats, updatePersonalStats];
+  return {
+    partnerMeetupInfo: updatedPartnerUserMeetup,
+    personalMeetupInfo: updatedPersonalUserMeetup,
+  };
 };
 module.exports = UserMeetup;

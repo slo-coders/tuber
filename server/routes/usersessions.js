@@ -8,7 +8,7 @@ const {
   UserTopic,
 } = require('../db/index');
 
-const matchToPartner = require('../db/utils/matchWithPartner');
+const matchToPartner = require('../db/utils/matchToPartner');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -31,7 +31,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
   try {
     const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
@@ -74,38 +74,53 @@ router.post('/', async (req, res, next) => {
     }
 
     const userSession = await UserSession.create(newSessionInfo);
+    let matchedUserMeetupInfo;
 
     /* Check UserSessions for possible partners with whom to create a Meetup */
     //TODO: change "FIFO" idea for better algo that
     //considers skipping mentor to maximize number of meetups
-    if (userType === 'mentee' || userType === 'mentor' || userType === 'peer') {
-      const matchedUserMeetupInfo = await matchToPartner(
-        userId,
-        userType,
-        location,
-        userSession.selectedTopics,
-      );
+    try {
+      if (
+        userType === 'mentee' ||
+        userType === 'mentor' ||
+        userType === 'peer'
+      ) {
+        matchedUserMeetupInfo = await matchToPartner(
+          userId,
+          userType,
+          location,
+          userSession.selectedTopics,
+        );
 
-      //TODO:
-      //CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USER
-      //IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, but DO NOT DELETE userSession
+        /* //TODO:
+        CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USERSESSION
+        IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, 
+        but DO NOT DELETE userSession; creating them again would change createdAt and put them at 
+        the end of the sorted array of users
+         */
 
-      // DESTROY mentee's recently created UserSession instance
-      userSession.destroy();
+        // DESTROY mentee's recently created UserSession instance
+        userSession.destroy();
 
-      // DESTROY mentor's pre-existing UserSession instance
-      const partnerUserSession = await UserSession.findOne({
-        where: { userId: matchedUserMeetupInfo.partner.userId },
-      });
-      await partnerUserSession.destroy();
+        // DESTROY mentor's pre-existing UserSession instance
+        const partnerUserSession = await UserSession.findOne({
+          where: { userId: matchedUserMeetupInfo.partner.userId },
+        });
+        await partnerUserSession.destroy();
 
-      // RESPOND with UserMeetup info
-      res.status(201).send(matchedUserMeetupInfo);
-    } else {
+        // RESPOND with UserMeetup info
+        res.status(201).send(matchedUserMeetupInfo);
+      } else {
+        res.send(userSession);
+      }
+    } catch {
       res.send(userSession);
     }
   } catch (err) {
-    next(err);
+    res.send(
+      'Failed POST; could not findOne instance of UserSession matching this userId.',
+    );
+    // next(err);
   }
 });
 
@@ -123,19 +138,22 @@ router.put('/:userId', async (req, res, next) => {
 
     if (!checkUserSession) {
       //add checkSession when deployed
+      res.send(
+        'Failed PUT; could not findOne instance of UserSession matching this userId.',
+      );
       res.sendStatus(401);
     }
-    const updateUser = await UserSession.updateUserSession(
+    const updatedUser = await UserSession.updateUserSession(
       req.params.userId,
       req.body,
     );
-    res.send(updateUser);
+    res.send(updatedUser);
   } catch (err) {
     next(err);
   }
 });
 
-//Returns user session by userId
+//Returns user sessions by userId
 router.delete('/:userId', async (req, res, next) => {
   try {
     //implement when deployed. Same as above. Can close a User session without fully logging out
@@ -154,12 +172,13 @@ router.delete('/:userId', async (req, res, next) => {
 
     //Check if user has submitted a review.
     //This will require a form that will put to both the User profeciency on UserTopics model as well as to here for review status updates
-    if (checkUserSession.reviewStatus === 'no review') {
-      res.send('Please review your partners profeciency').end();
-    } else {
-      checkUserSession.destroy();
-      res.send('user-session closed');
-    }
+    //
+    // if (checkUserSession.reviewStatus === 'no review') {
+    //   res.send('Please review your partners profeciency').end();
+    // } else {
+    //   checkUserSession.destroy();
+    //   res.send('user-session closed');
+    // }
   } catch (err) {
     next(err);
   }
