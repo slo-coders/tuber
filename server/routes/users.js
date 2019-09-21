@@ -105,50 +105,51 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
       req.params.meetupId,
       newPartnerProfRating,
     );
-    
-    const {partnerMeetupInfo} = userMeetupUpdate;
 
-    if(newPartnerProfRating && partnerMeetupInfo.proficiencyRating) {
+    const { partnerMeetupInfo } = userMeetupUpdate;
+
+    if (newPartnerProfRating && partnerMeetupInfo.proficiencyRating) {
       //GET the meetup's topicId
-      const meetup = (
-        await Meetup.findOne({
-          where: {id: req.params.meetupId },
-          include: [
-            { model: Topic, through: { model: MeetupTopic } }
-          ],
-        })
-      );
-        
+      const meetup = await Meetup.findOne({
+        where: { id: req.params.meetupId },
+        include: [{ model: Topic, through: { model: MeetupTopic } }],
+      });
+
       const topicId = meetup.topics[0].id;
-      
+
       //GET the partner's previous running average
-      const prevRunningAveTopicProfeciency = (
-        await UserTopic.findOne({
-          where: {
-            userId: partnerMeetupInfo.userId,
-            topicId,
-          }
-        })
-      ).proficiencyRating;
-      
+      const prevRunningAveTopicProfeciency = (await UserTopic.findOne({
+        where: {
+          userId: partnerMeetupInfo.userId,
+          topicId,
+        },
+      })).proficiencyRating;
+
       //Set an alpha for an estimated exponenial moving average
       const alpha = 0.1;
 
       //Calculate new running average
-      const newAveProfRating = Math.round(alpha*newPartnerProfRating + (1 - alpha)*prevRunningAveTopicProfeciency);
+      const newAveProfRating = Math.round(
+        alpha * newPartnerProfRating +
+          (1 - alpha) * prevRunningAveTopicProfeciency,
+      );
 
       //Update newAveProfRating in UserTopic table
-      await UserTopic.update({
-        proficiencyRating: newAveProfRating
-      }, {
-        where: {
-          userId: partnerMeetupInfo.userId,
-          topicId
-        }
-      });
-
+      await UserTopic.update(
+        {
+          proficiencyRating: newAveProfRating,
+        },
+        {
+          where: {
+            userId: partnerMeetupInfo.userId,
+            topicId,
+          },
+        },
+      );
     } else {
-      console.log('Error; either could not find previous average rating or new rating could not be read correctly.');
+      console.log(
+        'Error; either could not find previous average rating or new rating could not be read correctly.',
+      );
     }
     res.send(userMeetupUpdate);
   } catch (err) {

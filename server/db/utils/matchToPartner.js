@@ -75,8 +75,7 @@ const findAMatch = async (
         meetupId: meetup.id,
         topicId: requetorsUserTopicInstance.topicId,
       });
-    }
-    else return null;
+    } else return null;
     return {
       reqUser: reqUserMeetupInstance,
       partner: partnerUserMeetupInstance,

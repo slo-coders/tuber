@@ -46,7 +46,6 @@ router.post('/', async (req, res, next) => {
       res.sendStatus(401);
     }
 
-
     /* CREATE UserSession instance */
     const newSessionInfo = {
       userId: userId,
@@ -80,43 +79,47 @@ router.post('/', async (req, res, next) => {
     /* Check UserSessions for possible partners with whom to create a Meetup */
     //TODO: change "FIFO" idea for better algo that
     //considers skipping mentor to maximize number of meetups
-    try{
-      if (userType === 'mentee' || userType === 'mentor' || userType === 'peer') {
+    try {
+      if (
+        userType === 'mentee' ||
+        userType === 'mentor' ||
+        userType === 'peer'
+      ) {
         matchedUserMeetupInfo = await matchToPartner(
           userId,
           userType,
           location,
           userSession.selectedTopics,
         );
-  
+
         /* //TODO:
         CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USERSESSION
         IF CONFIRMED === 'FALSE', delete mentor from mentee's possible mentors array, 
         but DO NOT DELETE userSession; creating them again would change createdAt and put them at 
         the end of the sorted array of users
          */
-  
+
         // DESTROY mentee's recently created UserSession instance
         userSession.destroy();
-  
+
         // DESTROY mentor's pre-existing UserSession instance
         const partnerUserSession = await UserSession.findOne({
           where: { userId: matchedUserMeetupInfo.partner.userId },
         });
         await partnerUserSession.destroy();
-  
+
         // RESPOND with UserMeetup info
         res.status(201).send(matchedUserMeetupInfo);
       } else {
         res.send(userSession);
       }
-    }
-    catch {
+    } catch {
       res.send(userSession);
     }
-    
   } catch (err) {
-    res.send('Failed POST; could not findOne instance of UserSession matching this userId.');
+    res.send(
+      'Failed POST; could not findOne instance of UserSession matching this userId.',
+    );
     // next(err);
   }
 });
@@ -135,7 +138,9 @@ router.put('/:userId', async (req, res, next) => {
 
     if (!checkUserSession) {
       //add checkSession when deployed
-      res.send('Failed PUT; could not findOne instance of UserSession matching this userId.');
+      res.send(
+        'Failed PUT; could not findOne instance of UserSession matching this userId.',
+      );
       res.sendStatus(401);
     }
     const updatedUser = await UserSession.updateUserSession(
