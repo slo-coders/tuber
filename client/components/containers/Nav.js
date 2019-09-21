@@ -52,7 +52,7 @@ export class Nav extends React.Component {
                 className="navbar-item"
                 to="/request_match" /* path will eventually depend on match status, this is a placeholder */
               >
-                Matches
+                Meetups
               </Link>
               <div className="navbar-item">
                 <Button

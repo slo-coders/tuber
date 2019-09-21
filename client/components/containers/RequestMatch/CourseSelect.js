@@ -27,7 +27,7 @@ const CourseSelect = props => {
                       value={course.courseName}
                       className="tile is-parent is-vertical is-4"
                     >
-                      <div value={course.courseName} className="tile is-child">
+                      <div value={course.id} className="tile is-child">
                         MAT{course.courseCode}
                         {course.courseName}
                       </div>
