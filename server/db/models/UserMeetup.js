@@ -45,22 +45,22 @@ const UserMeetup = db.define('user_meetup', {
   }, */
 });
 
-UserMeetup.updatePartnerUserMeetup = async function(userId, meetupId, req) {
+UserMeetup.ratePartnerUserMeetup = async function(userId, meetupId, newPartnerProfRating) {
   const userMeetup = await this.findAll({
     where: { meetupId },
   });
   const partnerUserMeetupInst = userMeetup.filter(el => el.userId !== userId);
   const personalUserMeetupInst = userMeetup.filter(el => el.userId === userId);
-  /*  const updatePersonalStats = await personalUserMeetupInst[0].update({
-    // userType: req.body.userType,
-    // comments: req.body.comments,
-  }); */
 
-  const updatedPartnerUserMeetup = await partnerUserMeetupInst[0].update({
-    // softSkillsRating: req.body.softSkillsRating,
-    proficiencyRating: req.body.proficiencyRating,
+  const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update({
+    status: 'completed',  
   });
 
-  return {partnerMeetupInfo: updatedPartnerUserMeetup, personalMeetupInfo: personalUserMeetupInst};
+  const updatedPartnerUserMeetup = await partnerUserMeetupInst[0].update({
+    // softSkillsRating: newPartnerSoftSkillsRating,
+    proficiencyRating: newPartnerProfRating,
+  });
+
+  return {partnerMeetupInfo: updatedPartnerUserMeetup, personalMeetupInfo: updatedPersonalUserMeetup};
 };
 module.exports = UserMeetup;
