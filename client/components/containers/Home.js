@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import LoginForm from './LoginForm';
 import PropTypes from 'prop-types';
@@ -27,25 +27,23 @@ export class Home extends React.Component {
       );
     }
     return (
-      <Fragment>
-        <CSSTransitionGroup
-          transitionAppear={true}
-          transitionName="componentFadeIn"
-          transitionAppearTimeout={9000}
-          transitionLeaveTimeout={9000}
-          transitionEnterTimeout={9000}
-        >
-          <div className="section">
-            <div className="container">
-              <div className="level">
-                <div className="column">
-                  <LoginForm />
-                </div>
+      <CSSTransitionGroup
+        transitionAppear={true}
+        transitionName="componentFadeIn"
+        transitionAppearTimeout={9000}
+        transitionLeaveTimeout={9000}
+        transitionEnterTimeout={9000}
+      >
+        <div className="section">
+          <div className="container">
+            <div className="level">
+              <div className="column">
+                <LoginForm />
               </div>
             </div>
           </div>
-        </CSSTransitionGroup>
-      </Fragment>
+        </div>
+      </CSSTransitionGroup>
     );
   }
 }

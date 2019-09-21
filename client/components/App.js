@@ -13,12 +13,10 @@ import { fetchLoggedInThunked } from '../actions/sessionActions';
 
 class App extends React.Component {
   componentDidMount() {
-    console.log('mounted');
     /* will probably move, keeping fetch at high level for now */
     this.props.listTopics();
     this.props.listUsers();
     this.props.getUser();
-    console.log(this.props);
   }
 
   render() {
