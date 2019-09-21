@@ -17,7 +17,7 @@ export default function DisplayStarRating(props) {
 
       <i
         id="one-half"
-        className={score >= 25 && score <= 50 ? 'fas fa-star-half-alt' : ''}
+        className={score >= 25 && score < 50 ? 'fas fa-star-half-alt' : ''}
       />
 
       <i
@@ -76,10 +76,11 @@ export default function DisplayStarRating(props) {
         className={score >= 425 && score < 450 ? 'fas fa-star-half-alt' : ''}
       />
 
-      {(score >= 25 && score <= 50) ||
+      {(score >= 25 && score < 50) ||
       (score >= 125 && score < 150) ||
       (score >= 225 && score < 250) ||
-      (score >= 325 && score < 350) ? (
+      (score >= 325 && score < 350) ||
+      (score >= 425 && score < 450) ? (
         ''
       ) : (
         <i

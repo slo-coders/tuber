@@ -19,6 +19,15 @@ export const singleCourseThunk = courseId => async dispatch => {
   }
 };
 
+export const singleCourseTopicsThunk = courseId => async dispatch => {
+  try {
+    const response = await axios.get(`/api/courses/${courseId}/topics`);
+    dispatch({ type: action.FETCH_COURSE_TOPICS, payload: response.data });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const postCourseThunk = course => async dispatch => {
   try {
     const response = await axios.post('/api/courses', course);

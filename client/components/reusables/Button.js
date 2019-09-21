@@ -8,6 +8,7 @@ export default function Button(props) {
         value={props.value}
         className={'button ' + props.buttonStyle}
         onClick={props.handleClick}
+        disabled={props.disabled}
       >
         {props.buttonText}
       </a>
@@ -16,6 +17,7 @@ export default function Button(props) {
 }
 
 Button.propTypes = {
+  disabled: PropTypes.string,
   value: PropTypes.string,
   buttonText: PropTypes.string,
   buttonStyle: PropTypes.string,
