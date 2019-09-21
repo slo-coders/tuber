@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Model
-const { UserTopic } = require('../db/index');
+const { UserTopic, Topic, User } = require('../db/index');
 
 // Routes
 //`/api/users/:userId/topics
@@ -10,8 +10,9 @@ router
   .route('/') //NOTE: req.params does not include userId here w/ req.uesrId
   .get(async (req, res, next) => {
     try {
-      const userTopics = await UserTopic.findAll({
-        where: { userId: req.userId },
+      const userTopics = await User.findAll({
+        where: { id: req.userId },
+        include: [{ model: Topic, attributes: ['title'] }],
       });
       if (userTopics) {
         res.send(userTopics);

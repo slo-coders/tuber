@@ -54,7 +54,7 @@ const mapStateToProps = state => ({
 });
 
 SignUpTopics.propTypes = {
-  topics: PropTypes.array,
+  topics: PropTypes.object,
   handleCheckboxChange: PropTypes.func,
   checked: PropTypes.string,
   handleContinue: PropTypes.func,
