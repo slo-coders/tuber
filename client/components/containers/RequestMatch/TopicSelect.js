@@ -10,10 +10,6 @@ class TopicSelect extends Component {
   }
 
   render() {
-    console.log(
-      'this.props.topic',this.props.topicId,
-    );
-
     return (
       <div>
         {this.props.courses[0]
@@ -25,9 +21,6 @@ class TopicSelect extends Component {
                 handleCheckboxChange={this.props.handleTopicChoice}
                 
                 />
-                {/* <a onClick={this.props.handleTopicChoice} value={topic.id}>
-                  {topic.title}
-                </a> */}
               </div>
             ))
           : 'loading...'}

@@ -8,7 +8,7 @@ const UserSession = db.define('user_session', {
     defaultValue: db.Sequelize.UUIDV4,
     primaryKey: true,
   },
-
+  //DELETE THIS?
   // userTopics: {
   //   type: Sequelize.ARRAY(Sequelize.STRING),
   // },
@@ -30,15 +30,16 @@ const UserSession = db.define('user_session', {
 
   status: {
     type: Sequelize.ENUM,
-    values: ['waiting', 'matched'],
+    values: ['waiting', 'pending confirmation', 'matched'],
     defaultValue: 'waiting',
   },
 
-  reviewStatus: {
-    type: Sequelize.ENUM,
-    values: ['review submitted', 'no review'],
-    defaultValue: 'no review',
-  },
+  //DELETE THIS?
+  // reviewStatus: {
+  //   type: Sequelize.ENUM,
+  //   values: ['review submitted', 'no review'],
+  //   defaultValue: 'no review',
+  // },
 });
 
 //Hooks to get convert comma strings into an array for storage
@@ -48,28 +49,6 @@ UserSession.beforeCreate(usersession => {
 UserSession.beforeUpdate(usersession => {
   usersession.selectedTopics = convertArray(usersession.selectedTopics);
 });
-
-//Should exist only in UserMeetup
-// UserSession.updateUserSession = async function(userId, userInfo) {
-//   {
-//     const sessionUser = await this.findOne({
-//       where: { userId: userId },
-//     });
-
-//     const updatedUserSession = {
-//       userType: userInfo.type,
-//       status: userInfo.status,
-//       location: userInfo.location,
-//       selectedTopic:
-//         userInfo.topicId === undefined
-//           ? sessionUser.selectedTopic
-//           : userInfo.selectedTopic.split(','),
-//       reviewStatus: userInfo.reviewStatus,
-//     };
-
-//     return await sessionUser.update(updatedUserSession);
-//   }
-// };
 
 UserSession.findActiveUsersByType = async function() {
   const allSessions = await this.findAll({ where: { status: 'waiting' } });

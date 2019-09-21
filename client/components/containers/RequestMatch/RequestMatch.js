@@ -17,7 +17,6 @@ class RequestMatch extends Component {
       topicId: '',
       location: 'library',
       userId: '',
-      disabled: true,
     };
     this.handleRoleChoice = this.handleRoleChoice.bind(this);
     this.handleCourseChoice = this.handleCourseChoice.bind(this);
@@ -101,7 +100,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
-  // singleCourseThunk: courseId => dispatch(singleCourseThunk),
   getLoggedInUser: () => dispatch(fetchLoggedInThunked()),
   createUserSessionThunk: userData =>
     dispatch(createUserSessionThunk(userData)),
