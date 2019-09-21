@@ -2,12 +2,10 @@
 import React from 'react';
 import uuid from '../../../server/db/utils/uuid';
 import { connect } from 'react-redux';
-//socket suff will be moved to the char component
+import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
 
 import io from 'socket.io-client';
 const socket = io('http://localhost:3001');
-
-//should capture data from server and update state???
 
 class Chatroom extends React.Component {
   constructor() {
@@ -21,18 +19,33 @@ class Chatroom extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
 
-    socket.on('chat-message', data => {
-      console.log('Info from SERVER: ', data); //"Hellow world"
+    //listening for incomming server data
+    socket.on('message-data', data => {
+      console.log('Info from SERVER: ', data);
       this.updateMessages(data);
+    });
+  }
+  componentDidMount() {
+    socket.emit('room', {
+      room: 'main-room',
+    });
+    console.log('componentDidMount: room');
+  }
+
+  componentWillUnmount() {
+    socket.emit('leave-room', {
+      room: 'main-room',
     });
   }
 
   onHandle(ev) {
     this.setState({ message: ev.target.value });
   }
+
   onSubmit(ev) {
     ev.preventDefault();
     socket.emit('chat-message', {
+      room: 'main-room',
       user: this.props.user.authUser.firstName,
       text: this.state.message,
     });
@@ -40,16 +53,17 @@ class Chatroom extends React.Component {
   }
 
   updateMessages(payload) {
-    console.log('update fired:', payload);
     this.setState(prevState => {
       return { messageList: [...prevState.messageList, payload] };
     });
   }
   render() {
-    console.log('Chat room', this.state);
+    console.log('CHAT ROOM', this.props);
     return (
       <div>
-        <div>You are in the Chatroom</div>
+        <div>
+          <h3>Welcome! The topic of discussion is:</h3>
+        </div>
 
         <div className="message-list">
           {this.state.messageList.map((item, idx) => (
@@ -58,10 +72,10 @@ class Chatroom extends React.Component {
         </div>
 
         <form onSubmit={this.onSubmit}>
-          <label htmlFor="message">Message</label>
+          <label htmlFor="chatmessage">Message</label>
           <input
             type="text"
-            name="message"
+            name="chatmessage"
             onChange={this.onHandle}
             value={this.state.message}
           />
@@ -72,9 +86,16 @@ class Chatroom extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ user: state.auth });
+const mapStateToProps = state => ({
+  user: state.auth,
+  userMeetup: state.userMeetup,
+});
+const mapDispatchToProps = dispatch => ({
+  getUserMeetupDataThunked: userid =>
+    dispatch(getUserMeetupDataThunked(userid)),
+});
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Chatroom);

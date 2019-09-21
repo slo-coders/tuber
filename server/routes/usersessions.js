@@ -90,17 +90,17 @@ router.post('/', async (req, res, next) => {
       if (matchedUserMeetupInfo && userSession) {
         console.log('IN MATCH CONDITIONS', matchedUserMeetupInfo);
 
+        //have two partners
+
         io.on('matched', socket => {
-          console.log('In the match socket');
-          socket.emit('match-message', 'A MATCH HAS BEEN FOUND');
+          console.log('In the match socket:', socket);
 
           //will listen for input from the client for instance of 'send-chat-message'
-          socket.on('chat-message', message => {
-            console.log('Message from client: ' + message);
-            //will send message to everyone on server except for the sender
-            //Will want to make this more specific for user and partner. possibly need to set up a room
-            socket.broadcast.emit('chat-message', message);
-          });
+          // socket.on('chat-message', message => {
+          //   console.log('Message from client: ' + message);
+          //will send message to everyone on server except for the sender
+          //Will want to make this more specific for user and partner. possibly need to set up a room
+          // socket.broadcast.emit('chat-message', message);
         });
       }
 
