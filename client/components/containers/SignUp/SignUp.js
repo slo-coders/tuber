@@ -34,7 +34,7 @@ class SignUp extends Component {
   handleSubmit() {
     // Still needs to be set up to get new user ID
     // this.props.postTopics(
-    //   '58351ee7-e39d-4f71-92c4-e8ba05cfd9cc',
+    //   '7c9a127d-fa4f-428f-a2eb-da9e8943ef59',
     //   this.state.topicsWithRatings,
     // );
     this.setState({

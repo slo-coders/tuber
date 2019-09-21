@@ -4,17 +4,22 @@ import {
   POST_COURSE,
   DELETE_COURSE,
   EDIT_COURSE,
+  FETCH_COURSE_TOPICS,
 } from '../actions/actionTypes';
 
 const initialState = {
   courses: [],
   singleCourse: {},
+  singleCourseWithTopics: {},
 };
 
 const courseReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_COURSE:
       return { ...state, singleCourse: action.payload };
+
+    case FETCH_COURSE_TOPICS:
+      return { ...state, singleCourseWithTopics: action.payload };
 
     case FETCH_COURSE_ALL:
       return { ...state, courses: action.payload };
