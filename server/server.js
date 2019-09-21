@@ -17,29 +17,26 @@ const io = require('socket.io')(3001);
 
 // app.use(morgan('dev'));
 
-//move sockets to adter sessions?
-
 //will give each user a new socket
 //all socket logic will go in this function
 //Note, socket has a unique id (socket.id) that can be used to differentiate users
-io.on('connection', socket => {
-  console.log('NEW USER LOGGED IN');
-  socket.emit('return-message', 'Hellow from server socket');
 
-  //will listen for input from the client for instance of 'send-chat-message'
-  socket.on('send-chat-message', message => {
-    console.log(message);
+io.on('connection', socket => {
+  console.log('User Socket made: ', socket.id);
+
+  //will listen for input from the client for instance of 'chat-message'
+  socket.on('chat-message', data => {
+    console.log('message from client:', data);
+    io.emit('chat-message', data);
+
     //will send message to everyone on server except for the sender
     //Will want to make this more specific for user and partner. possibly need to set up a room
-    socket.broadcast.emit('chat-message', message);
-  });
 
-  socket.on('partner-found', () => {});
-
-  socket.on('disconnect', () => {
-    //delete user[socket.id] or similar
+    // socket.broadcast.emit('chat-message', message);
   });
 });
+
+//move sockets to adter sessions?
 
 app.use(
   session({
@@ -67,4 +64,4 @@ app.use('/api/sessions', require('./routes/sessions'));
 
 app.use('/api', routes);
 
-module.exports = app;
+module.exports = { app, io };

@@ -54,6 +54,10 @@ export class Nav extends React.Component {
               >
                 Matches
               </Link>
+
+              <Link className="navbar-item" to="/chatroom">
+                Chat Room
+              </Link>
               <div className="navbar-item">
                 <Button
                   handleClick={this.logout}

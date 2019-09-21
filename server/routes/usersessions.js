@@ -32,6 +32,7 @@ router.get('/:userId', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
+  const { io } = require('../server');
   try {
     const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
@@ -85,6 +86,23 @@ router.post('/', async (req, res, next) => {
         location,
         userSession.selectedTopics,
       );
+
+      if (matchedUserMeetupInfo && userSession) {
+        console.log('IN MATCH CONDITIONS', matchedUserMeetupInfo);
+
+        io.on('matched', socket => {
+          console.log('In the match socket');
+          socket.emit('match-message', 'A MATCH HAS BEEN FOUND');
+
+          //will listen for input from the client for instance of 'send-chat-message'
+          socket.on('chat-message', message => {
+            console.log('Message from client: ' + message);
+            //will send message to everyone on server except for the sender
+            //Will want to make this more specific for user and partner. possibly need to set up a room
+            socket.broadcast.emit('chat-message', message);
+          });
+        });
+      }
 
       //TODO:
       //CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USER
