@@ -31,7 +31,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
   try {
     const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
