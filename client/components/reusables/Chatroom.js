@@ -8,10 +8,10 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3001');
 
 class Chatroom extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      id: uuid(),
+      // id: uuid(),
       messageList: [],
       message: '',
     };
@@ -29,12 +29,6 @@ class Chatroom extends React.Component {
   //need to get meetupId
   componentDidMount() {
     this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
-
-    if (this.props.userMeetup.userMeetup[0] !== undefined) {
-      socket.emit('room', {
-        room: this.props.userMeetup.userMeetup[0].id,
-      });
-    }
   }
 
   // else {
@@ -45,19 +39,26 @@ class Chatroom extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      prevProps.user.authUser.id !== this.props.user.authUser.id ||
-      this.props.userMeetup.userMeetup === undefined
+      prevProps.user.authUser &&
+      this.props.user.authUser &&
+      prevProps.user.authUser.id !== this.props.user.authUser.id
     ) {
       this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+    }
+    if (
+      prevProps.userMeetup &&
+      this.props.userMeetup &&
+      prevProps.userMeetup.id !== this.props.userMeetup.id
+    ) {
       socket.emit('room', {
-        room: this.props.userMeetup.userMeetup[0].id,
+        room: this.props.userMeetup.id,
       });
     }
   }
 
   componentWillUnmount() {
     socket.emit('leave-room', {
-      room: 'main-room',
+      room: this.props.userMeetup.id,
     });
   }
 
@@ -68,7 +69,7 @@ class Chatroom extends React.Component {
   onSubmit(ev) {
     ev.preventDefault();
     socket.emit('chat-message', {
-      room: 'main-room',
+      room: this.props.userMeetup.id,
       user: this.props.user.authUser.firstName,
       text: this.state.message,
     });
@@ -80,8 +81,9 @@ class Chatroom extends React.Component {
       return { messageList: [...prevState.messageList, payload] };
     });
   }
+
   render() {
-    console.log('CHAT ROOM', this.props);
+    if (this.props.user.authUser.id === undefined) return null;
     return (
       <div>
         <div>
@@ -90,11 +92,14 @@ class Chatroom extends React.Component {
 
         <div className="message-list">
           {this.state.messageList.map((item, idx) => (
-            <li key={idx}>{`${item.user}: ${item.text}`}</li>
+            <li
+              className="messages"
+              key={idx}
+            >{`${item.user}: ${item.text}`}</li>
           ))}
         </div>
 
-        <form onSubmit={this.onSubmit}>
+        <form classNames="chatForm" onSubmit={this.onSubmit}>
           <label htmlFor="chatmessage">Message</label>
           <input
             type="text"
@@ -102,7 +107,9 @@ class Chatroom extends React.Component {
             onChange={this.onHandle}
             value={this.state.message}
           />
-          <button type="submit">Submit</button>
+          <button className="button" type="submit">
+            Submit
+          </button>
         </form>
       </div>
     );
@@ -111,7 +118,7 @@ class Chatroom extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.auth,
-  userMeetup: state.userMeetup,
+  userMeetup: state.userMeetup.mostRecentUserMeetup,
 });
 const mapDispatchToProps = dispatch => ({
   getUserMeetupDataThunked: userid =>

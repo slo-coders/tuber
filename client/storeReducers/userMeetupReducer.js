@@ -6,17 +6,17 @@ import {
 
 const initialState = {
   userMeetupsArray: [],
-  userMeetupSelected: {},
+  mostRecentUserMeetup: {}, //mostRecentUserMeetup.id
 };
 
 const userMeetupReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_MEETUP_DATA: //GETs all meeup data with a userId
-      return { ...state, userMeetupsArray: action.payload.meetups };
+    // case GET_MEETUP_DATA: //GETs all meeup data with a userId
+    //   return { ...state, userMeetupsArray: action.payload.meetups };
     case GET_USER_MEETUP_DATA: //Gets one meetup with a userId and meetupId
-      return action.payload;
+      return { ...state, mostRecentUserMeetup: action.payload.meetups[0] };
     case UPDATE_MEETUP_DATA:
-      return action.payload;
+      return { ...state, userMeeupsArray: action.payload.meetups };
     default:
       return state;
   }

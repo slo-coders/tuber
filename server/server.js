@@ -55,7 +55,7 @@ io.on('connection', socket => {
 
   socket.on('room', data => {
     //verify meetup connection/meetupId
-    socket.join('main-room');
+    socket.join(data.room);
     console.log('in room creator:', data.room);
   });
 

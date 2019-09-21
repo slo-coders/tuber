@@ -76,15 +76,17 @@ router
     }
   });
 
-//Gets all meetupinformation for a user.
+//Gets all most recent meetup data for a user
 router.get('/:userId/meetups', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { id: req.params.userId },
       include: [
-        { model: Meetup, through: { model: UserMeetup } }, //status
+        { model: Meetup, attributes: ['id'], through: { model: UserMeetup } }, //status
         { model: Topic, through: { model: UserTopic } }, //topic
       ],
+      order: ['createdAt'],
+      limit: 1,
     });
     res.send(user);
   } catch (err) {
