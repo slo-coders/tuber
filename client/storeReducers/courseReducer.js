@@ -16,8 +16,8 @@ const initialState = {
 const courseReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_COURSE:
+      console.log('Inside fetch course reducer');
       return { ...state, singleCourse: action.payload };
-
     case FETCH_COURSE_TOPICS:
       return { ...state, singleCourseWithTopics: action.payload };
 

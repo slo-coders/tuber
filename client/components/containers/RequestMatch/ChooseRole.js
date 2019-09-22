@@ -9,6 +9,7 @@ export default function ChooseRole(props) {
     { id: 2, value: 'mentee', buttonText: 'Mentee' },
     { id: 3, value: 'peer', buttonText: 'Peer' },
   ];
+  console.log('CHOOSE ROLE:', props);
   return (
     <CSSTransitionGroup
       transitionAppear={true}

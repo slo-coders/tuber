@@ -17,7 +17,7 @@ export default function Button(props) {
 }
 
 Button.propTypes = {
-  disabled: PropTypes.string,
+  disabled: PropTypes.bool,
   value: PropTypes.string,
   buttonText: PropTypes.string,
   buttonStyle: PropTypes.string,

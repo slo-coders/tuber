@@ -8,6 +8,10 @@ import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
 
+//TODO: Render and submit topics based on a course for Mentors
+//TODO: Render and submit selected topics for either mentee or peer
+//NOTE: This componet has local state that can be utilized
+
 class RequestMatch extends Component {
   constructor() {
     super();
@@ -43,15 +47,21 @@ class RequestMatch extends Component {
   }
 
   handleSubmit() {
+    console.log(
+      "RequestMatch's handleSubmit running UserSessionThunk with state: ",
+      this.state,
+    );
     this.props.createUserSessionThunk(this.state);
+    //want to navigate to matchup page post submit
   }
 
   componentDidMount() {
-    this.props.getLoggedInUser();
     this.props.getCourses();
   }
 
   render() {
+    console.log('REQUEST MATCH PAGE PROPS', this.props);
+    console.log('REQUEST MATCH PAGE STATE', this.state);
     if (!this.state.userType) {
       return (
         <div className="section">
@@ -73,6 +83,7 @@ class RequestMatch extends Component {
       return (
         <div className="section">
           <CourseSelect
+            userType={this.state.userType}
             courses={this.props.courses}
             handleCourseChoice={this.handleCourseChoice}
           />
@@ -87,7 +98,6 @@ RequestMatch.defaultProps = {
   courses: PropTypes.array,
 };
 RequestMatch.propTypes = {
-  getLoggedInUser: PropTypes.func,
   createUserSessionThunk: PropTypes.func,
   user: PropTypes.object,
   getCourses: PropTypes.func,
@@ -100,7 +110,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
-  getLoggedInUser: () => dispatch(fetchLoggedInThunked()),
   createUserSessionThunk: userData =>
     dispatch(createUserSessionThunk(userData)),
 });
