@@ -8,8 +8,10 @@ import {
 } from './actionTypes';
 
 export const getUserTopicsThunked = userId => async dispatch => {
+  console.log('in user topics thunk');
   try {
     const response = await axios.get(`/api/users/${userId}/topics/`);
+    console.log('USER ACTION THUNK', response);
     dispatch({ type: GET_ALL_USER_TOPICS, userTopicsArr: response.data });
   } catch (err) {
     console.error(err);

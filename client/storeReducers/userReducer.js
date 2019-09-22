@@ -2,7 +2,6 @@ import * as actions from '../actions/actionTypes';
 
 const initUser = {};
 const initAllUsers = [];
-// const initPotentialPartners = [];
 
 export const userReducer = (state = initUser, action) => {
   switch (action.type) {
@@ -25,12 +24,3 @@ export const allUsersReducer = (state = initAllUsers, action) => {
       return state;
   }
 };
-
-/* export const potentialPartnersReducer = (state = initPotentialPartners, action) => {
-  switch (action.type) {
-    case actions.FETCH_ALL_USERS:
-      return { ...state, allPartnerOptions: action.payload };
-    default:
-      return state;
-  }
-};*/

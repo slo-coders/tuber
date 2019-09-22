@@ -45,7 +45,7 @@ router.post('/login', async (req, res, next) => {
     }
     // eslint-disable-next-line require-atomic-updates
     req.session.userId = loggedSessionUser.id;
-    res.send('You are logged in');
+    res.send(loggedSessionUser);
   } catch (err) {
     next(err);
   }
