@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const CourseSelect = props => {
-  let courseList = props.courses;
+  let courseList = props.courseOptions;
   console.log('COURSE SELECT', props);
+  console.log('Course list in CourseSelect', courseList);
   return (
     <CSSTransitionGroup
       transitionAppear={true}
@@ -18,7 +20,7 @@ const CourseSelect = props => {
         {courseList.map(course => {
           return (
             <a
-              value={course.courseName}
+              value={course.id} //should probably be course.id?
               key={course.id}
               onClick={props.handleCourseChoice}
             >
@@ -30,8 +32,7 @@ const CourseSelect = props => {
                       className="tile is-parent is-vertical is-4"
                     >
                       <div value={course.id} className="tile is-child">
-                        MAT{course.courseCode}
-                        {course.courseName}
+                        `MATH ${course.courseCode} - ${course.courseName}`
                       </div>
                     </div>
                   </div>
@@ -46,8 +47,8 @@ const CourseSelect = props => {
 };
 
 CourseSelect.defaultProps = {
-  courses: Proptypes.array,
-  handleCourseChoice: Proptypes.func,
+  courses: [],
+  handleCourseChoice: () => {},
 };
 CourseSelect.propTypes = {
   courses: Proptypes.array,

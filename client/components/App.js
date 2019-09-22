@@ -9,7 +9,6 @@ import RequestMatch from './containers/RequestMatch/RequestMatch';
 import SignUp from './containers/SignUp/SignUp';
 import PropTypes from 'prop-types';
 import { listTopicsThunk } from '../actions/topicActions';
-
 import { fetchLoggedInThunked } from '../actions/sessionActions';
 
 class App extends React.Component {

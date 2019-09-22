@@ -8,7 +8,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-  courses: [],
+  allCoursesArr: [],
   singleCourse: {},
   singleCourseWithTopics: {},
 };
@@ -22,7 +22,7 @@ const courseReducer = (state = initialState, action) => {
       return { ...state, singleCourseWithTopics: action.payload };
 
     case FETCH_COURSE_ALL:
-      return { ...state, courses: action.payload };
+      return { ...state, allCoursesArr: action.payload };
 
     case POST_COURSE:
       return { ...state, singleCourse: [...state.courses, action.payload] };

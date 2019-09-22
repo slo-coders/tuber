@@ -18,7 +18,7 @@ const reducer = combineReducers({
   allUsers: allUsersReducer,
   meetups: meetupReducer,
   // potentialParteners: potentialPartnersReducer,
-  courses: courseReducer,
+  courses: courseReducer, //courses.singleCourseWithTopics
   topics: topicReducer,
   userTopics: userTopicReducer,
   userMeetup: userMeetupReducer,

@@ -35,7 +35,7 @@ class RequestMatch extends Component {
   }
   handleCourseChoice(e) {
     this.setState({
-      courseId: e.target.getAttribute('value'),
+      courseId: e.target.getAttribute('value'), // from course in courseOptions sent to CourseSelect
     });
   }
 
@@ -52,12 +52,18 @@ class RequestMatch extends Component {
       this.state,
     );
     this.props.createUserSessionThunk(this.state);
-    //want to navigate to matchup page post submit
+    //NOTE: want to navigate to matchup page post submit
   }
 
   componentDidMount() {
     this.props.getCourses();
   }
+
+  /*  componentDidUpdate(prevProps) {
+    if (prevProps.courses !== this.props.courses) {
+      this.props.getCourses();
+    }
+  } */
 
   render() {
     console.log('REQUEST MATCH PAGE PROPS', this.props);
@@ -72,10 +78,9 @@ class RequestMatch extends Component {
     if (this.state.userType && this.state.courseId) {
       return (
         <TopicSelect
-          courseId={this.state.courseId}
           handleSubmit={this.handleSubmit}
           handleTopicChoice={this.handleTopicChoice}
-          {...this.state}
+          {...this.state} //courseId...
         />
       );
     }
@@ -84,7 +89,7 @@ class RequestMatch extends Component {
         <div className="section">
           <CourseSelect
             userType={this.state.userType}
-            courses={this.props.courses}
+            courseOptions={this.props.courses} //from list course
             handleCourseChoice={this.handleCourseChoice}
           />
         </div>
@@ -94,8 +99,8 @@ class RequestMatch extends Component {
 }
 
 RequestMatch.defaultProps = {
-  getCourses: PropTypes.func,
-  courses: PropTypes.array,
+  getCourses: () => {},
+  courses: [],
 };
 RequestMatch.propTypes = {
   createUserSessionThunk: PropTypes.func,
@@ -105,7 +110,7 @@ RequestMatch.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  courses: state.courses.courses,
+  courses: state.courses.allCoursesArr,
   user: state.auth,
 });
 const mapDispatchToProps = dispatch => ({
