@@ -12,6 +12,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -31,12 +32,16 @@ class SignUp extends Component {
     this.handleContinue2 = this.handleContinue2.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (!prevProps.newUser || prevProps.newUser.id !== this.props.newUser.id) {
+      this.setState({ id: this.props.newUser.id });
+    }
+  }
+
+  //TODO: get userID and create UserTopics
   handleSubmit() {
     // Still needs to be set up to get new user ID
-    // this.props.postTopics(
-    //   '58351ee7-e39d-4f71-92c4-e8ba05cfd9cc',
-    //   this.state.topicsWithRatings,
-    // );
+    this.props.postTopics(this.state.id, this.state.topicsWithRatings);
     this.setState({
       showRatings: false,
       redirect: true,
@@ -44,14 +49,22 @@ class SignUp extends Component {
   }
 
   handleContinue1() {
-    this.props.sendUserInfo(this.state);
+    //POSTS NEW USER, SETS IT IN STORE
+    const { email, firstName, lastName, password } = this.state;
+
+    this.props.sendUserInfo({
+      email,
+      password,
+      firstName,
+      lastName,
+    });
     this.setState({
       showForm: false,
       showTopics: true,
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
+      firstName,
+      lastName,
+      email,
+      password,
     });
   }
 
@@ -96,6 +109,7 @@ class SignUp extends Component {
   }
 
   render() {
+    console.log('SIGN UP LEVEL', this.state);
     const { topics } = this.props.topics;
     if (topics && this.state.showForm) {
       return (
@@ -135,6 +149,7 @@ class SignUp extends Component {
 
 const mapStateToProps = state => ({
   topics: state.topics,
+  newUser: state.user,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -150,10 +165,9 @@ SignUp.defaultProps = {
 };
 SignUp.propTypes = {
   topics: PropTypes.object,
-};
-SignUp.propTypes = {
   sendUserInfo: PropTypes.func,
   postTopics: PropTypes.func,
+  newUser: PropTypes.object,
 };
 
 export default connect(

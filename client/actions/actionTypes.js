@@ -3,6 +3,10 @@ export const FETCH_LOGGED_USER = 'FETCH_LOGGED_USER';
 export const LOGIN_USER = 'LOGIN_USER ';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
+//socket actions
+export const RECEIVED_MESSAGE = 'RECEIVED_MESSAGE';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+
 //User-session actions
 export const FETCH_ACTIVE_SESSIONS = 'FETCH_USER_SESSIONS';
 export const CREATE_USER_SESSION = 'CREATE_USER_SESSION';
@@ -12,6 +16,7 @@ export const CLOSE_USER_SESSION = 'CLOSE_USER_SESSION';
 //Course actions
 export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';
+export const FETCH_COURSE_TOPICS = 'FETCH_COURSE_TOPICS';
 export const DELETE_COURSE = 'DELETE_COURSE';
 export const POST_COURSE = 'POST_COURSE';
 export const EDIT_COURSE = 'EDIT_COURSE';

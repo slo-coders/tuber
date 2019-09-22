@@ -58,6 +58,8 @@ const getPossiblePartnersAsync = async (
     },
     // include: [{model: User, include:{model:UserTopic}}],
     order: [['createdAt']],
+    limit: 5,
+    //offset:5
   });
 
   // Filter by proficiencyRating comparisons
