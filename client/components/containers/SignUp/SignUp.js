@@ -6,7 +6,7 @@ import SignUpInput from './SignUpInput';
 import SignUpTopics from './SignUpTopics';
 import SignUpRateTopics from './SignUpRateTopics';
 import { postUserTopicsArrThunked } from '../../../actions/userTopicActions';
-import LoginForm from '../LoginForm';
+import { LoginForm } from '../LoginForm';
 
 class SignUp extends Component {
   constructor(props) {

@@ -24,7 +24,7 @@ export default function SignUpSubmit(props) {
                   handleInputChange={props.handleInputChange}
                   type={'text'}
                   placeholder={'First Name'}
-                  icon={'envelope'}
+                  icon={'grin-alt'}
                 />
                 <Input
                   value={props.lastName}
@@ -32,7 +32,7 @@ export default function SignUpSubmit(props) {
                   handleInputChange={props.handleInputChange}
                   type={'text'}
                   placeholder={'Last Name'}
-                  icon={'envelope'}
+                  icon={'grin-alt'}
                 />
                 <Input
                   value={props.email}
