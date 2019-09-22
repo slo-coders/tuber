@@ -109,7 +109,6 @@ class SignUp extends Component {
   }
 
   render() {
-    console.log('SIGN UP LEVEL', this.state);
     const { topics } = this.props.topics;
     if (topics && this.state.showForm) {
       return (

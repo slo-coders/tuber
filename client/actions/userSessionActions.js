@@ -22,6 +22,7 @@ export const closeUserSession = userId => async dispatch => {
 export const createUserSessionThunk = userData => async dispatch => {
   try {
     const response = await axios.post('/api/usersessions', userData);
+
     dispatch({ type: actions.CREATE_USER_SESSION, payload: response.data });
   } catch (err) {
     console.error(err);

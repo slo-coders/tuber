@@ -1,9 +1,11 @@
 import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Proptypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const CourseSelect = props => {
   let courseList = props.courses;
+  console.log('COURSE SELECT', props);
   return (
     <CSSTransitionGroup
       transitionAppear={true}
@@ -52,4 +54,12 @@ CourseSelect.propTypes = {
   handleCourseChoice: Proptypes.func,
 };
 
-export default CourseSelect;
+const mapStateToProps = state => ({
+  topics: state.userTopics,
+  user: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+)(CourseSelect);
