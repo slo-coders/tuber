@@ -6,6 +6,6 @@ export default function Star(props) {
 }
 
 Star.propTypes = {
-  starType: PropTypes.string,
-  filled: PropTypes.string,
+  starType: PropTypes.number,
+  filled: PropTypes.bool,
 };

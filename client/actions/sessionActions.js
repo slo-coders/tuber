@@ -10,7 +10,7 @@ export const loginThunked = userInfo => async dispatch => {
   }
 };
 // Logout User
-export const LogoutThunked = userInfo => async dispatch => {
+export const logoutThunked = userInfo => async dispatch => {
   try {
     const logoutUser = await axios.post('/api/sessions/logout', userInfo);
     dispatch({ type: action.LOGOUT_USER, payload: logoutUser.data });
@@ -18,7 +18,7 @@ export const LogoutThunked = userInfo => async dispatch => {
     console.log(err);
   }
 };
-//fetch a logged-in user
+// fetch a logged-in user
 export const fetchLoggedInThunked = () => async dispatch => {
   try {
     const authUser = await axios.get('/api/sessions/login');

@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  LogoutThunked,
-  fetchLoggedInThunked,
-} from '../../actions/sessionActions';
+import { logoutThunked } from '../../actions/sessionActions';
 import PropTypes from 'prop-types';
 import Button from '../reusables/Button';
 
@@ -15,14 +12,10 @@ export class Nav extends React.Component {
     this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getUser();
-  }
-
   logout(ev) {
     ev.preventDefault();
-    this.props.LogoutThunked();
-    window.location = '/#home';
+    this.props.logoutThunked();
+    window.location = '/';
   }
 
   render() {
@@ -42,7 +35,7 @@ export class Nav extends React.Component {
         {this.props.user.authUser.id ? (
           <div className="navbar-menu">
             <div className="navbar-start">
-              <Link className="navbar-item" to="/home">
+              <Link className="navbar-item" to="/">
                 Home
               </Link>
               <Link className="navbar-item" to="/profile">
@@ -70,7 +63,7 @@ export class Nav extends React.Component {
         ) : (
           <div className="navbar-menu">
             <div className="navbar-start">
-              <Link className="navbar-item" to="/home">
+              <Link className="navbar-item" to="/">
                 Home
               </Link>
             </div>
@@ -82,15 +75,13 @@ export class Nav extends React.Component {
 }
 
 Nav.defaultProps = {
-  LogoutThunked: PropTypes.func,
-  fetchLoggedInThunked: PropTypes.func,
+  logoutThunked: PropTypes.func,
   user: PropTypes.object,
   authUser: PropTypes.object,
   id: PropTypes.string,
 };
 Nav.propTypes = {
-  LogoutThunked: PropTypes.func,
-  getUser: PropTypes.func,
+  logoutThunked: PropTypes.func,
   user: PropTypes.object,
   authUser: PropTypes.func,
   id: PropTypes.func,
@@ -101,8 +92,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  LogoutThunked: () => dispatch(LogoutThunked()),
-  getUser: () => dispatch(fetchLoggedInThunked()),
+  logoutThunked: () => dispatch(logoutThunked()),
 });
 
 export default connect(

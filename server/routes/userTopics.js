@@ -1,4 +1,5 @@
 const express = require('express');
+const Sequelize = require('sequelize');
 const router = express.Router();
 
 // Model
@@ -10,12 +11,26 @@ router
   .route('/') //NOTE: req.params does not include userId here w/ req.uesrId
   .get(async (req, res, next) => {
     try {
-      const userTopics = await User.findAll({
-        where: { id: req.userId },
-        include: [{ model: Topic, attributes: ['title'] }],
+      const userTopics = await UserTopic.findAll({
+        where: { userId: req.userId },
       });
-      if (userTopics) {
-        res.send(userTopics);
+
+      const topicNames = await Promise.all(
+        userTopics.map(uTop =>
+          Topic.findOne({
+            where: { id: uTop.topicId },
+          }),
+        ),
+      );
+
+      const returnObj = userTopics.map((uTop, i) => ({
+        topicName: topicNames[i].title,
+        topicId: uTop.topicId,
+        proficiencyRating: uTop.proficiencyRating,
+      }));
+
+      if (returnObj) {
+        res.send(returnObj);
       } else {
         res.sendStatus(404);
       }

@@ -95,5 +95,5 @@ export default function DisplayStarRating(props) {
 }
 
 DisplayStarRating.propTypes = {
-  score: PropTypes.string,
+  score: PropTypes.number,
 };

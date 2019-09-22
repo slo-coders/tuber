@@ -4,34 +4,88 @@
 body {
   background-color: #e8e8e8;
   height: 100vh;
-  width: 100vw;
-}
+  width: 100vw; }
 
 a {
-  color: #a9a9a9;
-}
+  color: #a9a9a9; }
 
 a:hover {
-  color: #cb7676;
-}
+  color: #cb7676; }
 
 a > svg {
   width: 10px;
   height: 10px;
-  pointer-events: none;
-}
+  pointer-events: none; }
 
 /* CSS className stylings */
 .tile {
-  background-color: #4a4a4a;
-}
+  background-color: #4a4a4a; }
 
 /* CSS Transition group animations */
 .componentFadeIn-appear {
-  opacity: 0.01;
-}
+  opacity: 0.01; }
 
 .componentFadeIn-appear.componentFadeIn-appear-active {
   opacity: 1;
-  transition: opacity 600ms ease-in;
-}
+  transition: opacity 600ms ease-in; }
+
+.chatForm {
+  background: #000;
+  padding: 3px;
+  position: fixed;
+  bottom: 0;
+  width: 100%; }
+
+form input {
+  border: 0;
+  padding: 10px;
+  width: 90%;
+  margin-right: 0.5%; }
+
+form button {
+  width: 9%;
+  background: #82e0ff;
+  border: none;
+  padding: 10px; }
+
+.messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.messages li {
+  padding: 5px 10px; }
+
+.messages li:nth-child(odd) {
+  background: #eee; }
+
+/* saved colors */
+/* temporary theme */
+/* css classes */
+body {
+  background-color: #e8e8e8;
+  height: 100vh;
+  width: 100vw; }
+
+a {
+  color: #a9a9a9; }
+
+a:hover {
+  color: #cb7676; }
+
+a > svg {
+  width: 10px;
+  height: 10px;
+  pointer-events: none; }
+
+/* CSS className stylings */
+.tile {
+  background-color: #4a4a4a; }
+
+/* CSS Transition group animations */
+.componentFadeIn-appear {
+  opacity: 0.01; }
+
+.componentFadeIn-appear.componentFadeIn-appear-active {
+  opacity: 1;
+  transition: opacity 600ms ease-in; }

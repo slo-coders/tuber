@@ -3,16 +3,11 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import LoginForm from './LoginForm';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchLoggedInThunked } from '../../actions/sessionActions';
 
 export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  componentDidMount() {
-    this.props.getUser();
   }
 
   render() {
@@ -49,13 +44,11 @@ export class Home extends React.Component {
 }
 
 Home.defaultProps = {
-  getUser: PropTypes.func,
   user: PropTypes.object,
   authUser: PropTypes.object,
   id: PropTypes.string,
 };
 Home.propTypes = {
-  getUser: PropTypes.func,
   user: PropTypes.object,
   authUser: PropTypes.func,
   id: PropTypes.func,
@@ -65,11 +58,7 @@ const mapStateToProps = state => ({
   user: state.auth,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getUser: () => dispatch(fetchLoggedInThunked()),
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 )(Home);
