@@ -74,6 +74,7 @@ router.post('/', async (req, res) => {
     }
 
     const userSession = await UserSession.create(newSessionInfo);
+    console.log('USERSESSION ROUTE', userSession);
 
     let matchedUserMeetupInfo;
 
@@ -92,6 +93,8 @@ router.post('/', async (req, res) => {
           location,
           userSession.selectedTopics,
         );
+
+        console.log('matched meetup', matchedUserMeetupInfo);
         // console.log(' >>>>>>>>>>>>  ', userSession);
         // if (userSession) {
         //   ////////////////////????????????????
