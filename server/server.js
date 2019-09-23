@@ -15,7 +15,7 @@ const io = require('socket.io')(3001);
 // const server = require('http').createServer(app);
 // const io = socketIO(server);
 
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 //will give each user a new socket
 //all socket logic will go in this function
@@ -60,6 +60,7 @@ io.on('connection', socket => {
   });
 
   socket.on('leave-room', data => {
+    console.log('chat-room closed');
     socket.leave(data.room);
   });
 

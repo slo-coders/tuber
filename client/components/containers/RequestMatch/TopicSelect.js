@@ -3,19 +3,18 @@ import { singleCourseTopicsThunk } from '../../../actions/courseActions';
 import { connect } from 'react-redux';
 import Button from '../../reusables/Button';
 import PropTypes from 'prop-types';
-import DisplayStarRating from '../../reusables/DisplayStarRating';
 
 class TopicSelect extends React.Component {
   componentDidMount() {
-    this.props.singleCourseTopicsThunk(this.props.courseId);
+    this.props.singleCourseTopicsThunk(this.props.courseId); //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.topics.length !== this.props.topics.length) {
-      //is this really a thing?!?!
-      this.render();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.topics.length !== this.props.topics.length) {
+  //     //is this really a thing?!?!
+  //     this.props.singleCourseTopicsThunk(this.props.courseId);
+  //   }
+  // }
 
   //TODO: Put stars next to topic names.
 
@@ -36,10 +35,10 @@ class TopicSelect extends React.Component {
     return (
       <div>
         <div>
-          {this.props.topics.length > 0 ? ( //userTopics
+          {this.props.topics.length > 0 ? (
             <div>
               <form>
-                {this.props.topics //usertopics
+                {this.props.topics
                   .filter(item =>
                     selectedCourseTopicsIds.includes(item.topicId),
                   )
@@ -66,7 +65,7 @@ class TopicSelect extends React.Component {
               </form>
             </div>
           ) : (
-            'No topics found for this course; please select another course.'
+            'User did not select topic ratings for topics in this course; please select another course.'
           )}
         </div>
         <Button
@@ -103,13 +102,13 @@ TopicSelect.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  course: state.courses.singleCourseWithTopics,
-  topics: state.userTopics,
+  course: state.courses.singleCourseWithTopics, ///courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
+  topics: state.userTopics, //////////////////userTopics === [{proficienctyRating:, topicId:, topicName:}] !=== courseTopics
 });
 
 const mapDispatchToProps = dispatch => ({
   singleCourseTopicsThunk: courseId =>
-    dispatch(singleCourseTopicsThunk(courseId)),
+    dispatch(singleCourseTopicsThunk(courseId)), //sets state.courses.singleCourseWithTopics
 });
 
 export default connect(

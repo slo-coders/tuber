@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -19,6 +20,7 @@ export class Nav extends React.Component {
   }
 
   render() {
+    console.log('NAV-BAR', this.props);
     return (
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
@@ -51,6 +53,7 @@ export class Nav extends React.Component {
               <Link className="navbar-item" to="/chatroom">
                 Chat Room
               </Link>
+
               <div className="navbar-item">
                 <Button
                   handleClick={this.logout}
@@ -79,16 +82,19 @@ Nav.defaultProps = {
   user: PropTypes.object,
   authUser: PropTypes.object,
   id: PropTypes.string,
+  meetupId: PropTypes.string,
 };
 Nav.propTypes = {
   logoutThunked: PropTypes.func,
   user: PropTypes.object,
   authUser: PropTypes.func,
   id: PropTypes.func,
+  meetupId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   user: state.auth,
+  meetupId: state.pairedUserMeetups.reqUser,
 });
 
 const mapDispatchToProps = dispatch => ({

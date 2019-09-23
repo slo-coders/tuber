@@ -99,12 +99,13 @@ router.get('/:userId/meetups', async (req, res, next) => {
  */
 router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
   try {
-    //User submits req.body = {proficiencyRating:} with PUT to get UserMeetup instances for both themeselves and partner
+    //User submits req.body = {proficiencyRating:, status:} with PUT to get UserMeetup instances for both themeselves and partner
+    const newPartnerInfo = req.body;
     const newPartnerProfRating = req.body.proficiencyRating;
-    const userMeetupUpdate = await UserMeetup.ratePartnerUserMeetup(
+    const userMeetupUpdate = await UserMeetup.updatePartnerUserMeetup(
       req.params.userId,
       req.params.meetupId,
-      newPartnerProfRating,
+      newPartnerInfo,
     );
 
     const { partnerMeetupInfo } = userMeetupUpdate;
