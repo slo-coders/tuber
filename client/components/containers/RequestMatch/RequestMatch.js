@@ -7,6 +7,7 @@ import { listCoursesThunk } from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
+import { createMeetupRoomThunk } from '../../../actions/meetupRoomAction';
 
 //TODO: Render and submit topics based on a course for Mentors
 //TODO: Render and submit selected topics for either mentee or peer
@@ -31,6 +32,7 @@ class RequestMatch extends Component {
   handleRoleChoice(e) {
     this.setState({
       userType: e.target.getAttribute('value'),
+      userId: this.props.user.authUser.id,
     });
   }
   handleCourseChoice(e) {
@@ -42,7 +44,6 @@ class RequestMatch extends Component {
   handleTopicChoice(e) {
     this.setState({
       topicId: e.target.getAttribute('value'),
-      userId: this.props.user.authUser.id,
     });
   }
 
@@ -52,7 +53,7 @@ class RequestMatch extends Component {
       this.state,
     );
     this.props.createUserSessionThunk(this.state);
-    //NOTE: want to navigate to matchup page post submit
+    window.location = '/#/meetuproom';
   }
 
   componentDidMount() {

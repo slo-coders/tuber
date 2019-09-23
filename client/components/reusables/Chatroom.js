@@ -28,7 +28,10 @@ class Chatroom extends React.Component {
 
   //need to get meetupId
   componentDidMount() {
-    this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+    // this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+    socket.emit('room', {
+      room: this.props.meetupId,
+    });
   }
 
   // else {
@@ -37,28 +40,24 @@ class Chatroom extends React.Component {
   //   });
   // }
 
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.user.authUser &&
-      this.props.user.authUser &&
-      prevProps.user.authUser.id !== this.props.user.authUser.id
-    ) {
-      this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
-    }
-    if (
-      prevProps.userMeetup &&
-      this.props.userMeetup &&
-      prevProps.userMeetup.id !== this.props.userMeetup.id
-    ) {
-      socket.emit('room', {
-        room: this.props.userMeetup.id,
-      });
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     prevProps.user.authUser &&
+  //     this.props.user.authUser &&
+  //     prevProps.user.authUser.id !== this.props.user.authUser.id
+  //   ) {
+  //     this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+  //   }
+  //   if (
+  //     prevProps.userMeetup &&
+  //     this.props.userMeetup &&
+  //     prevProps.meetupId !== this.props.meetupId
+  //   )
+  // }
 
   componentWillUnmount() {
     socket.emit('leave-room', {
-      room: this.props.userMeetup.id,
+      room: this.props.meetupId,
     });
   }
 
@@ -69,7 +68,7 @@ class Chatroom extends React.Component {
   onSubmit(ev) {
     ev.preventDefault();
     socket.emit('chat-message', {
-      room: this.props.userMeetup.id,
+      room: this.props.meetupId,
       user: this.props.user.authUser.firstName,
       text: this.state.message,
     });
@@ -84,6 +83,7 @@ class Chatroom extends React.Component {
 
   render() {
     if (this.props.user.authUser.id === undefined) return null;
+    console.log('CHAT-ROOM PROPS', this.props);
     return (
       <div>
         <div>
@@ -99,7 +99,7 @@ class Chatroom extends React.Component {
           ))}
         </div>
 
-        <form classNames="chatForm" onSubmit={this.onSubmit}>
+        <form className="chatForm" onSubmit={this.onSubmit}>
           <label htmlFor="chatmessage">Message</label>
           <input
             type="text"
@@ -118,7 +118,8 @@ class Chatroom extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.auth,
-  userMeetup: state.userMeetup.mostRecentUserMeetup,
+  // userMeetup: state.userMeetup.mostRecentUserMeetup,
+  meetupId: state.pairedUserMeetups.reqUser.meetupId,
 });
 const mapDispatchToProps = dispatch => ({
   getUserMeetupDataThunked: userid =>

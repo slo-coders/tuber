@@ -13,6 +13,9 @@ export const CREATE_USER_SESSION = 'CREATE_USER_SESSION';
 export const CHANGE_USER_SESSION = 'CHANGE_USER_SESSION';
 export const CLOSE_USER_SESSION = 'CLOSE_USER_SESSION';
 
+//Special MeetupRoom actions
+export const CREATE_MEETUP_ROOM = 'CREATE_MEETUP_ROOM';
+
 //Course actions
 export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';

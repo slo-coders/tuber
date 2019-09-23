@@ -32,7 +32,7 @@ const CourseSelect = props => {
                       className="tile is-parent is-vertical is-4"
                     >
                       <div value={course.id} className="tile is-child">
-                        `MATH ${course.courseCode} - ${course.courseName}`
+                        {`MATH ${course.courseCode} - ${course.courseName}`}
                       </div>
                     </div>
                   </div>

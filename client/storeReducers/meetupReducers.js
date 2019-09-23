@@ -17,7 +17,6 @@ const meetupReducer = (state = initialState, action) => {
 
     case POST_MEETUP:
       return { ...state, singleMeetup: [...state.meetups, action.payload] };
-
     case EDIT_MEETUP:
       return {
         ...state,

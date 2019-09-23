@@ -74,7 +74,7 @@ router.post('/', async (req, res) => {
     }
 
     const userSession = await UserSession.create(newSessionInfo);
-    console.log('USERSESSION ROUTE', userSession);
+    // console.log('USERSESSION ROUTE', userSession);
 
     let matchedUserMeetupInfo;
 
