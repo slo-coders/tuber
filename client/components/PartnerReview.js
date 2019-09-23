@@ -7,7 +7,7 @@ class PartnerReview extends React.Component {
   }
 
   componentDidMount() {
-    //import partner data from meetup-in
+    //import partner data from store/state
     //need usermeetup info and maybe meetup info
   }
 
