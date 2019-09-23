@@ -7,9 +7,9 @@ import Nav from './containers/Nav';
 import UserProfile from './containers/UserProfile/UserProfile';
 import RequestMatch from './containers/RequestMatch/RequestMatch';
 import SignUp from './containers/SignUp/SignUp';
+import MeetupRoom from './containers/MeetupRoom';
 import PropTypes from 'prop-types';
 import { listTopicsThunk } from '../actions/topicActions';
-
 import { fetchLoggedInThunked } from '../actions/sessionActions';
 
 class App extends React.Component {
@@ -32,6 +32,7 @@ class App extends React.Component {
             RequestMatch
           }
         />
+        <Route exact path="/meetuproom" component={MeetupRoom} />
         <Route exact path="/chatroom" component={Chatroom} />
       </HashRouter>
     );

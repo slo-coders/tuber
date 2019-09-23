@@ -23,7 +23,26 @@ export const createUserSessionThunk = userData => async dispatch => {
   try {
     const response = await axios.post('/api/usersessions', userData);
 
-    dispatch({ type: actions.CREATE_USER_SESSION, payload: response.data });
+    if (response.data.partner) {
+      console.log(
+        'INSIDE createUserSessionThunk_PAIRED',
+        response.data.partner,
+      );
+      dispatch({
+        type: actions.GET_USER_MEETUP_DATA,
+        payload: response.data.reqUser,
+      });
+      dispatch({
+        type: actions.CREATE_MEETUP_ROOM,
+        payload: response.data,
+      });
+    } else {
+      console.log('INSIDE createUserSessionThunk_USERSESSION', response.data);
+      dispatch({
+        type: actions.CREATE_USER_SESSION,
+        payload: response.data,
+      });
+    }
   } catch (err) {
     console.error(err);
   }

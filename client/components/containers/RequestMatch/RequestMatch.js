@@ -7,6 +7,7 @@ import { listCoursesThunk } from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
+import { createMeetupRoomThunk } from '../../../actions/meetupRoomAction';
 
 //TODO: Render and submit topics based on a course for Mentors
 //TODO: Render and submit selected topics for either mentee or peer
@@ -28,21 +29,35 @@ class RequestMatch extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getCourses();
+    //TODO: Check 'status' of UserMeetup instance
+
+    //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
+    //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
+  }
+
+  /*  componentDidUpdate(prevProps) {
+    if (prevProps.courses !== this.props.courses) {
+      this.props.getCourses();
+    }
+  } */
+
   handleRoleChoice(e) {
     this.setState({
       userType: e.target.getAttribute('value'),
+      userId: this.props.user.authUser.id,
     });
   }
   handleCourseChoice(e) {
     this.setState({
-      courseId: e.target.getAttribute('value'),
+      courseId: e.target.getAttribute('value'), // from course in courseOptions sent to CourseSelect
     });
   }
 
   handleTopicChoice(e) {
     this.setState({
       topicId: e.target.getAttribute('value'),
-      userId: this.props.user.authUser.id,
     });
   }
 
@@ -52,11 +67,7 @@ class RequestMatch extends Component {
       this.state,
     );
     this.props.createUserSessionThunk(this.state);
-    //want to navigate to matchup page post submit
-  }
-
-  componentDidMount() {
-    this.props.getCourses();
+    window.location = '/#/meetuproom';
   }
 
   render() {
@@ -72,10 +83,9 @@ class RequestMatch extends Component {
     if (this.state.userType && this.state.courseId) {
       return (
         <TopicSelect
-          courseId={this.state.courseId}
           handleSubmit={this.handleSubmit}
           handleTopicChoice={this.handleTopicChoice}
-          {...this.state}
+          {...this.state} //courseId...
         />
       );
     }
@@ -84,7 +94,7 @@ class RequestMatch extends Component {
         <div className="section">
           <CourseSelect
             userType={this.state.userType}
-            courses={this.props.courses}
+            courseOptions={this.props.courses} //from list course
             handleCourseChoice={this.handleCourseChoice}
           />
         </div>
@@ -94,8 +104,8 @@ class RequestMatch extends Component {
 }
 
 RequestMatch.defaultProps = {
-  getCourses: PropTypes.func,
-  courses: PropTypes.array,
+  getCourses: () => {},
+  courses: [],
 };
 RequestMatch.propTypes = {
   createUserSessionThunk: PropTypes.func,
@@ -105,7 +115,7 @@ RequestMatch.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  courses: state.courses.courses,
+  courses: state.courses.allCoursesArr,
   user: state.auth,
 });
 const mapDispatchToProps = dispatch => ({
