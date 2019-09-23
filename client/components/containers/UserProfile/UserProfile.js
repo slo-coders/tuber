@@ -28,18 +28,46 @@ class UserProfile extends Component {
   render() {
     console.log('PROFILE', this.props);
     const user = this.props.user;
+    console.log('userrrr', user);
     if (user) {
       return (
-        <div className="section">
-          {user.authUser.imageUrl ? (
-            <UserInfoDisplay userInfo={user.authUser} />
-          ) : null}
-          {user.authUser.id ? (
-            <TopicDisplay
-              topicsFromLocal={this.props.topics}
-              userId={user.authUser.id}
-            />
-          ) : null}
+        <div>
+          <section class="hero">
+            <div
+              class="hero-body"
+              style={{ paddingBottom: '0px', paddingTop: '30px' }}
+            >
+              <div class="container">
+                <h1 class="title" style={{ marginBottom: '12px' }}>
+                  {'Hello, ' + user.authUser.firstName + '!'}
+                </h1>
+                <p>
+                  Lorem ipsum dolor sit amet, pri quod inimicus disputando cu,
+                  sit facilisi abhorreant in. Pri iudico euismod copiosae in,
+                  salutatus democritum sit no.
+                </p>
+              </div>
+            </div>
+          </section>
+          <div className="section" style={{ paddingTop: '30px' }}>
+            <div className="container">
+              <div
+                className="tile is-ancestor"
+                style={{ backgroundColor: '#e8e8e8' }}
+              >
+                {user.authUser.imageUrl ? (
+                  <UserInfoDisplay userInfo={user.authUser} />
+                ) : null}
+
+                {user.authUser.id ? (
+                  <TopicDisplay
+                    topicsFromLocal={this.props.topics}
+                    userId={user.authUser.id}
+                  />
+                ) : null}
+              </div>
+            </div>
+          </div>
         </div>
       );
     }

@@ -7,6 +7,7 @@ import {
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import Input from '../reusables/Input';
+import Button from '../reusables/Button';
 
 //save for sever restart
 
@@ -34,11 +35,9 @@ export class LoginForm extends Component {
 
   render() {
     return (
-      <div className="column is-half is-center">
         <form className="LoginForm" onSubmit={this.onSubmit}>
           <div className="field">
             <div className="control">
-              <label> Email </label>
               <Input
                 type={'email'}
                 handleInputChange={this.onHandle}
@@ -51,7 +50,6 @@ export class LoginForm extends Component {
           </div>
           <div className="field">
             <div className="control">
-              <label> Password </label>
               <Input
                 type={'password'}
                 handleInputChange={this.onHandle}
@@ -62,20 +60,21 @@ export class LoginForm extends Component {
               />
             </div>
           </div>
-          <div className="button-box_login">
-            <button
+          <div className="buttons" style={{ justifyContent: 'center' }}>
+            <Button
               disabled={this.state.email && this.state.password ? false : true}
-              className="button is-primary"
-            >
-              Log In
-            </button>
-            <hr />
-            <Link className="button" to="/signup">
+              buttonStyle={'is-primary'}
+              handleClick={this.onSubmit}
+              buttonText={'Log In'}
+              divStyle={''}
+              customButtonStyle={{ marginRight: '5px' }}
+            />
+
+            <Link className="button" to="/signup" style={{ marginLeft: '5px' }}>
               Sign Up
             </Link>
           </div>
         </form>
-      </div>
     );
   }
 }

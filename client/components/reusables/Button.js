@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Button(props) {
   return (
-    <div className={'buttons' + props.divStyle} style={props.customDivStyle}>
+    <div className={props.divStyle} style={props.customDivStyle}>
       <a
         value={props.value}
         className={'button ' + props.buttonStyle}

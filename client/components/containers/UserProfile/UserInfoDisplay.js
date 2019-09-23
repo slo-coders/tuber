@@ -4,21 +4,25 @@ import PropTypes from 'prop-types';
 
 export default function UserInfoDisplay(props) {
   return (
-    <CSSTransitionGroup
-      transitionAppear={true}
-      transitionName="componentFadeIn"
-      transitionAppearTimeout={9000}
-      transitionLeaveTimeout={9000}
-      transitionEnterTimeout={9000}
-    >
-      <div className="container">
-        <img src={props.userInfo.imageUrl} />
-        <h4>
-          Name: {props.userInfo.firstName + ' ' + props.userInfo.lastName}
-        </h4>
-        <h4>Email Address: {props.userInfo.email}</h4>
+    <div className="tile is-3 is-parent" style={{ backgroundColor: '#e8e8e8' }}>
+      <div className="tile is-child box" style={{ backgroundColor: '#e8e8e8' }}>
+        <CSSTransitionGroup
+          transitionAppear={true}
+          transitionName="componentFadeIn"
+          transitionAppearTimeout={9000}
+          transitionLeaveTimeout={9000}
+          transitionEnterTimeout={9000}
+        >
+          <div style={{ textAlign: 'center' }}>
+            <img id="profile" src={props.userInfo.imageUrl} />
+          </div>
+          <p>
+            Name: {props.userInfo.firstName + ' ' + props.userInfo.lastName}
+          </p>
+          <p>Email Address: {props.userInfo.email}</p>
+        </CSSTransitionGroup>
       </div>
-    </CSSTransitionGroup>
+    </div>
   );
 }
 

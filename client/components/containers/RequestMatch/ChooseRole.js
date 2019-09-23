@@ -18,27 +18,54 @@ export default function ChooseRole(props) {
       transitionLeaveTimeout={9000}
       transitionEnterTimeout={9000}
     >
-      <div className="container">
-      <div className="level">
-        <p>Placeholder text goes here</p>
-      </div>
-          <div className="level" >
-          {buttons.map(info => (
-            <div className="column" style={{textAlign:"center", padding:"0px"}}>
-                   <img
-                   style={{height:"250px", width:"200px"}}
-                   src="https://wolper.com.au/wp-content/uploads/2017/10/image-placeholder.jpg"/>
-            <Button
-              customDivStyle={{margin:'14px'}}
-              divStyle={'centerInDiv'}
-              key={info.id}
-              value={info.value}
-              buttonStyle="is-large is-primary centerItem"
-              buttonText={info.buttonText}
-              handleClick={props.handleRoleChoice}
-            />
-            </div>
-          ))}
+      <section class="hero">
+        <div
+          class="hero-body"
+          style={{ paddingBottom: '0px', paddingTop: '30px' }}
+        >
+          <div class="container">
+            <h1 class="title" style={{ marginBottom: '12px' }}>
+              Request a Meetup
+            </h1>
+            <p>
+              Lorem ipsum dolor sit amet, pri quod inimicus disputando cu, sit
+              facilisi abhorreant in. Pri iudico euismod copiosae in, salutatus
+              democritum sit no.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="section" style={{ paddingTop: '30px' }}>
+        <div className="container">
+          <div className="tile is-ancestor matchBackground">
+            <div className="tile is-parent is-1 matchBackground"></div>
+
+            {buttons.map(info => (
+              <div className="tile is-parent matchBackground">
+                <div
+                  className="tile is-child matchBackground box"
+                  style={{ textAlign: 'center' }}
+                >
+                  <img
+                    style={{ height: '200px', width: '175px' }}
+                    src="https://wolper.com.au/wp-content/uploads/2017/10/image-placeholder.jpg"
+                  />
+                  <Button
+                    customDivStyle={{ margin: '14px' }}
+                    divStyle={'centerInDiv'}
+                    key={info.id}
+                    value={info.value}
+                    buttonStyle="is-medium is-primary centerItem"
+                    buttonText={info.buttonText}
+                    handleClick={props.handleRoleChoice}
+                  />
+                </div>
+              </div>
+            ))}
+
+            <div className="tile is-parent is-1"></div>
+          </div>
         </div>
       </div>
     </CSSTransitionGroup>

@@ -63,11 +63,7 @@ class RequestMatch extends Component {
     console.log('REQUEST MATCH PAGE PROPS', this.props);
     console.log('REQUEST MATCH PAGE STATE', this.state);
     if (!this.state.userType) {
-      return (
-        <div className="section">
-          <ChooseRole handleRoleChoice={this.handleRoleChoice} />
-        </div>
-      );
+      return <ChooseRole handleRoleChoice={this.handleRoleChoice} />;
     }
     if (this.state.userType && this.state.courseId) {
       return (
