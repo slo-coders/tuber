@@ -39,16 +39,16 @@ const UserMeetup = db.define('user_meetup', {
     defaultValue: 'pending confirmation',
   },
 
-  /*  DELETE THIS? 
+  /*  DELETE THIS?
     comments: {
     type: Sequelize.TEXT,
   }, */
 });
 
-UserMeetup.ratePartnerUserMeetup = async function(
+UserMeetup.updatePartnerUserMeetup = async function(
   userId,
   meetupId,
-  newPartnerProfRating,
+  newPartnerInfo,
 ) {
   const userMeetup = await this.findAll({
     where: { meetupId },
@@ -56,14 +56,13 @@ UserMeetup.ratePartnerUserMeetup = async function(
   const partnerUserMeetupInst = userMeetup.filter(el => el.userId !== userId);
   const personalUserMeetupInst = userMeetup.filter(el => el.userId === userId);
 
-  const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update({
-    status: 'completed',
-  });
+  const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update(
+    newPartnerInfo,
+  );
 
-  const updatedPartnerUserMeetup = await partnerUserMeetupInst[0].update({
-    // softSkillsRating: newPartnerSoftSkillsRating,
-    proficiencyRating: newPartnerProfRating,
-  });
+  const updatedPartnerUserMeetup = await partnerUserMeetupInst[0].update(
+    newPartnerInfo,
+  );
 
   return {
     partnerMeetupInfo: updatedPartnerUserMeetup,

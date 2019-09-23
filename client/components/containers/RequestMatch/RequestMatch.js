@@ -29,6 +29,20 @@ class RequestMatch extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getCourses();
+    //TODO: Check 'status' of UserMeetup instance
+
+    //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
+    //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
+  }
+
+  /*  componentDidUpdate(prevProps) {
+    if (prevProps.courses !== this.props.courses) {
+      this.props.getCourses();
+    }
+  } */
+
   handleRoleChoice(e) {
     this.setState({
       userType: e.target.getAttribute('value'),
@@ -55,16 +69,6 @@ class RequestMatch extends Component {
     this.props.createUserSessionThunk(this.state);
     window.location = '/#/meetuproom';
   }
-
-  componentDidMount() {
-    this.props.getCourses();
-  }
-
-  /*  componentDidUpdate(prevProps) {
-    if (prevProps.courses !== this.props.courses) {
-      this.props.getCourses();
-    }
-  } */
 
   render() {
     console.log('REQUEST MATCH PAGE PROPS', this.props);

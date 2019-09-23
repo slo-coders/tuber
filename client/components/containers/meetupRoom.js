@@ -7,10 +7,14 @@
 //install button to close chat and "finish" meetup
 //render review page for partner
 
+//General: List the topic for the room
+//Get all partner info: firstname, profiency, image.... (User + UserTopic + Topic)
+
 import React from 'react';
 import Chatroom from '../reusables/Chatroom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { singlePartnerThunk } from '../../actions/partnerActions';
 
 class MeetupRoom extends React.Component {
   constructor(props) {
@@ -19,6 +23,25 @@ class MeetupRoom extends React.Component {
 
   componentDidMount() {
     //collect either usermeetup data OR usersession data
+    //loads in the partners user information
+    if (this.props.pairedUserMeetups.partner) {
+      this.props.singlePartnerThunk(
+        this.props.pairedUserMeetups.partner.userId,
+      );
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      !prevProps.pairedUserMeetups.partner ||
+      this.props.partner === undefined ||
+      prevProps.pairedUserMeetups.partner.userId !==
+        this.props.pairedUserMeetups.partner.userId
+    ) {
+      this.props.singlePartnerThunk(
+        this.props.pairedUserMeetups.partner.userId,
+      );
+    }
   }
 
   render() {
@@ -45,14 +68,19 @@ class MeetupRoom extends React.Component {
 MeetupRoom.propTypes = {
   userSesion: PropTypes.object,
   pairedUserMeetups: PropTypes.object,
+  singlePartnerThunk: PropTypes.func,
+  partner: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   userSession: state.userSession, //if not paired
   pairedUserMeetups: state.pairedUserMeetups, //if paired
+  partner: state.partner,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  singlePartnerThunk: partnerId => dispatch(singlePartnerThunk(partnerId)),
+});
 
 export default connect(
   mapStateToProps,

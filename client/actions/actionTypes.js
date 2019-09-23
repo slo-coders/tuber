@@ -13,9 +13,6 @@ export const CREATE_USER_SESSION = 'CREATE_USER_SESSION';
 export const CHANGE_USER_SESSION = 'CHANGE_USER_SESSION';
 export const CLOSE_USER_SESSION = 'CLOSE_USER_SESSION';
 
-//Special MeetupRoom actions
-export const CREATE_MEETUP_ROOM = 'CREATE_MEETUP_ROOM';
-
 //Course actions
 export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';
@@ -37,6 +34,13 @@ export const DELETE_MEETUP = 'DELETE_MEETUP';
 export const POST_MEETUP = 'POST_MEETUP';
 export const EDIT_MEETUP = 'EDIT_MEETUP';
 
+//Special MeetupRoom actions
+export const CREATE_MEETUP_ROOM = 'CREATE_MEETUP_ROOM';
+
+//Partner actions
+export const FETCH_PARTNER = 'FETCH_PARTNER';
+export const UPDATE_PARTNER_USERMEETUP = 'UPDATE_PARTNER_USERMEETUP';
+
 //User actions
 export const FETCH_ALL_USERS = 'FETCH_ALL_USERS';
 export const FETCH_USER = 'FETCH_USER';
@@ -51,6 +55,7 @@ export const GET_USER_MEETUP_DATA = 'GET_USER_MEETUP_DATA ';
 
 //User-topic actions
 export const GET_ALL_USER_TOPICS = 'GET_ALL_USER_TOPICS';
+
 // export const GET_USER_TOPIC = 'GET_USER_TOPIC';
 export const POST_USER_TOPICS_ARR = 'POST_USER_TOPICS_ARR';
 export const UPDATE_USER_TOPIC = 'UPDATE_USER_TOPIC';

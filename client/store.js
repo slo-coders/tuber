@@ -11,6 +11,7 @@ import authReducer from './storeReducers/authReducer';
 import userSessionReducer from './storeReducers/userSessionReducer';
 // import socketReducer from './storeReducers/socketReducer';
 import meetupRoomReducer from './storeReducers/meetupRoomReducer';
+import partnerReducer from './storeReducers/partnerReducer';
 
 const thunkMiddleware = require('redux-thunk').default;
 
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   //will return either the usersession info OR the usermeetup info with partner information
   userSession: userSessionReducer, //{singleUserSessionInfo:{}, ...}
   // socket: socketReducer,
+  partner: partnerReducer,
   pairedUserMeetups: meetupRoomReducer,
   /* {
     "reqUser": {
