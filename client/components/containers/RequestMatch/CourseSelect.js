@@ -20,7 +20,7 @@ const CourseSelect = props => {
         {courseList.map(course => {
           return (
             <a
-              value={course.id} //should probably be course.id?
+              value={course.id}
               key={course.id}
               onClick={props.handleCourseChoice}
             >
