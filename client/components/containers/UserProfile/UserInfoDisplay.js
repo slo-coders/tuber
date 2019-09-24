@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 export default function UserInfoDisplay(props) {
   return (
-    <div className="tile is-3 is-parent" style={{ backgroundColor: '#e8e8e8' }}>
-      <div className="tile is-child box" style={{ backgroundColor: '#e8e8e8' }}>
+    <div className="tile is-3 is-parent">
+      <div className="tile is-child box tileColor">
         <CSSTransitionGroup
           transitionAppear={true}
           transitionName="componentFadeIn"

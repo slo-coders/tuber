@@ -5,9 +5,7 @@ import CourseSelect from './CourseSelect';
 import TopicSelect from './TopicSelect';
 import { listCoursesThunk } from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
-import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
-import { createMeetupRoomThunk } from '../../../actions/meetupRoomAction';
 
 //TODO: Render and submit topics based on a course for Mentors
 //TODO: Render and submit selected topics for either mentee or peer
@@ -76,13 +74,21 @@ class RequestMatch extends Component {
     if (!this.state.userType) {
       return <ChooseRole handleRoleChoice={this.handleRoleChoice} />;
     }
+
     if (this.state.userType && this.state.courseId) {
       return (
-        <TopicSelect
-          handleSubmit={this.handleSubmit}
-          handleTopicChoice={this.handleTopicChoice}
-          {...this.state} //courseId...
-        />
+        <div>
+          <CourseSelect
+            userType={this.state.userType}
+            courseOptions={this.props.courses} //from list course
+            handleCourseChoice={this.handleCourseChoice}
+          />
+          <TopicSelect
+            handleSubmit={this.handleSubmit}
+            handleTopicChoice={this.handleTopicChoice}
+            {...this.state} //courseId...
+          />
+        </div>
       );
     }
     if (this.state.userType) {

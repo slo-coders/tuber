@@ -32,13 +32,13 @@ class UserProfile extends Component {
     if (user) {
       return (
         <div>
-          <section class="hero">
+          <section className="hero">
             <div
-              class="hero-body"
+              className="hero-body"
               style={{ paddingBottom: '0px', paddingTop: '30px' }}
             >
-              <div class="container">
-                <h1 class="title" style={{ marginBottom: '12px' }}>
+              <div className="container">
+                <h1 className="title" style={{ marginBottom: '12px' }}>
                   {'Hello, ' + user.authUser.firstName + '!'}
                 </h1>
                 <p>
@@ -51,15 +51,12 @@ class UserProfile extends Component {
           </section>
           <div className="section" style={{ paddingTop: '30px' }}>
             <div className="container">
-              <div
-                className="tile is-ancestor"
-                style={{ backgroundColor: '#e8e8e8' }}
-              >
+              <div className="tile is-ancestor">
                 {user.authUser.imageUrl ? (
                   <UserInfoDisplay userInfo={user.authUser} />
                 ) : null}
 
-                {user.authUser.id ? (
+                {user.authUser.id && this.props.topics ? (
                   <TopicDisplay
                     topicsFromLocal={this.props.topics}
                     userId={user.authUser.id}

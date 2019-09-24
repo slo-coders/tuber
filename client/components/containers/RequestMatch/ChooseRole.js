@@ -18,13 +18,13 @@ export default function ChooseRole(props) {
       transitionLeaveTimeout={9000}
       transitionEnterTimeout={9000}
     >
-      <section class="hero">
+      <section className="hero">
         <div
-          class="hero-body"
+          className="hero-body"
           style={{ paddingBottom: '0px', paddingTop: '30px' }}
         >
-          <div class="container">
-            <h1 class="title" style={{ marginBottom: '12px' }}>
+          <div className="container">
+            <h1 className="title" style={{ marginBottom: '12px' }}>
               Request a Meetup
             </h1>
             <p>
@@ -42,7 +42,7 @@ export default function ChooseRole(props) {
             <div className="tile is-parent is-1 matchBackground"></div>
 
             {buttons.map(info => (
-              <div className="tile is-parent matchBackground">
+              <div key={info.id} className="tile is-parent matchBackground">
                 <div
                   className="tile is-child matchBackground box"
                   style={{ textAlign: 'center' }}
@@ -74,4 +74,5 @@ export default function ChooseRole(props) {
 
 ChooseRole.propTypes = {
   handleRoleChoice: PropTypes.func,
+  key: PropTypes.string,
 };

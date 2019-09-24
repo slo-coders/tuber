@@ -35,46 +35,46 @@ export class LoginForm extends Component {
 
   render() {
     return (
-        <form className="LoginForm" onSubmit={this.onSubmit}>
-          <div className="field">
-            <div className="control">
-              <Input
-                type={'email'}
-                handleInputChange={this.onHandle}
-                name={'email'}
-                value={this.state.email}
-                placeholder={'Email'}
-                icon={'envelope'}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <Input
-                type={'password'}
-                handleInputChange={this.onHandle}
-                name={'password'}
-                value={this.state.password}
-                placeholder={'Password'}
-                icon={'key'}
-              />
-            </div>
-          </div>
-          <div className="buttons" style={{ justifyContent: 'center' }}>
-            <Button
-              disabled={this.state.email && this.state.password ? false : true}
-              buttonStyle={'is-primary'}
-              handleClick={this.onSubmit}
-              buttonText={'Log In'}
-              divStyle={''}
-              customButtonStyle={{ marginRight: '5px' }}
+      <form className="LoginForm" onSubmit={this.onSubmit}>
+        <div className="field">
+          <div className="control">
+            <Input
+              type={'email'}
+              handleInputChange={this.onHandle}
+              name={'email'}
+              value={this.state.email}
+              placeholder={'Email'}
+              icon={'envelope'}
             />
-
-            <Link className="button" to="/signup" style={{ marginLeft: '5px' }}>
-              Sign Up
-            </Link>
           </div>
-        </form>
+        </div>
+        <div className="field">
+          <div className="control">
+            <Input
+              type={'password'}
+              handleInputChange={this.onHandle}
+              name={'password'}
+              value={this.state.password}
+              placeholder={'Password'}
+              icon={'key'}
+            />
+          </div>
+        </div>
+        <div className="buttons" style={{ justifyContent: 'center' }}>
+          <Button
+            disabled={this.state.email && this.state.password ? false : true}
+            buttonStyle={'is-primary'}
+            handleClick={this.onSubmit}
+            buttonText={'Log In'}
+            divStyle={''}
+            customButtonStyle={{ marginRight: '5px' }}
+          />
+
+          <Link className="button" to="/signup" style={{ marginLeft: '5px' }}>
+            Sign Up
+          </Link>
+        </div>
+      </form>
     );
   }
 }

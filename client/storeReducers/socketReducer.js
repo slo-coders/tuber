@@ -1,4 +1,4 @@
-import { RECEIVED_MESSAGE, SEND_MESSAGE } from '../actions/actionTypes';
+import { RECEIVED_MESSAGE } from '../actions/actionTypes';
 
 const initialState = {
   messages: [],

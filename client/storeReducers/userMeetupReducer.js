@@ -1,7 +1,4 @@
-import {
-  UPDATE_MEETUP_DATA,
-  GET_USER_MEETUP_DATA,
-} from '../actions/actionTypes';
+import { GET_USER_MEETUP_DATA } from '../actions/actionTypes';
 
 const initialState = {
   // userMeetupsArray: [],

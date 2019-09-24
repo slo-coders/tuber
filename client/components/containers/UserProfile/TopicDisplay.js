@@ -25,10 +25,10 @@ class TopicDisplay extends Component {
 
     if (userTopics.length > 0) {
       return (
-        <div className="tile is-parent" style={{ backgroundColor: '#e8e8e8' }}>
+        <div className="tile is-parent">
           <div
-            className="tile is-child box"
-            style={{ backgroundColor: '#e8e8e8' }}
+            className="tile is-child box tileColor"
+            style={{ paddingBottom: '47px' }}
           >
             <CSSTransitionGroup
               transitionAppear={true}
@@ -44,7 +44,7 @@ class TopicDisplay extends Component {
                 style={{
                   paddingRight: '80px',
                   paddingLeft: '40px',
-                  paddingTop: '20px',
+                  paddingTop: '12px',
                 }}
               >
                 {userTopics.map((topic, idx) => (
@@ -52,7 +52,11 @@ class TopicDisplay extends Component {
                     <h5>{topic.topicName}</h5>
                     <div className="level-right">
                       {'  Current Rating:'}
-                      <DisplayStarRating score={topic.proficiencyRating} />
+                      {topic.proficiencyRating ? (
+                        <DisplayStarRating score={topic.proficiencyRating} />
+                      ) : (
+                        'loading...'
+                      )}
                       {'  ' + this.ratingToDecimal(topic.proficiencyRating)}
                     </div>
                   </div>
