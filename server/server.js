@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const routes = require('./routes/APIs');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const { db } = require('./db/index');
 const session = require('express-session');
 const createSequelizeStore = require('connect-session-sequelize');
@@ -15,7 +15,7 @@ const io = require('socket.io')(3001);
 // const server = require('http').createServer(app);
 // const io = socketIO(server);
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 //will give each user a new socket
 //all socket logic will go in this function
