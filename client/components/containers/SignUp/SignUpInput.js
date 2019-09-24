@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '../../reusables/Input';
 import { CSSTransitionGroup } from 'react-transition-group';
-import Button from '../../reusables/Button';
+import Button from '../../reusables/Button-b';
 import PropTypes from 'prop-types';
 
 export default function SignUpSubmit(props) {
@@ -24,7 +24,7 @@ export default function SignUpSubmit(props) {
                   handleInputChange={props.handleInputChange}
                   type={'text'}
                   placeholder={'First Name'}
-                  icon={'envelope'}
+                  icon={'user'}
                 />
                 <Input
                   value={props.lastName}
@@ -32,7 +32,7 @@ export default function SignUpSubmit(props) {
                   handleInputChange={props.handleInputChange}
                   type={'text'}
                   placeholder={'Last Name'}
-                  icon={'envelope'}
+                  icon={'user'}
                 />
                 <Input
                   value={props.email}
@@ -54,6 +54,11 @@ export default function SignUpSubmit(props) {
               <div className="level" style={{ paddingTop: '14px' }}>
                 <div className="level-item">
                   <Button
+                    disabled={
+                      props.firstName && props.email && props.password
+                        ? false
+                        : true
+                    }
                     handleClick={props.handleContinue}
                     buttonStyle={'is-primary'}
                     buttonText={'Continue'}

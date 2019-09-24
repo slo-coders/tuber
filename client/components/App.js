@@ -26,13 +26,7 @@ class App extends React.Component {
         <Route exact path="/" component={Home} />
         <Route exact path="/profile" component={UserProfile} />
         <Route exact path="/signup" component={SignUp} />
-        <Route
-          exact
-          path="/request_match"
-          component={
-            RequestMatch
-          }
-        />
+        <Route exact path="/request_match" component={RequestMatch} />
         <Route exact path="/meetuproom" component={MeetupRoom} />
         <Route exact path="/chatroom" component={Chatroom} />
         <Route exact path="/review" component={Review} />

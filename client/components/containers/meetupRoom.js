@@ -33,8 +33,12 @@ class MeetupRoom extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const first = prevProps.pairedUserMeetups.partner && prevProps.pairedUserMeetups.partner.userId;
-    const second = this.props.pairedUserMeetups.partner && this.props.pairedUserMeetups.partner.userId;
+    const first =
+      prevProps.pairedUserMeetups.partner &&
+      prevProps.pairedUserMeetups.partner.userId;
+    const second =
+      this.props.pairedUserMeetups.partner &&
+      this.props.pairedUserMeetups.partner.userId;
     if (first !== second) {
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,

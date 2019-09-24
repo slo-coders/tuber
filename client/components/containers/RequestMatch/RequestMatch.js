@@ -30,7 +30,7 @@ class RequestMatch extends Component {
   componentDidMount() {
     this.props.getCourses();
     //TODO: Check 'status' of UserMeetup instance
-    
+
     //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
     //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
   }
