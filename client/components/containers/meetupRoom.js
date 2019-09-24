@@ -20,6 +20,7 @@ import Title from '../reusables/Title';
 class MeetupRoom extends React.Component {
   constructor(props) {
     super(props);
+    this.redirectToHome = this.redirectToHome.bind(this);
   }
 
   componentDidMount() {
@@ -33,13 +34,24 @@ class MeetupRoom extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const first = prevProps.pairedUserMeetups.partner && prevProps.pairedUserMeetups.partner.userId;
-    const second = this.props.pairedUserMeetups.partner && this.props.pairedUserMeetups.partner.userId;
+    const first =
+      prevProps.pairedUserMeetups.partner &&
+      prevProps.pairedUserMeetups.partner.userId;
+    const second =
+      this.props.pairedUserMeetups.partner &&
+      this.props.pairedUserMeetups.partner.userId;
     if (first !== second) {
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
       );
     }
+  }
+
+  redirectToHome() {
+    console.log('Redirect to home triggered');
+    setTimeout(() => {
+      window.location = '/';
+    }, 2500);
   }
 
   render() {
@@ -64,8 +76,8 @@ class MeetupRoom extends React.Component {
         ) : (
           <Title
             style={{ paddingTop: '80px' }}
-            smallText="No partner was found. Please try again later or wait for next available partner."
-            largeText="Meetup Not Successful"
+            smallText="Please wait for next available partner."
+            largeText="Meetup Pending"
           />
         )}
       </div>
