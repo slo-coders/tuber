@@ -7,7 +7,7 @@ import Nav from './containers/Nav';
 import UserProfile from './containers/UserProfile/UserProfile';
 import RequestMatch from './containers/RequestMatch/RequestMatch';
 import SignUp from './containers/SignUp/SignUp';
-import MeetupRoom from './containers/MeetupRoom';
+import MeetupRoom from './containers/meetupRoom';
 import PropTypes from 'prop-types';
 import { listTopicsThunk } from '../actions/topicActions';
 import { fetchLoggedInThunked } from '../actions/sessionActions';
