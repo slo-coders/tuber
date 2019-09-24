@@ -18,7 +18,7 @@ export const updatePartnerUserMeetupThunk = (
   data,
 ) => async dispatch => {
   try {
-    const response = await axios.get(
+    const response = await axios.put(
       `/api/users/${userId}/meetups/${meetupId}`,
       data,
     );
