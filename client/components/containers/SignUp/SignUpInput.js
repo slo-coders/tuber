@@ -55,7 +55,7 @@ export default function SignUpSubmit(props) {
                 <div className="level-item">
                   <Button
                     disabled={
-                      props.firstName && props.email && props.password
+                      props.firstName && props.lastName && props.email && props.password
                         ? false
                         : true
                     }

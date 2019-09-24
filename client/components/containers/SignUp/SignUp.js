@@ -7,6 +7,7 @@ import SignUpTopics from './SignUpTopics';
 import SignUpRateTopics from './SignUpRateTopics';
 import { postUserTopicsArrThunked } from '../../../actions/userTopicActions';
 import { loginThunked } from '../../../actions/sessionActions';
+import { userProfile } from '../../containers/UserProfile/UserProfile';
 
 class SignUp extends Component {
   constructor(props) {
@@ -141,6 +142,12 @@ class SignUp extends Component {
           handleStarClick={this.handleStarClick}
           {...this.state}
         />
+      );
+    }
+
+    if (this.state.redirect === true ) {
+      return (
+        <userProfile />
       );
     }
   }
