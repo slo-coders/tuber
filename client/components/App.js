@@ -29,7 +29,7 @@ class App extends React.Component {
         <Route
           exact
           path="/request_match"
-          /* path will eventually depend on match status */ component={
+          component={
             RequestMatch
           }
         />

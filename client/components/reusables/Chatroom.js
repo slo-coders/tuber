@@ -30,12 +30,26 @@ class Chatroom extends React.Component {
     socket.emit('room', {
       room: this.props.meetupId,
     });
+    if (
+      !this.props.partner&& this.props.pairedUserMeetups
+    ) {
+      this.props.singlePartnerThunk(
+        this.props.pairedUserMeetups.partner.userId,
+      );
+    }
   }
 
-  componentWillUnmount() {
-    socket.emit('leave-room', {
-      room: this.props.meetupId,
-    });
+  componentDidUpdate (prevProps){
+    const prevMeetupId = prevProps.pairedUserMeetups.partner && prevProps.pairedUserMeetups.partner.meetupId;
+    const currentMeetupId = this.props.pairedUserMeetups.partner && this.props.pairedUserMeetups.partner.meetupId;
+    if (prevMeetupId !== currentMeetupId) {
+      socket.emit('leave-room', {
+        room: prevProps.meetupId,
+      });
+      socket.emit('room', {
+        room: this.props.meetupId,
+      });
+    }
   }
 
   onHandle(ev) {
@@ -137,9 +151,10 @@ class Chatroom extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.auth,
-  // userMeetup: state.userMeetup.mostRecentUserMeetup,
-  meetupId: state.pairedUserMeetups.reqUser.meetupId,
+  // userMeetup: state.userMeetup,
+  meetupId: state.pairedUserMeetups.reqUser ? state.pairedUserMeetups.reqUser.meetupId : null,
   partner: state.partner,
+  pairedUserMeetups: state.pairedUserMeetups,
 });
 const mapDispatchToProps = dispatch => ({
   getUserMeetupDataThunked: userid =>

@@ -30,7 +30,7 @@ class RequestMatch extends Component {
   componentDidMount() {
     this.props.getCourses();
     //TODO: Check 'status' of UserMeetup instance
-
+    
     //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
     //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
   }
@@ -69,8 +69,8 @@ class RequestMatch extends Component {
   }
 
   render() {
-    console.log('REQUEST MATCH PAGE PROPS', this.props);
-    console.log('REQUEST MATCH PAGE STATE', this.state);
+    // console.log('REQUEST MATCH PAGE PROPS', this.props);
+    // console.log('REQUEST MATCH PAGE STATE', this.state);
     if (!this.state.userType) {
       return <ChooseRole handleRoleChoice={this.handleRoleChoice} />;
     }
@@ -84,9 +84,10 @@ class RequestMatch extends Component {
             handleCourseChoice={this.handleCourseChoice}
           />
           <TopicSelect
+            userType={this.state.userType}
+            courseId={this.state.courseId}
             handleSubmit={this.handleSubmit}
             handleTopicChoice={this.handleTopicChoice}
-            {...this.state} //courseId...
           />
         </div>
       );
@@ -96,7 +97,7 @@ class RequestMatch extends Component {
         <div className="section">
           <CourseSelect
             userType={this.state.userType}
-            courseOptions={this.props.courses} //from list course
+            courseOptions={this.props.courses} //from list courses
             handleCourseChoice={this.handleCourseChoice}
           />
         </div>
@@ -120,6 +121,7 @@ const mapStateToProps = state => ({
   courses: state.courses.allCoursesArr,
   user: state.auth,
 });
+
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
   createUserSessionThunk: userData =>

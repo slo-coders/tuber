@@ -36,7 +36,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
-app.use('/api/sessions', require('./routes/sessions'));
 
 io.on('connection', socket => {
   console.log('User Socket made: ', socket.id);
@@ -60,7 +59,7 @@ io.on('connection', socket => {
     io.in(data.room).emit('message-data', data);
   });
 });
-
+app.use('/api/sessions', require('./routes/sessions'));
 app.use('/api', routes);
 
 module.exports = { http, io };
