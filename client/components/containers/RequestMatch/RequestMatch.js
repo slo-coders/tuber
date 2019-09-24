@@ -6,6 +6,7 @@ import TopicSelect from './TopicSelect';
 import { listCoursesThunk } from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import PropTypes from 'prop-types';
+import { createMeetupRoomThunk } from '../../../actions/meetupRoomAction';
 
 //TODO: Render and submit topics based on a course for Mentors
 //TODO: Render and submit selected topics for either mentee or peer
