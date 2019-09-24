@@ -20,17 +20,14 @@ const CourseSelect = props => {
         {courseList.map(course => {
           return (
             <a
-              value={course.id} //should probably be course.id?
+              value={course.id}
               key={course.id}
               onClick={props.handleCourseChoice}
             >
-              <div value={course.courseName} className="section">
-                <div value={course.courseName} className="container">
-                  <div value={course.courseName} className="level">
-                    <div
-                      value={course.courseName}
-                      className="tile is-parent is-vertical is-4"
-                    >
+              <div value={course.id} className="section">
+                <div value={course.id} className="container">
+                  <div value={course.id} className="level">
+                    <div value={course.id} className="tile is-parent is-vertical is-4">
                       <div value={course.id} className="tile is-child">
                         {`MATH ${course.courseCode} - ${course.courseName}`}
                       </div>

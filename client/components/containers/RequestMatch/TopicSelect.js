@@ -32,6 +32,13 @@ class TopicSelect extends React.Component {
       topic => topic.id,
     );
     console.log('SELECTED COURSE TOPICS', selectedCourseTopicsIds); //single course with topics
+
+    // <div className="section" style={{paddingTop: "115px", paddingRight:'300px', paddingLeft:'300px'}}>
+    // <div className="container">
+    // <div className="tile is-ancestor">
+    // <div className="tile is-parent">
+    // <div className="tile is-child box">
+
     return (
       <div>
         <div>
@@ -42,12 +49,12 @@ class TopicSelect extends React.Component {
                   .filter(item =>
                     selectedCourseTopicsIds.includes(item.topicId),
                   )
-                  .map((uTop, idx) =>
-                    this.props.userType === 'mentor' ? (
-                      <div key={idx}>
+                  .map((uTop) =>
+                    this.props.userType === 'mentor' ? 
+                      <div key={uTop.id}>
                         <li>{uTop.topicName}</li>
                       </div>
-                    ) : (
+                     : 
                       //mentor's topics w/o radio buttons
                       <div className="radio" key={uTop.id}>
                         <label htmlFor="radioButton">
@@ -60,7 +67,7 @@ class TopicSelect extends React.Component {
                           {uTop.topicName}
                         </label>
                       </div>
-                    ),
+                    ,
                   )}
               </form>
             </div>

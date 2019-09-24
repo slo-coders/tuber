@@ -5,7 +5,7 @@ import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
 import { updateMeetupDataThunked } from '../../actions/userMeetupActions';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:3001');
+const socket = io();
 
 class Chatroom extends React.Component {
   constructor(props) {
@@ -30,12 +30,26 @@ class Chatroom extends React.Component {
     socket.emit('room', {
       room: this.props.meetupId,
     });
+    if (
+      !this.props.partner&& this.props.pairedUserMeetups
+    ) {
+      this.props.singlePartnerThunk(
+        this.props.pairedUserMeetups.partner.userId,
+      );
+    }
   }
 
-  componentWillUnmount() {
-    socket.emit('leave-room', {
-      room: this.props.meetupId,
-    });
+  componentDidUpdate (prevProps){
+    const prevMeetupId = prevProps.pairedUserMeetups.partner && prevProps.pairedUserMeetups.partner.meetupId;
+    const currentMeetupId = this.props.pairedUserMeetups.partner && this.props.pairedUserMeetups.partner.meetupId;
+    if (prevMeetupId !== currentMeetupId) {
+      socket.emit('leave-room', {
+        room: prevProps.meetupId,
+      });
+      socket.emit('room', {
+        room: this.props.meetupId,
+      });
+    }
   }
 
   onHandle(ev) {
@@ -78,37 +92,58 @@ class Chatroom extends React.Component {
     console.log('CHAT-ROOM PROPS', this.props);
     return (
       <div>
-        <div>
-          <h3>Welcome! The topic of discussion is: {}</h3>
-          <h5>Your Partners names is: {this.props.partner.firstName}</h5>
-          <br />
-          <img className="partnerImg" src={this.props.partner.imageUrl} />
+        <div className="tile is-ancestor">
+          <div className="tile is-parent">
+            <div className="tile is-parent is-4">
+              <div
+                className="tile is-child box tileColor"
+                style={{ textAlign: 'center' }}
+              >
+                <div>
+                  <div>
+                    <h5>
+                      {"Your partner's name is: " +
+                        this.props.partner.firstName}
+                    </h5>
+                    <h3>The topic of discussion is: {}</h3>
+                    <br />
+                    <img
+                      className="partnerImg"
+                      src={this.props.partner.imageUrl}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tile is-parent">
+              <div className="tile is-child box tileColor">
+                <div className="message-list">
+                  {this.state.messageList.map((item, idx) => (
+                    <li
+                      className="messages"
+                      key={idx}
+                    >{`${item.user}: ${item.text}`}</li>
+                  ))}
+                </div>
+
+                <form onSubmit={this.onSubmit}>
+                  <label htmlFor="chatmessage">Message</label>
+                  <input
+                    type="text"
+                    name="chatmessage"
+                    onChange={this.onHandle}
+                    value={this.state.message}
+                  />
+                  <button className="button" type="submit">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="message-list">
-          {this.state.messageList.map((item, idx) => (
-            <li
-              className="messages"
-              key={idx}
-            >{`${item.user}: ${item.text}`}</li>
-          ))}
-        </div>
-
-        <form className="chatForm" onSubmit={this.onSubmit}>
-          <label htmlFor="chatmessage">Message</label>
-          <input
-            type="text"
-            name="chatmessage"
-            onChange={this.onHandle}
-            value={this.state.message}
-          />
-          <button className="button" type="submit">
-            Submit
-          </button>
-        </form>
-        <div>
-          <button onClick={this.closeMeetup}>Close MeetupRoom</button>
-        </div>
+        <button onClick={this.closeMeetup}>Close MeetupRoom</button>
       </div>
     );
   }
@@ -116,9 +151,10 @@ class Chatroom extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.auth,
-  // userMeetup: state.userMeetup.mostRecentUserMeetup,
-  meetupId: state.pairedUserMeetups.reqUser.meetupId,
+  // userMeetup: state.userMeetup,
+  meetupId: state.pairedUserMeetups.reqUser ? state.pairedUserMeetups.reqUser.meetupId : null,
   partner: state.partner,
+  pairedUserMeetups: state.pairedUserMeetups,
 });
 const mapDispatchToProps = dispatch => ({
   getUserMeetupDataThunked: userid =>

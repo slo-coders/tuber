@@ -3,14 +3,32 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutThunked } from '../../actions/sessionActions';
+import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
 import PropTypes from 'prop-types';
 import Button from '../reusables/Button';
 
 export class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      status: ''
+    };
     this.logout = this.logout.bind(this);
+  }
+
+
+  componentDidMount(){
+    this.props.getUserMeetup(this.props.user.authUser.id);
+  }
+
+  componentDidUpdate(prevProps){
+    const prevUserId =  prevProps.user.authUser && prevProps.user.authUser.id;
+    const currentUserId =  this.props.user.authUser && this.props.user.authUser.id;
+    const prevUserMeetupId =  prevProps.userMeetup && prevProps.userMeetup.id;
+    const currentUserMeetupId =  this.props.userMeetup && this.props.userMeetup.id;
+    if((prevUserId !== currentUserId) || (prevUserMeetupId !== currentUserMeetupId)){
+      this.props.getUserMeetup(this.props.user.authUser.id);
+    }
   }
 
   logout(ev) {
@@ -45,13 +63,25 @@ export class Nav extends React.Component {
               </Link>
               <Link
                 className="navbar-item"
-                to="/request_match" /* path will eventually depend on match status, this is a placeholder */
+                to={
+                  this.props.userMeetup && this.props.userMeetup.status  === 'pending confirmation'
+                  ? "/request_match"//"/confirm_match" 
+                  : this.props.userMeetup && this.props.userMeetup.status === 'pending review'
+                    ? "/review"
+                    : this.props.userMeetup && this.props.userMeetup.status === 'matched'
+                      ? "/meetuproom"
+                      : "/request_match"
+                } /* path will eventually depend on match status, this is a placeholder */
               >
                 Meetups
               </Link>
 
               <Link className="navbar-item" to="/chatroom">
                 Chat Room
+              </Link>
+
+              <Link className="navbar-item" to="/review">
+                Review
               </Link>
 
               <div className="navbar-item">
@@ -78,27 +108,26 @@ export class Nav extends React.Component {
 }
 
 Nav.defaultProps = {
-  logoutThunked: PropTypes.func,
-  user: PropTypes.object,
-  authUser: PropTypes.object,
-  id: PropTypes.string,
-  meetupId: PropTypes.string,
+  logoutThunked: ()=>{},
+  user: {},
+  authUser: {},
+  id: '',
 };
 Nav.propTypes = {
   logoutThunked: PropTypes.func,
   user: PropTypes.object,
-  authUser: PropTypes.func,
-  id: PropTypes.func,
-  meetupId: PropTypes.string,
+  authUser: PropTypes.object,
+  id: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   user: state.auth,
-  meetupId: state.pairedUserMeetups.reqUser,
+  userMeetup: state.userMeetup,
 });
 
 const mapDispatchToProps = dispatch => ({
   logoutThunked: () => dispatch(logoutThunked()),
+  getUserMeetup: (userId) => dispatch(getUserMeetupDataThunked(userId)),
 });
 
 export default connect(

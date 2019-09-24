@@ -5,9 +5,7 @@ import CourseSelect from './CourseSelect';
 import TopicSelect from './TopicSelect';
 import { listCoursesThunk } from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
-import { fetchLoggedInThunked } from '../../../actions/sessionActions';
 import PropTypes from 'prop-types';
-import { createMeetupRoomThunk } from '../../../actions/meetupRoomAction';
 
 //TODO: Render and submit topics based on a course for Mentors
 //TODO: Render and submit selected topics for either mentee or peer
@@ -32,7 +30,7 @@ class RequestMatch extends Component {
   componentDidMount() {
     this.props.getCourses();
     //TODO: Check 'status' of UserMeetup instance
-
+    
     //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
     //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
   }
@@ -71,22 +69,27 @@ class RequestMatch extends Component {
   }
 
   render() {
-    console.log('REQUEST MATCH PAGE PROPS', this.props);
-    console.log('REQUEST MATCH PAGE STATE', this.state);
+    // console.log('REQUEST MATCH PAGE PROPS', this.props);
+    // console.log('REQUEST MATCH PAGE STATE', this.state);
     if (!this.state.userType) {
-      return (
-        <div className="section">
-          <ChooseRole handleRoleChoice={this.handleRoleChoice} />
-        </div>
-      );
+      return <ChooseRole handleRoleChoice={this.handleRoleChoice} />;
     }
+
     if (this.state.userType && this.state.courseId) {
       return (
-        <TopicSelect
-          handleSubmit={this.handleSubmit}
-          handleTopicChoice={this.handleTopicChoice}
-          {...this.state} //courseId...
-        />
+        <div>
+          <CourseSelect
+            userType={this.state.userType}
+            courseOptions={this.props.courses} //from list course
+            handleCourseChoice={this.handleCourseChoice}
+          />
+          <TopicSelect
+            userType={this.state.userType}
+            courseId={this.state.courseId}
+            handleSubmit={this.handleSubmit}
+            handleTopicChoice={this.handleTopicChoice}
+          />
+        </div>
       );
     }
     if (this.state.userType) {
@@ -94,7 +97,7 @@ class RequestMatch extends Component {
         <div className="section">
           <CourseSelect
             userType={this.state.userType}
-            courseOptions={this.props.courses} //from list course
+            courseOptions={this.props.courses} //from list courses
             handleCourseChoice={this.handleCourseChoice}
           />
         </div>
@@ -118,6 +121,7 @@ const mapStateToProps = state => ({
   courses: state.courses.allCoursesArr,
   user: state.auth,
 });
+
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
   createUserSessionThunk: userData =>
