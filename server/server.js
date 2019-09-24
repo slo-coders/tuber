@@ -41,13 +41,11 @@ app.use('/api/sessions', require('./routes/sessions'));
 io.on('connection', socket => {
   console.log('User Socket made: ', socket.id);
 
-  // //will listen for input from the client for instance of 'chat-message'
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
 
   socket.on('room', data => {
-    //verify meetup connection/meetupId
     socket.join(data.room);
     console.log('in room creator:', data.room);
   });
@@ -59,18 +57,8 @@ io.on('connection', socket => {
 
   socket.on('chat-message', function(data) {
     console.log('message from client', data);
-    //ISSUE - data coming in from client, but not getting sent back to the room. not subscribed?
     io.in(data.room).emit('message-data', data);
-    // io.emit('message-data', data);
   });
-  // socket.on('message', data => {
-  //   console.log('message from client:', data);
-  //   //send to client with 'chat-message'tag
-  //   io.emit('chat-message', data);
-  //   //will send message to everyone on server except for the sender
-  //   //Will want to make this more specific for user and partner. possibly need to set up a room
-  //   // socket.broadcast.emit('chat-message', message);
-  // });
 });
 
 app.use('/api', routes);
