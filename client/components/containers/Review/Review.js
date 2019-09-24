@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Title from '../../reusables/Title';
 import StarRating from '../../reusables/StarRating';
+import { updatePartnerUserMeetupThunk } from '../../../actions/partnerActions';
 
 class Review extends Component {
   constructor() {
@@ -11,6 +12,7 @@ class Review extends Component {
       topicId: '',
     };
     this.handleStarClick = this.handleStarClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleStarClick(e, topicId) {
@@ -21,8 +23,18 @@ class Review extends Component {
     });
   }
 
+  handleSubmit() {
+    //////////////////NOT UPDATING thunk is not being called
+    this.props.updatePartnerUserMeetupThunk(
+      this.props.user.authUser.id,
+      this.props.userMeetup.meetupId,
+      { proficiencyRating: this.state.proficiencyRating, status: 'completed' },
+    );
+    window.location = '/profile';
+  }
+
   render() {
-    console.log('RATING STATE', this.state);
+    console.log('Review Component', this.props);
     return (
       <div>
         <Title
@@ -57,12 +69,30 @@ class Review extends Component {
             </div>
           </div>
         </div>
+        <div>
+          {' '}
+          <button onClick={this.handleSubmit} className="button">
+            Submit
+          </button>
+        </div>
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.auth,
+  userMeetup: state.userMeetup,
+  partner: state.partner,
+  pairedUserMeetups: state.pairedUserMeetups,
+});
+
+const mapDispatchToProps = dispatch => ({
+  updatePartnerUserMeetupThunk: (userId, meetupId, data) =>
+    dispatch(updatePartnerUserMeetupThunk(userId, meetupId, data)),
+});
+
 export default connect(
-  null,
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Review);
