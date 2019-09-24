@@ -42,12 +42,12 @@ class TopicSelect extends React.Component {
                   .filter(item =>
                     selectedCourseTopicsIds.includes(item.topicId),
                   )
-                  .map((uTop, idx) =>
-                    this.props.userType === 'mentor' ? (
-                      <div key={idx}>
+                  .map((uTop) =>
+                    this.props.userType === 'mentor' ? 
+                      <div key={uTop.id}>
                         <li>{uTop.topicName}</li>
                       </div>
-                    ) : (
+                     : 
                       //mentor's topics w/o radio buttons
                       <div className="radio" key={uTop.id}>
                         <label htmlFor="radioButton">
@@ -60,7 +60,7 @@ class TopicSelect extends React.Component {
                           {uTop.topicName}
                         </label>
                       </div>
-                    ),
+                    ,
                   )}
               </form>
             </div>

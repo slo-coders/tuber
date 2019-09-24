@@ -71,8 +71,8 @@ class RequestMatch extends Component {
   }
 
   render() {
-    console.log('REQUEST MATCH PAGE PROPS', this.props);
-    console.log('REQUEST MATCH PAGE STATE', this.state);
+    // console.log('REQUEST MATCH PAGE PROPS', this.props);
+    // console.log('REQUEST MATCH PAGE STATE', this.state);
     if (!this.state.userType) {
       return (
         <div className="section">
@@ -94,7 +94,7 @@ class RequestMatch extends Component {
         <div className="section">
           <CourseSelect
             userType={this.state.userType}
-            courseOptions={this.props.courses} //from list course
+            courseOptions={this.props.courses} //from list courses
             handleCourseChoice={this.handleCourseChoice}
           />
         </div>
@@ -118,6 +118,7 @@ const mapStateToProps = state => ({
   courses: state.courses.allCoursesArr,
   user: state.auth,
 });
+
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
   createUserSessionThunk: userData =>

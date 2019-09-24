@@ -32,12 +32,9 @@ class MeetupRoom extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      !prevProps.pairedUserMeetups.partner ||
-      this.props.partner === undefined ||
-      prevProps.pairedUserMeetups.partner.userId !==
-        this.props.pairedUserMeetups.partner.userId
-    ) {
+    const first = prevProps.pairedUserMeetups.partner && prevProps.pairedUserMeetups.partner.userId;
+    const second = this.props.pairedUserMeetups.partner && this.props.pairedUserMeetups.partner.userId;
+    if (first !== second) {
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
       );
@@ -58,7 +55,7 @@ class MeetupRoom extends React.Component {
             </div>
           </div>
         ) : (
-          'No partner was found. Please try again later or wait for next available partner.'
+          'Please wait for the next available partner...'
         )}
       </div>
     );

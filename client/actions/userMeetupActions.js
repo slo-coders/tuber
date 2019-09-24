@@ -10,6 +10,8 @@ export const getUserMeetupDataThunked = userId => async dispatch => {
     console.error(err);
   }
 };
+//returns User w/ User.meetups[].user_meetup.meetupId||status
+
 
 // gets a single meetup for a specific user
 // export const getMeetupDataThunked = (userId, meetupId) => async dispatch => {
