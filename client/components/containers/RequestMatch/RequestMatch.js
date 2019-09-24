@@ -84,9 +84,10 @@ class RequestMatch extends Component {
             handleCourseChoice={this.handleCourseChoice}
           />
           <TopicSelect
+            userType={this.state.userType}
+            courseId={this.state.courseId}
             handleSubmit={this.handleSubmit}
             handleTopicChoice={this.handleTopicChoice}
-            {...this.state} //courseId...
           />
         </div>
       );

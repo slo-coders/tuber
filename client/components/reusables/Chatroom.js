@@ -5,7 +5,7 @@ import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
 import { updateMeetupDataThunked } from '../../actions/userMeetupActions';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:3001');
+const socket = io();
 
 class Chatroom extends React.Component {
   constructor(props) {
