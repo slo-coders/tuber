@@ -15,6 +15,7 @@ import Chatroom from '../reusables/Chatroom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { singlePartnerThunk } from '../../actions/partnerActions';
+import Title from '../reusables/Title';
 
 class MeetupRoom extends React.Component {
   constructor(props) {
@@ -48,14 +49,24 @@ class MeetupRoom extends React.Component {
       <div>
         {this.props.pairedUserMeetups.partner ? (
           <div>
-            Your partners info: {this.props.pairedUserMeetups.partner.userId}
-            <div>
-              You are now connected:
-              <Chatroom />
+            <Title
+              smallText="Lorem ipsum dolor sit amet, pri quod inimicus disputando cu, sit
+                  facilisi abhorreant in."
+              largeText="You have been matched!"
+            />
+
+            <div className="section">
+              <div className="container">
+                <Chatroom />
+              </div>
             </div>
           </div>
         ) : (
-          'Please wait for the next available partner...'
+          <Title
+            style={{ paddingTop: '80px' }}
+            smallText="No partner was found. Please try again later or wait for next available partner."
+            largeText="Meetup Not Successful"
+          />
         )}
       </div>
     );

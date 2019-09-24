@@ -80,6 +80,10 @@ export class Nav extends React.Component {
                 Chat Room
               </Link>
 
+              <Link className="navbar-item" to="/review">
+                Review
+              </Link>
+
               <div className="navbar-item">
                 <Button
                   handleClick={this.logout}

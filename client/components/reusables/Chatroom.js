@@ -92,36 +92,58 @@ class Chatroom extends React.Component {
     console.log('CHAT-ROOM PROPS', this.props);
     return (
       <div>
-        <div>
-          <h3>Welcome! The topic of discussion is: {}</h3>
-          <h5>Your Partners names is: {this.props.partner.firstName}</h5>
-          <br />
-          <img className="partnerImg" src={this.props.partner.imageUrl} />
-          <button onClick={this.closeMeetup}>Close MeetupRoom</button>
+        <div className="tile is-ancestor">
+          <div className="tile is-parent">
+            <div className="tile is-parent is-4">
+              <div
+                className="tile is-child box tileColor"
+                style={{ textAlign: 'center' }}
+              >
+                <div>
+                  <div>
+                    <h5>
+                      {"Your partner's name is: " +
+                        this.props.partner.firstName}
+                    </h5>
+                    <h3>The topic of discussion is: {}</h3>
+                    <br />
+                    <img
+                      className="partnerImg"
+                      src={this.props.partner.imageUrl}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tile is-parent">
+              <div className="tile is-child box tileColor">
+                <div className="message-list">
+                  {this.state.messageList.map((item, idx) => (
+                    <li
+                      className="messages"
+                      key={idx}
+                    >{`${item.user}: ${item.text}`}</li>
+                  ))}
+                </div>
+
+                <form onSubmit={this.onSubmit}>
+                  <label htmlFor="chatmessage">Message</label>
+                  <input
+                    type="text"
+                    name="chatmessage"
+                    onChange={this.onHandle}
+                    value={this.state.message}
+                  />
+                  <button className="button" type="submit">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="message-list">
-          {this.state.messageList.map((item, idx) => (
-            <li
-              className="messages"
-              key={idx}
-            >{`${item.user}: ${item.text}`}</li>
-          ))}
-        </div>
-
-        <form className="chatForm" onSubmit={this.onSubmit}>
-          <label htmlFor="chatmessage">Message</label>
-          <input
-            type="text"
-            name="chatmessage"
-            onChange={this.onHandle}
-            value={this.state.message}
-          />
-          <button className="button" type="submit">
-            Submit
-          </button>
-        </form>
-        
+        <button onClick={this.closeMeetup}>Close MeetupRoom</button>
       </div>
     );
   }
