@@ -62,7 +62,7 @@ class RequestMatch extends Component {
   }
 
   handleTopicChoice(e) {
-    const newTopicId = this.state.topicId ? '' : e.target.getAttribute('value');
+    const newTopicId = this.state.topicId === e.target.getAttribute('value') ? '' : e.target.getAttribute('value');
     this.setState({
       topicId: newTopicId,
     });
