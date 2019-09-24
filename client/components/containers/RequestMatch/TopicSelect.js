@@ -33,6 +33,13 @@ class TopicSelect extends React.Component {
     );
     console.log('SELECTED COURSE TOPICS', selectedCourseTopicsIds); //single course with topics
     return (
+      // <div className="section" style={{paddingTop: "115px", paddingRight:'300px', paddingLeft:'300px'}}>
+
+      // <div className="container">
+      // <div className="tile is-ancestor">
+      // <div className="tile is-parent">
+      // <div className="tile is-child box">
+
       <div>
         <div>
           {this.props.topics.length > 0 ? (
