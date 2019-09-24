@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Title from '../../reusables/Title';
 import StarRating from '../../reusables/StarRating';
 import { updatePartnerUserMeetupThunk } from '../../../actions/partnerActions';
+import PropTypes from 'prop-types';
 
 class Review extends Component {
   constructor() {
@@ -30,8 +31,9 @@ class Review extends Component {
       this.props.userMeetup.meetupId,
       { proficiencyRating: this.state.proficiencyRating, status: 'completed' },
     );
-    window.location = '/profile';
+    window.location = '/#/profile';
   }
+
 
   render() {
     console.log('Review Component', this.props);
@@ -79,6 +81,14 @@ class Review extends Component {
     );
   }
 }
+
+Review.PropTypes = {
+  user: PropTypes.object,
+  userMeetup: PropTypes.object,
+  partner: PropTypes.object,
+  pairedUserMeetups: PropTypes.object,
+  updatePartnerUserMeetupThunk: PropTypes.func,
+};
 
 const mapStateToProps = state => ({
   user: state.auth,
