@@ -7,19 +7,12 @@ const session = require('express-session');
 const createSequelizeStore = require('connect-session-sequelize');
 const SequelizeStore = createSequelizeStore(session.Store);
 const app = express();
-
 require('dotenv').config();
 
-//sockets are listening on 3001, need to fix this later
-const io = require('socket.io')(3001);
-// const server = require('http').createServer(app);
-// const io = socketIO(server);
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 app.use(morgan('dev'));
-
-//will give each user a new socket
-//all socket logic will go in this function
-//Note, socket has a unique id (socket.id) that can be used to differentiate users
 
 app.use(
   session({
@@ -82,4 +75,4 @@ io.on('connection', socket => {
 
 app.use('/api', routes);
 
-module.exports = { app, io };
+module.exports = { http, io };
