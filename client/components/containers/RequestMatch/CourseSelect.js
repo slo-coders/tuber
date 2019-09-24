@@ -1,13 +1,10 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Proptypes from 'prop-types';
-import { connect } from 'react-redux';
 
 const CourseSelect = props => {
   let courseList = props.courseOptions;
-  console.log('COURSE SELECT', props);
-  console.log('Course list in CourseSelect', courseList);
+
   return (
     <CSSTransitionGroup
       transitionAppear={true}
@@ -47,20 +44,12 @@ const CourseSelect = props => {
 };
 
 CourseSelect.defaultProps = {
-  courses: [],
+  courseOptions: [],
   handleCourseChoice: () => {},
 };
 CourseSelect.propTypes = {
-  courses: Proptypes.array,
+  courseOptions: Proptypes.array,
   handleCourseChoice: Proptypes.func,
 };
 
-const mapStateToProps = state => ({
-  topics: state.userTopics,
-  user: state.auth,
-});
-
-export default connect(
-  mapStateToProps,
-  null,
-)(CourseSelect);
+export default CourseSelect;

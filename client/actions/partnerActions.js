@@ -18,11 +18,11 @@ export const updatePartnerUserMeetupThunk = (
   data,
 ) => async dispatch => {
   try {
-    const response = await axios.get(
+    const response = await axios.put(
       `/api/users/${userId}/meetups/${meetupId}`,
       data,
     );
-    console.log('UPDATE Partner Thunk', response.data);
+    console.log('UPDATE PARTNER THUNK>>>>>>>', response.data);
     dispatch({
       type: actions.UPDATE_PARTNER_USERMEETUP,
       payload: response.data,
