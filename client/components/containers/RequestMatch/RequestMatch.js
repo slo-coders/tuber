@@ -111,10 +111,10 @@ RequestMatch.defaultProps = {
   courses: [],
 };
 RequestMatch.propTypes = {
-  createUserSessionThunk: PropTypes.func,
-  user: PropTypes.object,
-  getCourses: PropTypes.func,
   courses: PropTypes.array,
+  user: PropTypes.object,
+  createUserSessionThunk: PropTypes.func,
+  getCourses: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
