@@ -9,7 +9,6 @@ import meetupReducer from './storeReducers/meetupReducers';
 import userMeetupReducer from './storeReducers/userMeetupReducer';
 import authReducer from './storeReducers/authReducer';
 import userSessionReducer from './storeReducers/userSessionReducer';
-// import socketReducer from './storeReducers/socketReducer';
 import meetupRoomReducer from './storeReducers/meetupRoomReducer';
 import partnerReducer from './storeReducers/partnerReducer';
 
@@ -22,12 +21,11 @@ const reducer = combineReducers({
   courses: courseReducer, //courses.singleCourseWithTopics
   topics: topicReducer,
   userTopics: userTopicReducer,
-  userMeetup: userMeetupReducer, //reqUser: === {mostRecentUserMeetup: {meetupId:, userId:, location:, proficiencyRating:, ...}}
-  // to call it use: userMeetup.mostRecentUserMeetup.____
+  userMeetup: userMeetupReducer, //reqUser: === {meetupId:, userId:, location:, proficiencyRating:, ...}
+  // to call it use: userMeetup.___
   auth: authReducer,
   //will return either the usersession info OR the usermeetup info with partner information
   userSession: userSessionReducer, //{singleUserSessionInfo:{}, ...}
-  // socket: socketReducer,
   partner: partnerReducer,
   pairedUserMeetups: meetupRoomReducer,
   /* {
