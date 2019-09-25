@@ -12,7 +12,7 @@ export class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: ''
+      status: '',
     };
     this.logout = this.logout.bind(this);
   }
@@ -25,12 +25,17 @@ export class Nav extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps){
-    const prevUserId =  prevProps.user.authUser && prevProps.user.authUser.id;
-    const currentUserId =  this.props.user.authUser && this.props.user.authUser.id;
-    const prevUserMeetupId =  prevProps.userMeetup && prevProps.userMeetup.id;
-    const currentUserMeetupId =  this.props.userMeetup && this.props.userMeetup.id;
-    if((prevUserId !== currentUserId) || (prevUserMeetupId !== currentUserMeetupId)){
+  componentDidUpdate(prevProps) {
+    const prevUserId = prevProps.user.authUser && prevProps.user.authUser.id;
+    const currentUserId =
+      this.props.user.authUser && this.props.user.authUser.id;
+    const prevUserMeetupId = prevProps.userMeetup && prevProps.userMeetup.id;
+    const currentUserMeetupId =
+      this.props.userMeetup && this.props.userMeetup.id;
+    if (
+      prevUserId !== currentUserId ||
+      prevUserMeetupId !== currentUserMeetupId
+    ) {
       this.props.getUserMeetup(this.props.user.authUser.id);
       this.props.getUserTopics(this.props.user.authUser.id);
     }
@@ -69,13 +74,16 @@ export class Nav extends React.Component {
               <Link
                 className="navbar-item"
                 to={
-                  this.props.userMeetup && this.props.userMeetup.status  === 'pending confirmation'
-                  ? "/request_match"//"/confirm_match" 
-                  : this.props.userMeetup && this.props.userMeetup.status === 'pending review'
-                    ? "/review"
-                    : this.props.userMeetup && this.props.userMeetup.status === 'matched'
-                      ? "/meetuproom"
-                      : "/request_match"
+                  this.props.userMeetup &&
+                  this.props.userMeetup.status === 'pending confirmation'
+                    ? '/request_match' //"/confirm_match"
+                    : this.props.userMeetup &&
+                      this.props.userMeetup.status === 'pending review'
+                    ? '/review'
+                    : this.props.userMeetup &&
+                      this.props.userMeetup.status === 'matched'
+                    ? '/meetuproom'
+                    : '/request_match'
                 } /* path will eventually depend on match status, this is a placeholder */
               >
                 Meetups

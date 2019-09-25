@@ -5,7 +5,7 @@ import {
 
 const userMeetupReducer = (state = {}, action) => {
   switch (action.type) {
-    case GET_USER_MEETUP_DATA: 
+    case GET_USER_MEETUP_DATA:
     //TODO: rewrite the routes to avoid this
     //When used with POST to /api/usersessions:
     //If matched, action.payload === {reqUser:{userId:, meetupId:}, partner:}

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 class TopicSelect extends React.Component {
 /*   componentDidMount() {
-  this.props.singleCourseTopics(this.props.courseId); 
+  this.props.singleCourseTopics(this.props.courseId);
   //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
   } */
 
@@ -20,7 +20,7 @@ class TopicSelect extends React.Component {
 
   render() {
     const courseTopics = this.props.courseWithTopics && this.props.courseWithTopics.topics;
-    
+
     if (courseTopics && courseTopics.length && this.props.userTopics){
       const selectedCourseTopicsIds = courseTopics.map(
         topic => topic.id,
@@ -41,13 +41,13 @@ class TopicSelect extends React.Component {
         <div>
           <div>
             {
-              (userTopicsForCourse && userTopicsForCourse.length > 0) ? 
+              (userTopicsForCourse && userTopicsForCourse.length > 0) ?
                 <form>
                   {
                     userTopicsForCourse
                     .map(uTop => {
                       const radioName = `${uTop.topicName.split(' ').join('-')}-Radio`;
-                      return this.props.userType === 'mentor' ? 
+                      return this.props.userType === 'mentor' ?
                         <div key={uTop.id}>
                           <li key={uTop.id}>{uTop.topicName}</li>
                         </div>
