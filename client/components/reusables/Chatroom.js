@@ -30,18 +30,20 @@ class Chatroom extends React.Component {
     socket.emit('room', {
       room: this.props.meetupId,
     });
-    if (
-      !this.props.partner&& this.props.pairedUserMeetups
-    ) {
+    if (!this.props.partner && this.props.pairedUserMeetups) {
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
       );
     }
   }
 
-  componentDidUpdate (prevProps){
-    const prevMeetupId = prevProps.pairedUserMeetups.partner && prevProps.pairedUserMeetups.partner.meetupId;
-    const currentMeetupId = this.props.pairedUserMeetups.partner && this.props.pairedUserMeetups.partner.meetupId;
+  componentDidUpdate(prevProps) {
+    const prevMeetupId =
+      prevProps.pairedUserMeetups.partner &&
+      prevProps.pairedUserMeetups.partner.meetupId;
+    const currentMeetupId =
+      this.props.pairedUserMeetups.partner &&
+      this.props.pairedUserMeetups.partner.meetupId;
     if (prevMeetupId !== currentMeetupId) {
       socket.emit('leave-room', {
         room: prevProps.meetupId,
@@ -97,7 +99,7 @@ class Chatroom extends React.Component {
             <div className="tile is-parent is-4">
               <div
                 className="tile is-child box tileColor"
-                style={{ textAlign: 'center' }}
+                style={{ textAlign: 'center', borderRadius: "0px" }}
               >
                 <div>
                   <div>
@@ -116,8 +118,9 @@ class Chatroom extends React.Component {
               </div>
             </div>
             <div className="tile is-parent">
-              <div className="tile is-child box tileColor">
-                <div className="message-list">
+              <div className="tile is-child box tileColor" style={{borderRadius: "0px"}}>
+                <div className="message-list" style={{overflowY: 'scroll',
+height: '200px'}}>
                   {this.state.messageList.map((item, idx) => (
                     <li
                       className="messages"
@@ -143,7 +146,7 @@ class Chatroom extends React.Component {
           </div>
         </div>
 
-        <button onClick={this.closeMeetup}>Close MeetupRoom</button>
+        <a className="button" onClick={this.closeMeetup}>Close MeetupRoom</a>
       </div>
     );
   }
@@ -152,7 +155,9 @@ class Chatroom extends React.Component {
 const mapStateToProps = state => ({
   user: state.auth,
   // userMeetup: state.userMeetup,
-  meetupId: state.pairedUserMeetups.reqUser ? state.pairedUserMeetups.reqUser.meetupId : null,
+  meetupId: state.pairedUserMeetups.reqUser
+    ? state.pairedUserMeetups.reqUser.meetupId
+    : null,
   partner: state.partner,
   pairedUserMeetups: state.pairedUserMeetups,
 });

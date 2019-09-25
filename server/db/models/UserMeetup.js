@@ -57,9 +57,9 @@ UserMeetup.updatePartnerUserMeetup = async function(
   const personalUserMeetupInst = userMeetup.filter(el => el.userId === userId);
 
   //Since the route is currently making the mistake of taking both a partner's proficiencyRating
-  //and updating a user's own status, we'll need to filter 
+  //and updating a user's own status, we'll need to filter
   let updatedPartnerUserMeetup;
-  if(newPartnerInfo.proficiencyRating){
+  if (newPartnerInfo.proficiencyRating) {
     updatedPartnerUserMeetup = await partnerUserMeetupInst[0].update({
       proficiencyRating: newPartnerInfo.proficiencyRating,
     });
@@ -69,7 +69,6 @@ UserMeetup.updatePartnerUserMeetup = async function(
   const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update(
     userUpdatedInfo,
   );
-
 
   return {
     partnerMeetupInfo: updatedPartnerUserMeetup,

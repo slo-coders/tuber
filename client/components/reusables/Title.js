@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Title(props) {
   return (
-    <section className="hero">
+    <section className="hero" style={props.center ? {textAlign:"center"} : {}}>
       <div
         className="hero-body"
         style={

@@ -34,7 +34,7 @@ class Review extends Component {
             <div className="tile is-ancestor">
               <div className="tile is-parent">
                 <div className="tile is-child"></div>
-                <div className="tile is-child is-6 box tileColor">
+                <div className="tile is-child is-6 box tileColor" style={{borderRadius: "0px"}}>
                   <strong>
                     {
                       'Please rate (name goes here) proficiency in the folowing topic:'
