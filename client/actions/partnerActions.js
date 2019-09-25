@@ -27,7 +27,7 @@ export const updatePartnerUserMeetupThunk = (
     //also update the user's userMeetup
     dispatch({
       type: actions.GET_USER_MEETUP_DATA,
-      payload: response.data
+      payload: response.data,
     });
   } catch (err) {
     console.error(err);

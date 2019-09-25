@@ -5,7 +5,6 @@ import Button from '../../reusables/Button-b';
 import PropTypes from 'prop-types';
 
 class TopicSelect extends React.Component {
-
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.courseWithTopics) !==

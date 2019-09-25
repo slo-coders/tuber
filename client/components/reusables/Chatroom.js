@@ -38,7 +38,7 @@ class Chatroom extends React.Component {
         this.props.pairedUserMeetups.partner.userId,
       );
     }
-    this.setState({title: this.props.singleTopic.title});
+    this.setState({ title: this.props.singleTopic.title });
   }
 
   componentDidUpdate(prevProps) {
@@ -48,7 +48,7 @@ class Chatroom extends React.Component {
     const currentMeetupId =
       this.props.pairedUserMeetups.partner &&
       this.props.pairedUserMeetups.partner.meetupId;
-    
+
     if (prevMeetupId !== currentMeetupId) {
       socket.emit('leave-room', {
         room: prevProps.meetupId,
@@ -91,7 +91,7 @@ class Chatroom extends React.Component {
     window.location = '/#/review'; //navigate to review component or to home
   }
 
-  render() {  
+  render() {
     if (this.props.user.authUser.id === undefined) return null;
 
     let partner;
@@ -110,13 +110,13 @@ class Chatroom extends React.Component {
                 <div>
                   <div>
                     <h5>{"Your partner's name is: " + partner.firstName}</h5>
-                    <h3>Let&apos;s talk about: { 
-                      this.state.title ?
-                      this.state.title
-                      : this.props.meetupTopic ?
-                      this.props.meetupTopic
-                      : 'why this isn\'t working!!!'
-                    }
+                    <h3>
+                      Let&apos;s talk about:{' '}
+                      {this.state.title
+                        ? this.state.title
+                        : this.props.meetupTopic
+                        ? this.props.meetupTopic
+                        : "why this isn't working!!!"}
                     </h3>
                     <br />
                     <img className="partnerImg" src={partner.imageUrl} />

@@ -31,7 +31,7 @@ class RequestMatch extends Component {
   componentDidMount() {
     this.props.getCourses();
   }
-  
+
   handleRoleChoice(e) {
     this.setState({
       userType: e.target.getAttribute('value'),
@@ -67,13 +67,13 @@ class RequestMatch extends Component {
     );
     await this.props.createUserSessionThunk(this.state);
     await this.props.singleTopicThunk(this.state.topicId);
-    this.setState({ 
-    userType: '',
-    courseId: '',
-    topicId: '',
-    location: 'library',
-    userId: ''
-  });
+    this.setState({
+      userType: '',
+      courseId: '',
+      topicId: '',
+      location: 'library',
+      userId: '',
+    });
     window.location = '/#/meetuproom';
   }
 
@@ -141,7 +141,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(createUserSessionThunk(userData)),
   setCourseTopics: courseId => dispatch(singleCourseTopicsThunk(courseId)),
   getUserTopics: courseId => dispatch(getUserTopicsThunked(courseId)),
-  singleTopicThunk: topicId => dispatch(singleTopicThunk(topicId))
+  singleTopicThunk: topicId => dispatch(singleTopicThunk(topicId)),
 });
 
 export default connect(

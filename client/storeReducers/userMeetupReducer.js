@@ -1,6 +1,4 @@
-import {
-  GET_USER_MEETUP_DATA,
-} from '../actions/actionTypes';
+import { GET_USER_MEETUP_DATA } from '../actions/actionTypes';
 
 const userMeetupReducer = (state = {}, action) => {
   switch (action.type) {

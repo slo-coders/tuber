@@ -32,15 +32,22 @@ export class Nav extends React.Component {
     const prevUserMeetupId = prevProps.userMeetup && prevProps.userMeetup.id;
     const currentUserMeetupId =
       this.props.userMeetup && this.props.userMeetup.id;
-      
-    const prevMeetupStatus = prevProps.userMeetup && prevProps.userMeetup.status;
-    const currentMeetupStatus = this.props.userMeetup && this.props.userMeetup.status;
-    
+
+    const prevMeetupStatus =
+      prevProps.userMeetup && prevProps.userMeetup.status;
+    const currentMeetupStatus =
+      this.props.userMeetup && this.props.userMeetup.status;
+
     if (prevUserId !== currentUserId) {
       this.props.getUserTopics(this.props.user.authUser.id);
     }
 
-    if(this.props.user.authUser.id && (!currentUserMeetupId || prevUserMeetupId !== currentUserMeetupId || prevMeetupStatus !== currentMeetupStatus)){
+    if (
+      this.props.user.authUser.id &&
+      (!currentUserMeetupId ||
+        prevUserMeetupId !== currentUserMeetupId ||
+        prevMeetupStatus !== currentMeetupStatus)
+    ) {
       this.props.getUserMeetup(this.props.user.authUser.id);
     }
 
