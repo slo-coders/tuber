@@ -5,90 +5,97 @@ import Button from '../../reusables/Button';
 import PropTypes from 'prop-types';
 
 class TopicSelect extends React.Component {
-  componentDidMount() {
-    this.props.singleCourseTopicsThunk(this.props.courseId); //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
-  }
+/*   componentDidMount() {
+  this.props.singleCourseTopics(this.props.courseId);
+  //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
+  } */
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.topics.length !== this.props.topics.length) {
-  //     //is this really a thing?!?!
-  //     this.props.singleCourseTopicsThunk(this.props.courseId);
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.courseWithTopics) !== JSON.stringify(this.props.courseWithTopics)) {
+      this.props.getSingleCourseTopics(this.props.courseId);
+    }
+  }
 
   //TODO: Put stars next to topic names.
 
   render() {
-    console.log('TOPIC SELECT', this.props);
-    console.log('UserTopics in TopicSelect: ', this.props.topics);
-    console.log('topicId required for enabling button: ', this.props.topicId);
+    const courseTopics = this.props.courseWithTopics && this.props.courseWithTopics.topics;
 
-    if (
-      this.props.course.topics === undefined ||
-      this.props.userType === undefined
-    )
-      return null;
-    const selectedCourseTopicsIds = this.props.course.topics.map(
-      topic => topic.id,
-    );
-    console.log('SELECTED COURSE TOPICS', selectedCourseTopicsIds); //single course with topics
+    if (courseTopics && courseTopics.length && this.props.userTopics){
+      const selectedCourseTopicsIds = courseTopics.map(
+        topic => topic.id,
+        );
 
-    // <div className="section" style={{paddingTop: "115px", paddingRight:'300px', paddingLeft:'300px'}}>
-    // <div className="container">
-    // <div className="tile is-ancestor">
-    // <div className="tile is-parent">
-    // <div className="tile is-child box">
+      // console.log('Selected course\'s topics as determined by `singleCourseWithTopics` in state ', selectedCourseTopicsIds);
+      // console.log('UserTopics acquired by Nav and saved in state ', this.props.userTopics);
 
-    return (
-      <div>
+      const userTopicsForCourse = this.props.userTopics.filter(item =>
+        selectedCourseTopicsIds.includes(item.topicId));
+
+      // <div className="section" style={{paddingTop: "115px", paddingRight:'300px', paddingLeft:'300px'}}>
+      // <div className="container">
+      // <div className="tile is-ancestor">
+      // <div className="tile is-parent">
+      // <div className="tile is-child box">
+      return (
         <div>
-          {this.props.topics.length > 0 ? (
-            <div>
-              <form>
-                {this.props.topics
-                  .filter(item =>
-                    selectedCourseTopicsIds.includes(item.topicId),
-                  )
-                  .map((uTop) =>
-                    this.props.userType === 'mentor' ? 
-                      <div key={uTop.id}>
-                        <li>{uTop.topicName}</li>
-                      </div>
-                     : 
-                      //mentor's topics w/o radio buttons
-                      <div className="radio" key={uTop.id}>
-                        <label htmlFor="radioButton">
-                          <input
-                            name="radioButton"
-                            type="radio"
-                            value={uTop.topicId}
-                            onChange={this.props.handleTopicChoice}
-                          />
-                          {uTop.topicName}
-                        </label>
-                      </div>
-                    ,
-                  )}
-              </form>
-            </div>
-          ) : (
-            'User did not select topic ratings for topics in this course; please select another course.'
-          )}
+          <div>
+            {
+              (userTopicsForCourse && userTopicsForCourse.length > 0) ?
+                <form>
+                  {
+                    userTopicsForCourse
+                    .map(uTop => {
+                      const radioName = `${uTop.topicName.split(' ').join('-')}-Radio`;
+                      return this.props.userType === 'mentor' ?
+                        <div key={uTop.id}>
+                          <li key={uTop.id}>{uTop.topicName}</li>
+                        </div>
+                      : //mentee/peer topics w/ radio buttons
+                        <div className="radio" key={uTop.id}>
+                          <label key={uTop.id}htmlFor={radioName}>
+                            <input
+                              key={uTop.id}
+                              name={radioName}
+                              type="radio"
+                              value={uTop.topicId}
+                              onChange={this.props.handleTopicChoice}
+                              checked={this.props.topicId === uTop.topicId}
+                            />
+                            {uTop.topicName}
+                          </label>
+                        </div>;
+                    })
+                  }
+                </form>
+            : <div>
+                <p>{'You do not appear to have any proficiency ratings for the topics in this selected course.'}</p>
+                <p>{'Please select another course.'}</p>
+              </div>
+            }
+          </div>
+          <Button
+            handleClick={this.props.handleSubmit} //createUserSessionThunk
+            buttonText={'Request Meetup'}
+            value={'Request Meetup'}
+            disabled={
+              this.props.topicId ||
+              (this.props.userType === 'mentor' &&
+                selectedCourseTopicsIds.length > 0)
+                ? false
+                : true
+            }
+          />
         </div>
-        <Button
-          handleClick={this.props.handleSubmit} //createUserSessionThunk
-          buttonText={'Request Meetup'}
-          value={'Request Meetup'}
-          disabled={
-            this.props.topicId ||
-            (this.props.userType === 'mentor' &&
-              selectedCourseTopicsIds.length > 0)
-              ? false
-              : true
-          }
-        />
-      </div>
-    );
+      );
+    } else {
+      console.log('No courseTopics (i.e., topics array) in courseWithTopics prop: ', this.props.courseWithTopics);
+      return (
+        <div>
+          <p>{'Fetching course topics...'}</p>
+        </div>
+      );
+    }
   }
 }
 
@@ -97,24 +104,24 @@ TopicSelect.defaultProps = {
 };
 
 TopicSelect.propTypes = {
-  course: PropTypes.object,
+  courseWithTopics: PropTypes.object,
   courseId: PropTypes.string,
-  singleCourseTopicsThunk: PropTypes.func,
+  getSingleCourseTopics: PropTypes.func,
   handleTopicChoice: PropTypes.func,
   handleSubmit: PropTypes.func,
   topicId: PropTypes.string,
   key: PropTypes.string,
-  topics: PropTypes.array,
+  userTopics: PropTypes.array,
   userType: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
-  course: state.courses.singleCourseWithTopics, ///courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
-  topics: state.userTopics, //////////////////userTopics === [{proficienctyRating:, topicId:, topicName:}] !=== courseTopics
+  courseWithTopics: state.courses.singleCourseWithTopics, // courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
+  userTopics: state.userTopics, // userTopics === [{proficienctyRating:, topicId:, topicName:}] !=== courseTopics
 });
 
 const mapDispatchToProps = dispatch => ({
-  singleCourseTopicsThunk: courseId =>
+  getSingleCourseTopics: courseId =>
     dispatch(singleCourseTopicsThunk(courseId)), //sets state.courses.singleCourseWithTopics
 });
 
@@ -122,15 +129,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(TopicSelect);
-
-{
-  /* this.props.courses[0].topics.map((topic, idx) => (
-              <div key={idx}>
-                <CheckBox
-                  checkboxValue={topic.id}
-                  checkboxItem={topic.title}
-                  handleCheckboxChange={this.props.handleTopicChoice}
-                />
-              </div>
-            ))*/
-}

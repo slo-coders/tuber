@@ -54,8 +54,15 @@ io.on('connection', socket => {
     socket.leave(data.room);
   });
 
+  let halfstackResponse =
+    'Hey! You probably want to talk to another human. Try chosing a topic and finding a partner!';
+
+  const dataFail = { user: 'Half-Stack', text: halfstackResponse };
+
   socket.on('chat-message', function(data) {
-    console.log('message from client', data);
+    if (data.room === null) {
+      io.to(`${socket.id}`).emit('message-data', dataFail);
+    }
     io.in(data.room).emit('message-data', data);
   });
 });
