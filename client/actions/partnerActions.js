@@ -22,7 +22,7 @@ export const updatePartnerUserMeetupThunk = (
       `/api/users/${userId}/meetups/${meetupId}`,
       data,
     );
-    console.log('UPDATE PARTNER THUNK>>>>>>>', response.data);
+    console.log('UPDATE PARTNER USERMEETUP THUNK >>>', response.data);
     dispatch({
       type: actions.UPDATE_PARTNER_USERMEETUP,
       payload: response.data,

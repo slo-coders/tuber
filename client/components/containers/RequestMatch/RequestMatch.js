@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import ChooseRole from './ChooseRole';
 import CourseSelect from './CourseSelect';
 import TopicSelect from './TopicSelect';
-import { listCoursesThunk , singleCourseTopicsThunk} from '../../../actions/courseActions';
+import {
+  listCoursesThunk,
+  singleCourseTopicsThunk,
+} from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { getUserTopicsThunked } from '../../../actions/userTopicActions';
 import PropTypes from 'prop-types';
@@ -31,7 +34,7 @@ class RequestMatch extends Component {
   componentDidMount() {
     this.props.getCourses();
     //TODO: Check 'status' of UserMeetup instance
-    
+
     //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
     //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
   }
@@ -48,7 +51,7 @@ class RequestMatch extends Component {
       userId: this.props.user.authUser.id,
     });
   }
-  
+
   async handleCourseChoice(e) {
     await this.setState({
       courseId: e.target.getAttribute('value'), // from course.id in courseOptions[] sent to CourseSelect
@@ -62,7 +65,10 @@ class RequestMatch extends Component {
   }
 
   handleTopicChoice(e) {
-    const newTopicId = this.state.topicId === e.target.getAttribute('value') ? '' : e.target.getAttribute('value');
+    const newTopicId =
+      this.state.topicId === e.target.getAttribute('value')
+        ? ''
+        : e.target.getAttribute('value');
     this.setState({
       topicId: newTopicId,
     });
@@ -103,7 +109,7 @@ class RequestMatch extends Component {
         </div>
       );
     }
-    
+
     if (this.state.userType && !this.state.courseId) {
       return (
         <div className="section">

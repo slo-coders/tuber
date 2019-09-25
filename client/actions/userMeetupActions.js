@@ -12,18 +12,17 @@ export const getUserMeetupDataThunked = userId => async dispatch => {
 };
 //returns User w/ User.meetups[].user_meetup.meetupId||status
 
-
 // gets a single meetup for a specific user
-// export const getMeetupDataThunked = (userId, meetupId) => async dispatch => {
-//   try {
-//     const response = await axios.get(
-//       `/api/users/${userId}/meetups/${meetupId}`,
-//     );
-//     dispatch({ type: action.GET_MEETUP_DATA, payload: response.data });
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
+export const getMeetupDataThunked = (userId, meetupId) => async dispatch => {
+  try {
+    const response = await axios.get(
+      `/api/users/${userId}/meetups/${meetupId}`,
+    );
+    dispatch({ type: action.GET_MEETUP_DATA, payload: response.data });
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 export const updateMeetupDataThunked = (
   userId,

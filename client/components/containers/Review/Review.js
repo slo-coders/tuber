@@ -25,15 +25,13 @@ class Review extends Component {
   }
 
   handleSubmit() {
-    //////////////////NOT UPDATING thunk is not being called
-    this.props.updatePartnerUserMeetupThunk(
+    this.props.updatePartnerUserMeetup(
       this.props.user.authUser.id,
       this.props.userMeetup.meetupId,
       { proficiencyRating: this.state.proficiencyRating, status: 'completed' },
     );
     window.location = '/#/profile';
   }
-
 
   render() {
     console.log('Review Component', this.props);
@@ -82,12 +80,12 @@ class Review extends Component {
   }
 }
 
-Review.PropTypes = {
+Review.propTypes = {
   user: PropTypes.object,
   userMeetup: PropTypes.object,
   partner: PropTypes.object,
   pairedUserMeetups: PropTypes.object,
-  updatePartnerUserMeetupThunk: PropTypes.func,
+  updatePartnerUserMeetup: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -98,7 +96,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updatePartnerUserMeetupThunk: (userId, meetupId, data) =>
+  updatePartnerUserMeetup: (userId, meetupId, data) =>
     dispatch(updatePartnerUserMeetupThunk(userId, meetupId, data)),
 });
 

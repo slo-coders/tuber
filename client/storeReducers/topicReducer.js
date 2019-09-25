@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   topics: [],
-  sinlgeTopic: {},
+  singleTopic: {},
 };
 
 const topicReducer = (state = initialState, action) => {
