@@ -17,9 +17,8 @@ export class Nav extends React.Component {
     this.logout = this.logout.bind(this);
   }
 
-
-  componentDidMount(){
-    if(this.props.user.authUser.id){
+  componentDidMount() {
+    if (this.props.user.authUser.id) {
       this.props.getUserMeetup(this.props.user.authUser.id);
       this.props.getUserTopics(this.props.user.authUser.id);
     }
@@ -124,7 +123,7 @@ Nav.defaultProps = {
   user: {},
   authUser: {},
   id: '',
-  logoutThunked: ()=>{},
+  logoutThunked: () => {},
 };
 Nav.propTypes = {
   user: PropTypes.object,
@@ -143,8 +142,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   logoutThunked: () => dispatch(logoutThunked()),
-  getUserMeetup: (userId) => dispatch(getUserMeetupDataThunked(userId)),
-  getUserTopics: (userId) => dispatch(getUserTopicsThunked(userId)),
+  getUserMeetup: userId => dispatch(getUserMeetupDataThunked(userId)),
+  getUserTopics: userId => dispatch(getUserTopicsThunked(userId)),
 });
 
 export default connect(

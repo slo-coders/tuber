@@ -5,9 +5,9 @@ import StarRating from '../../reusables/StarRating';
 import { updatePartnerUserMeetupThunk } from '../../../actions/partnerActions';
 import PropTypes from 'prop-types';
 
-class Review extends Component {
-  constructor() {
-    super();
+export class Review extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       proficiencyRating: 0,
       topicId: '',
@@ -24,24 +24,22 @@ class Review extends Component {
     });
   }
 
-  handleSubmit() {
-    //////////////////NOT UPDATING thunk is not being called
-    this.props.updatePartnerUserMeetupThunk(
+  async handleSubmit() {
+    console.log('SUBMIT');
+    await this.props.updatePartnerUserMeetupThunk(
       this.props.user.authUser.id,
       this.props.userMeetup.meetupId,
       { proficiencyRating: this.state.proficiencyRating, status: 'completed' },
     );
-    window.location = '/#/profile';
+    window.location = '#/profile';
   }
 
-
   render() {
-    console.log('Review Component', this.props);
     return (
       <div>
         <Title
           largeText="Review Your Partner"
-          smallText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. "
+          smallText="Before matching with new partner, please take a moment to rate the proficiency level of your previous partner."
         />
         <div className="section">
           <div className="container">
@@ -50,9 +48,7 @@ class Review extends Component {
                 <div className="tile is-child"></div>
                 <div className="tile is-child is-6 box tileColor">
                   <strong>
-                    {
-                      'Please rate (name goes here) proficiency in the folowing topic:'
-                    }
+                    {`Please rate ${this.props.partner.firstName} proficiency in the folowing topic:`}
                   </strong>
                   <br />
                   <br />

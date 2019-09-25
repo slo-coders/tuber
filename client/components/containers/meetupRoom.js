@@ -1,5 +1,4 @@
 //COMPONET: meetup-room
-//TODO After submitting a meetuprequest, navigate to meetup-page
 //match, (i.e., response from createUserSessionThunk in userSessionActions.js will be set
 //as either the UsersSession instance or paired UserMeetups info as {reqUser: , partner:} in store as userSession,
 //In store, userSession:
@@ -62,8 +61,7 @@ class MeetupRoom extends React.Component {
         {this.props.pairedUserMeetups.partner ? (
           <div>
             <Title
-              smallText="Lorem ipsum dolor sit amet, pri quod inimicus disputando cu, sit
-                  facilisi abhorreant in."
+              smallText="Chat with your partner to decide on meeting details. Always keep it respectful."
               largeText="You have been matched!"
             />
 
