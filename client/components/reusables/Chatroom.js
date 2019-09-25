@@ -15,6 +15,9 @@ class Chatroom extends React.Component {
       messageList: [],
       message: '',
       title: '',
+      //need to have userMeetup status checked for update. 
+      //Nessissary for terminating socket room?
+      status:'',
     };
     this.handleTextChange = this.handleTextChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -48,14 +51,20 @@ class Chatroom extends React.Component {
     const currentMeetupId =
       this.props.pairedUserMeetups.partner &&
       this.props.pairedUserMeetups.partner.meetupId;
-
+      
+    const currentUserMeetupStatus = this.props.pairedUserMeetups &&this.props.pairedUserMeetups.reqUser;
+    // const currentPartnerMeetupStatus = this.props.pairedUserMeetups && this.props.pairedUserMeeetups.partner;
+    
     if (prevMeetupId !== currentMeetupId) {
       socket.emit('leave-room', {
         room: prevProps.meetupId,
       });
-      socket.emit('room', {
-        room: this.props.meetupId,
-      });
+      if(currentUserMeetupStatus === 'matched'){
+        socket.emit('room', {
+          room: this.props.meetupId,
+          status: "matched"
+        });     
+      }
     }
   }
 
@@ -69,6 +78,7 @@ class Chatroom extends React.Component {
       room: this.props.meetupId,
       user: this.props.user.authUser.firstName,
       text: this.state.message,
+      status: this.state.status,
     });
     this.setState({ message: '' });
   }
@@ -82,11 +92,17 @@ class Chatroom extends React.Component {
   closeMeetup() {
     socket.emit('leave-room', {
       room: this.props.meetupId,
+      //include status on body as a check
     });
+    console.log('this.props.updateMeetupData{} in Chatroom: {}===', this.props.user.authUser.id,
+    this.props.meetupId);
     this.props.updateMeetupData(
       this.props.user.authUser.id,
       this.props.meetupId,
-      { status: 'pending review' },
+      { 
+        userStatus: 'pending review',
+        partnerStatus: 'pending review',
+      }
     );
     window.location = '/#/review'; //navigate to review component or to home
   }

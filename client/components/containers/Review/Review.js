@@ -28,7 +28,8 @@ export class Review extends Component {
     this.props.updatePartnerUserMeetup(
       this.props.user.authUser.id,
       this.props.userMeetup.meetupId,
-      { proficiencyRating: this.state.proficiencyRating, status: 'completed' },
+      { proficiencyRating: this.state.proficiencyRating, userStatus: 'completed' },
+      //status becomes userStatus because of route /api/users/:userId/meetups/:meetupId
     );
     window.location = '#/profile';
   }
