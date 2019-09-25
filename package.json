@@ -102,6 +102,7 @@
     "connect-session-sequelize": "^6.0.0",
     "crypto": "^1.0.1",
     "dotenv": "^8.1.0",
+    "faker": "^4.1.0",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "heroku": "^7.29.0",
