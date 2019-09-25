@@ -9,6 +9,7 @@ import {
 } from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { getUserTopicsThunked } from '../../../actions/userTopicActions';
+import { singleTopicThunk } from '../../../actions/topicActions';
 import PropTypes from 'prop-types';
 
 //TODO: Render and submit topics based on a course for Mentors
@@ -16,8 +17,8 @@ import PropTypes from 'prop-types';
 //NOTE: This componet has local state that can be utilized
 
 class RequestMatch extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       userType: '',
       courseId: '',
@@ -33,9 +34,14 @@ class RequestMatch extends Component {
 
   componentDidMount() {
     this.props.getCourses();
-    //TODO: Check 'status' of UserMeetup instance
+    //TODO: UPDATE UserMeetup with a new get and Check 'status' of UserMeetup instance
 
-    //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
+    //TODO: On mount of RequestMatch component, 
+    // if UserMeetup's status === 'completed', then userMeetup: in state gets empty object (MAYBE);
+    // else if status === 'matched', redirect to meetuproom component
+    // else if status === 'pending review', redirect to review component
+    //
+
     //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
   }
 
@@ -45,6 +51,8 @@ class RequestMatch extends Component {
     }
   } */
 
+  
+  
   handleRoleChoice(e) {
     this.setState({
       userType: e.target.getAttribute('value'),
@@ -61,7 +69,6 @@ class RequestMatch extends Component {
     this.setState({
       topicId: '',
     });
-    // console.log('Setting topicId to :', '\'\'');
   }
 
   handleTopicChoice(e) {
@@ -72,7 +79,6 @@ class RequestMatch extends Component {
     this.setState({
       topicId: newTopicId,
     });
-    // console.log('Setting topicId to :', e.target.getAttribute('value') );
   }
 
   async handleSubmit() {
@@ -81,6 +87,14 @@ class RequestMatch extends Component {
       this.state,
     );
     await this.props.createUserSessionThunk(this.state);
+    await this.props.singleTopicThunk(this.state.topicId);
+    this.setState({ 
+    userType: '',
+    courseId: '',
+    topicId: '',
+    location: 'library',
+    userId: ''
+  });
     window.location = '/#/meetuproom';
   }
 
@@ -136,6 +150,7 @@ RequestMatch.propTypes = {
   getCourses: PropTypes.func,
   setCourseTopics: PropTypes.func,
   getUserTopics: PropTypes.func,
+  singleTopicThunk: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -149,6 +164,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(createUserSessionThunk(userData)),
   setCourseTopics: courseId => dispatch(singleCourseTopicsThunk(courseId)),
   getUserTopics: courseId => dispatch(getUserTopicsThunked(courseId)),
+  singleTopicThunk: topicId => dispatch(singleTopicThunk(topicId))
 });
 
 export default connect(

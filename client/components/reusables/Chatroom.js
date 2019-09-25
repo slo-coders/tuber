@@ -14,13 +14,14 @@ class Chatroom extends React.Component {
     this.state = {
       messageList: [],
       message: '',
+      title: '',
     };
     this.handleTextChange = this.handleTextChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
     this.closeMeetup = this.closeMeetup.bind(this);
 
-    //listening for incomming server data
+    //listening for incoming server data
     socket.on('message-data', data => {
       console.log('Info from SERVER: ', data);
       this.updateMessages(data);
@@ -37,6 +38,7 @@ class Chatroom extends React.Component {
         this.props.pairedUserMeetups.partner.userId,
       );
     }
+    this.setState({title: this.props.singleTopic.title});
   }
 
   componentDidUpdate(prevProps) {
@@ -46,7 +48,7 @@ class Chatroom extends React.Component {
     const currentMeetupId =
       this.props.pairedUserMeetups.partner &&
       this.props.pairedUserMeetups.partner.meetupId;
-
+    
     if (prevMeetupId !== currentMeetupId) {
       socket.emit('leave-room', {
         room: prevProps.meetupId,
@@ -81,21 +83,18 @@ class Chatroom extends React.Component {
     socket.emit('leave-room', {
       room: this.props.meetupId,
     });
-
-    //TODO: In Review component, add put/update partner's profeciencyRating and change UserMeetup status from 'pending review' to 'completed'
-
     this.props.updateMeetupData(
       this.props.user.authUser.id,
       this.props.meetupId,
       { status: 'pending review' },
     );
-    window.location = '/'; //navigate to review component or to home
+    window.location = '/#/review'; //navigate to review component or to home
   }
 
-  render() {
-    console.log('ALTPROP', this.props.partnerAlt); //////
+  render() {  
     if (this.props.user.authUser.id === undefined) return null;
-    console.log('CHAT-ROOM PROPS', this.props);
+    // console.log('CHAT-ROOM PROPS', this.props);
+    // console.log('CHAT-ROOM STATE', this.state);
 
     let partner;
     if (this.props.partnerAlt) partner = this.props.partnerAlt;
@@ -113,7 +112,14 @@ class Chatroom extends React.Component {
                 <div>
                   <div>
                     <h5>{"Your partner's name is: " + partner.firstName}</h5>
-                    <h3>Let&apos;s talk about: {this.props.meetupTopic}</h3>
+                    <h3>Let&apos;s talk about: { 
+                      this.state.title ?
+                      this.state.title
+                      : this.props.meetupTopic ?
+                      this.props.meetupTopic
+                      : 'why this isn\'t working!!!'
+                    }
+                    </h3>
                     <br />
                     <img className="partnerImg" src={partner.imageUrl} />
                   </div>

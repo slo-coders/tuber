@@ -25,20 +25,18 @@ class MeetupRoom extends React.Component {
     // this.redirectToHome = this.redirectToHome.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const currentPairedPartner =
       this.props.pairedUserMeetups && this.props.pairedUserMeetups.partner;
     const currentMeetupId =
       this.props.userMeetup && this.props.userMeetup.meetupId;
     if (this.props.pairedUserMeetups && this.props.pairedUserMeetups.partner) {
       console.log('firing from if, inside componentDidMount top');
-      this.props.singlePartnerThunk(
-        this.props.pairedUserMeetups.partner.userId,
-      );
+      await this.props.singlePartnerThunk(this.props.pairedUserMeetups.partner.userId);
     }
     if (currentMeetupId && !currentPairedPartner) {
-      console.log('firing from inside componentDidUpdate, else-if');
-      this.props.getMeetupWithExtra(currentMeetupId); //sets meetups.singleMeetups in the store
+      console.log('firing from inside componentDidMount, second-if');
+      await this.props.getMeetupWithExtra(currentMeetupId); //sets meetups.singleMeetups in the store
     }
   }
 
@@ -63,14 +61,14 @@ class MeetupRoom extends React.Component {
       console.log('firing from inside componentDidUpdate (if)');
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
-      );
+        );
     } else if (
       currentMeetupId &&
       !currentPairedPartner &&
       !prevMeetupUsersArr //(prevMeetupUsersArr !== currentMeetupUsersArr)// && !prevMeetupUsersArr
     ) {
-      console.log('firing from inside componentDidUpdate, else-if');
-      await this.props.getMeetupWithExtra(currentMeetupId); //sets meetups.singleMeetups in the store
+      console.log('firing from inside componentDidUpdate, else-if', currentMeetupId);
+      await this.props.getMeetupWithExtra(currentMeetupId); //sets meetups.singleMeetups in the store by using an independent GET call
     }
   }
 

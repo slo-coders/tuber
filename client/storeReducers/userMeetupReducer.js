@@ -1,6 +1,5 @@
 import {
-  // UPDATE_MEETUP_DATA,
-  GET_USER_MEETUP_DATA,
+  GET_USER_MEETUP_DATA, UPDATE_PARTNER_USERMEETUP,
 } from '../actions/actionTypes';
 
 const userMeetupReducer = (state = {}, action) => {
@@ -35,8 +34,6 @@ const userMeetupReducer = (state = {}, action) => {
       } else {
         return state;
       }
-    // case UPDATE_MEETUP_DATA:
-    //   return { ...state, userMeeupsArray: action.payload.meetups };
     default:
       return state;
   }
