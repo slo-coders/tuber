@@ -24,6 +24,7 @@ router.get('/:meetupId', async (req, res, next) => {
         { model: Topic, through: { model: MeetupTopic } },
       ],
     });
+
     res.send(meetupInstance);
   } catch (err) {
     next(err);

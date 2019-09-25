@@ -11,6 +11,7 @@ const userSessionReducer = (state = initialState, action) => {
       //returns an object of that has arrays of UserSessions filterd by UserType ('mentor', 'mentee', 'peer')
       return { ...state, activeSessions: action.payload };
     case actions.CREATE_USER_SESSION:
+      console.log('inside userSession reducers');
       //may want to return all active sessions after posting a new userSession... Here I am only returning the info for one user for the Front-end to update UI
       return { ...state, singleUserSessionInfo: action.payload };
     case actions.CHANGE_USER_SESSION:

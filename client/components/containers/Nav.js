@@ -28,16 +28,32 @@ export class Nav extends React.Component {
     const prevUserId = prevProps.user.authUser && prevProps.user.authUser.id;
     const currentUserId =
       this.props.user.authUser && this.props.user.authUser.id;
+
     const prevUserMeetupId = prevProps.userMeetup && prevProps.userMeetup.id;
     const currentUserMeetupId =
       this.props.userMeetup && this.props.userMeetup.id;
-    if (
-      prevUserId !== currentUserId ||
-      prevUserMeetupId !== currentUserMeetupId
-    ) {
-      this.props.getUserMeetup(this.props.user.authUser.id);
+
+    const prevMeetupStatus =
+      prevProps.userMeetup && prevProps.userMeetup.status;
+    const currentMeetupStatus =
+      this.props.userMeetup && this.props.userMeetup.status;
+
+    if (prevUserId !== currentUserId) {
       this.props.getUserTopics(this.props.user.authUser.id);
     }
+
+    if (
+      this.props.user.authUser.id &&
+      (!currentUserMeetupId ||
+        prevUserMeetupId !== currentUserMeetupId ||
+        prevMeetupStatus !== currentMeetupStatus)
+    ) {
+      this.props.getUserMeetup(this.props.user.authUser.id);
+    }
+
+    /* if(currentMeetupStatus === 'completed') {
+      //partner should be empty or userMeetup should be empty since mostRecentMeetup is complete
+    } */
   }
 
   logout(ev) {
@@ -47,7 +63,7 @@ export class Nav extends React.Component {
   }
 
   render() {
-    // console.log('NAV-BAR', this.props);
+    console.log('NAV-BAR', this.props);
     return (
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
@@ -83,13 +99,9 @@ export class Nav extends React.Component {
                       this.props.userMeetup.status === 'matched'
                     ? '/meetuproom'
                     : '/request_match'
-                } /* path will eventually depend on match status, this is a placeholder */
+                }
               >
                 Meetups
-              </Link>
-
-              <Link className="navbar-item" to="/chatroom">
-                Chat Room
               </Link>
 
               <Link className="navbar-item" to="/review">
@@ -129,6 +141,7 @@ Nav.propTypes = {
   user: PropTypes.object,
   authUser: PropTypes.object,
   id: PropTypes.string,
+  status: PropTypes.string,
   logoutThunked: PropTypes.func,
   getUserMeetup: PropTypes.func,
   getUserTopics: PropTypes.func,
