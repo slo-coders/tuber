@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import ChooseRole from './ChooseRole';
 import CourseSelect from './CourseSelect';
 import TopicSelect from './TopicSelect';
-import { listCoursesThunk , singleCourseTopicsThunk} from '../../../actions/courseActions';
+import {
+  listCoursesThunk,
+  singleCourseTopicsThunk,
+} from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
 import { getUserTopicsThunked } from '../../../actions/userTopicActions';
 import PropTypes from 'prop-types';
@@ -48,7 +51,7 @@ class RequestMatch extends Component {
       userId: this.props.user.authUser.id,
     });
   }
-  
+
   async handleCourseChoice(e) {
     await this.setState({
       courseId: e.target.getAttribute('value'), // from course.id in courseOptions[] sent to CourseSelect
@@ -103,7 +106,7 @@ class RequestMatch extends Component {
         </div>
       );
     }
-    
+
     if (this.state.userType && !this.state.courseId) {
       return (
         <div className="section">

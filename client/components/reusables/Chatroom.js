@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
 import { updateMeetupDataThunked } from '../../actions/userMeetupActions';
+import Review from '../containers/Review/Review';
 
 import io from 'socket.io-client';
 const socket = io();
@@ -13,6 +14,7 @@ class Chatroom extends React.Component {
     this.state = {
       messageList: [],
       message: '',
+      redirect: false,
     };
     this.onHandle = this.onHandle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -78,7 +80,6 @@ class Chatroom extends React.Component {
     socket.emit('leave-room', {
       room: this.props.meetupId,
     });
-
     //TODO: In Review component, add put/update partner's profeciencyRating and change UserMeetup status from 'pending review' to 'completed'
 
     this.props.updateMeetupDataThunked(
@@ -86,10 +87,14 @@ class Chatroom extends React.Component {
       this.props.meetupId,
       { status: 'pending review' },
     );
-    window.location = '/'; //navigate to review component or to home
+    this.setState.redirect = true;
+    window.location = '#/review';
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Review />;
+    }
     if (this.props.user.authUser.id === undefined) return null;
     console.log('CHAT-ROOM PROPS', this.props);
     return (
