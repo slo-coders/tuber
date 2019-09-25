@@ -5,11 +5,10 @@ import PropTypes from 'prop-types';
 
 export default function ChooseRole(props) {
   const buttons = [
-    { id: 1, value: 'mentor', buttonText: 'Mentor' },
-    { id: 2, value: 'mentee', buttonText: 'Mentee' },
-    { id: 3, value: 'peer', buttonText: 'Peer' },
+    { id: 1, value: 'mentor', buttonText: 'Teach' },
+    { id: 2, value: 'mentee', buttonText: 'Learn' },
+    { id: 3, value: 'peer', buttonText: 'Collaborate' },
   ];
-  console.log('CHOOSE ROLE:', props);
   return (
     <CSSTransitionGroup
       transitionAppear={true}

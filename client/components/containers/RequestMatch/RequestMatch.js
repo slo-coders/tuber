@@ -12,10 +12,6 @@ import { getUserTopicsThunked } from '../../../actions/userTopicActions';
 import { singleTopicThunk } from '../../../actions/topicActions';
 import PropTypes from 'prop-types';
 
-//TODO: Render and submit topics based on a course for Mentors
-//TODO: Render and submit selected topics for either mentee or peer
-//NOTE: This componet has local state that can be utilized
-
 class RequestMatch extends Component {
   constructor(props) {
     super(props);
@@ -34,24 +30,7 @@ class RequestMatch extends Component {
 
   componentDidMount() {
     this.props.getCourses();
-    //TODO: UPDATE UserMeetup with a new get and Check 'status' of UserMeetup instance
-
-    //TODO: On mount of RequestMatch component, 
-    // if UserMeetup's status === 'completed', then userMeetup: in state gets empty object (MAYBE);
-    // else if status === 'matched', redirect to meetuproom component
-    // else if status === 'pending review', redirect to review component
-    //
-
-    //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
   }
-
-  /*  componentDidUpdate(prevProps) {
-    if (prevProps.courses !== this.props.courses) {
-      this.props.getCourses();
-    }
-  } */
-
-  
   
   handleRoleChoice(e) {
     this.setState({
@@ -62,7 +41,7 @@ class RequestMatch extends Component {
 
   async handleCourseChoice(e) {
     await this.setState({
-      courseId: e.target.getAttribute('value'), // from course.id in courseOptions[] sent to CourseSelect
+      courseId: e.target.getAttribute('value'),
     });
     await this.props.getUserTopics(this.state.userId);
     await this.props.setCourseTopics(this.state.courseId); //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
@@ -99,8 +78,6 @@ class RequestMatch extends Component {
   }
 
   render() {
-    // console.log('REQUEST MATCH PAGE PROPS', this.props);
-    // console.log('REQUEST MATCH PAGE STATE', this.state);
     if (!this.state.userType) {
       return <ChooseRole handleRoleChoice={this.handleRoleChoice} />;
     }

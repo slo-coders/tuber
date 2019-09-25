@@ -114,15 +114,12 @@ class MeetupRoom extends React.Component {
         {this.props.pairedUserMeetups.partner || (partner && meetupTopic) ? (
           <div>
             <Title
-              smallText="Lorem ipsum dolor sit amet, pri quod inimicus disputando cu, sit
-                  facilisi abhorreant in."
+              smallText="Chat with your partner to decide on meeting details. Always keep it respectful."
               largeText="You have been matched!"
             />
-
             <div className="section">
               <div className="container">
                 <Chatroom meetupTopic={meetupTopic} partnerAlt={partner} />
-                {/* should we pass partner? will it interfere wiht mapStateToProps */}
               </div>
             </div>
           </div>

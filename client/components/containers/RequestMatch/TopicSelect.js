@@ -1,14 +1,10 @@
 import React from 'react';
 import { singleCourseTopicsThunk } from '../../../actions/courseActions';
 import { connect } from 'react-redux';
-import Button from '../../reusables/Button';
+import Button from '../../reusables/Button-b';
 import PropTypes from 'prop-types';
 
 class TopicSelect extends React.Component {
-  /*   componentDidMount() {
-  this.props.singleCourseTopics(this.props.courseId); 
-  //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
-  } */
 
   componentDidUpdate(prevProps) {
     if (
@@ -27,9 +23,6 @@ class TopicSelect extends React.Component {
 
     if (courseTopics && courseTopics.length && this.props.userTopics) {
       const selectedCourseTopicsIds = courseTopics.map(topic => topic.id);
-
-      // console.log('Selected course\'s topics as determined by `singleCourseWithTopics` in state ', selectedCourseTopicsIds);
-      // console.log('UserTopics acquired by Nav and saved in state ', this.props.userTopics);
 
       const userTopicsForCourse = this.props.userTopics.filter(item =>
         selectedCourseTopicsIds.includes(item.topicId),

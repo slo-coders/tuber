@@ -93,8 +93,6 @@ class Chatroom extends React.Component {
 
   render() {  
     if (this.props.user.authUser.id === undefined) return null;
-    // console.log('CHAT-ROOM PROPS', this.props);
-    // console.log('CHAT-ROOM STATE', this.state);
 
     let partner;
     if (this.props.partnerAlt) partner = this.props.partnerAlt;
@@ -166,10 +164,6 @@ Chatroom.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.auth,
-  // userMeetup: state.userMeetup,
-  /* meetupId: state.pairedUserMeetups.reqUser
-    ? state.pairedUserMeetups.reqUser.meetupId
-    : null, */
   meetupId: state.pairedUserMeetups.reqUser
     ? state.pairedUserMeetups.reqUser.meetupId
     : state.userMeetup && state.userMeetup.meetupId

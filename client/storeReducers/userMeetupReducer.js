@@ -1,5 +1,5 @@
 import {
-  GET_USER_MEETUP_DATA, UPDATE_PARTNER_USERMEETUP,
+  GET_USER_MEETUP_DATA,
 } from '../actions/actionTypes';
 
 const userMeetupReducer = (state = {}, action) => {

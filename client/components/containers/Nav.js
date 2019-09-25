@@ -92,8 +92,7 @@ export class Nav extends React.Component {
                       this.props.userMeetup.status === 'matched'
                     ? '/meetuproom'
                     : '/request_match'
-                 
-                } /* path will eventually depend on match status, this is a placeholder */
+                }
               >
                 Meetups
               </Link>

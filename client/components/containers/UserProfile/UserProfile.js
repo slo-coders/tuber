@@ -26,9 +26,7 @@ class UserProfile extends Component {
   }
 
   render() {
-    console.log('PROFILE', this.props);
     const user = this.props.user;
-    console.log('userrrr', user);
     if (user) {
       return (
         <div>
