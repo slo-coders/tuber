@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 //COMPONET: meetup-room
 //TODO After submitting a meetuprequest, navigate to meetup-page
 //match, (i.e., response from createUserSessionThunk in userSessionActions.js will be set
@@ -134,6 +135,33 @@ class MeetupRoom extends React.Component {
 
       // console.log('MeetupRoom partner from render: ', partner);
     }
+    console.log('MEETUP ROOM', this.props);
+
+    //Get meetup topics ID --> userSession.singleUserSessionInfo.selectedTopics[0]
+
+    //could also get information off of the courses property on state: --> courses.singleCourseWithTopics
+
+    let topicId;
+
+    if (
+      this.props.userSession.singleUserSessionInfo &&
+      this.props.userSession.singleUserSessionInfo.selectedTopics
+    ) {
+      topicId = this.props.userSession.singleUserSessionInfo.selectedTopics[0];
+    }
+
+    let mentorTopic;
+    if (
+      this.props.userMeetup.userType === 'mentor' &&
+      this.props.courses.singleCourseWithTopics.length > 1
+    ) {
+      console.log(
+        'meetupRoom courses',
+        this.props.courses.singleUserSessionInfo,
+      );
+    }
+
+    console.log('meetuproom state courses', this.props.courses);
 
     return (
       <div>
@@ -145,7 +173,11 @@ class MeetupRoom extends React.Component {
             />
             <div className="section">
               <div className="container">
-                <Chatroom meetupTopic={meetupTopic} partnerAlt={partner} />
+                <Chatroom
+                  mentorTopic={mentorTopic}
+                  meetupTopic={meetupTopic}
+                  partnerAlt={partner}
+                />
               </div>
             </div>
           </div>
@@ -173,7 +205,6 @@ MeetupRoom.propTypes = {
   meetupObjWithUsersArr: PropTypes.object,
   singlePartnerThunk: PropTypes.func,
   getMeetupWithExtra: PropTypes.func,
-  singleTopic: PropTypes.object,
   singleTopicThunk: PropTypes.func,
   closeUserSession: PropTypes.func,
   getMeetupSelectedTopic: PropTypes.func,
@@ -187,6 +218,7 @@ const mapStateToProps = state => ({
   userMeetup: state.userMeetup,
   meetupObjWithUsersArr: state.meetups.singleMeetup,
   singleTopic: state.topics.singleTopic,
+  courses: state.courses,
 });
 
 const mapDispatchToProps = dispatch => ({

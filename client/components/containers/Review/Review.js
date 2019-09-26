@@ -67,10 +67,10 @@ export class Review extends Component {
   }
 
   render() {
-    const selectedMentorTopic =
-      this.props.userMeetup.userType === 'mentor'
-        ? 'Limits'
-        : this.props.singleTopic.title;
+    // const selectedMentorTopic =
+    //   this.props.userMeetup.userType === 'mentor'
+    //     ? 'Limits'
+    //     : this.props.singleTopic.title;
 
     console.log('Review form props', this.props);
     console.log('Review form state', this.state);
@@ -96,7 +96,12 @@ export class Review extends Component {
                   <br />
                   <br />
                   <div className="level">
-                    <p>{selectedMentorTopic}:</p>
+                    <p>
+                      {this.props.singleTopic.length > 1
+                        ? this.props.singleTopic[0].title
+                        : this.props.singleTopic.title}
+                      :
+                    </p>
 
                     <StarRating
                       // pass in topicId here, it will get sent back to this state with score when user clicks on star
