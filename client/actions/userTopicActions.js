@@ -16,6 +16,14 @@ export const getUserTopicsThunked = userId => async dispatch => {
   }
 };
 
+export const getMeetupTopicThunked = meetupId => async dispatch => {
+  try {
+    const resoponse = await axios.get();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 /* export const getUserTopicThunked = (userId, topicId) => async dispatch => {
   try {
     const response = await axios.get(
