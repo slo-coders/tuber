@@ -18,7 +18,7 @@ const topicReducer = (state = initialState, action) => {
     case FETCH_TOPIC_ALL:
       return { ...state, topics: action.payload };
     case POST_TOPIC:
-      return { ...state, singleTopic: [...state.topics, action.payload] };
+      return { ...state, topics: [...state.topics, action.payload] };
     case EDIT_TOPIC:
       return {
         ...state,
