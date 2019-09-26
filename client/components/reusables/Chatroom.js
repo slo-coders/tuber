@@ -2,8 +2,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
-import { updateMeetupDataThunked } from '../../actions/userMeetupActions';
+import { getUserMeetupDataThunked, updateMeetupDataThunked} from '../../actions/userMeetupActions';
+import { removeSingleMeetupThunk}  from '../../actions/meetupActions';
+import { removePairedUserMeetupsThunk}  from '../../actions/meetupRoomAction';
+
+
 
 import io from 'socket.io-client';
 const socket = io();
@@ -26,7 +29,7 @@ class Chatroom extends React.Component {
 
     //listening for incoming server data
     socket.on('message-data', data => {
-      console.log('Info from SERVER: ', data);
+      // console.log('Info from SERVER: ', data);
       this.updateMessages(data);
     });
   }
@@ -52,19 +55,15 @@ class Chatroom extends React.Component {
       this.props.pairedUserMeetups.partner &&
       this.props.pairedUserMeetups.partner.meetupId;
       
-    const currentUserMeetupStatus = this.props.pairedUserMeetups &&this.props.pairedUserMeetups.reqUser;
+    // const currentUserMeetupStatus = this.props.pairedUserMeetups &&this.props.pairedUserMeetups.reqUser;
     // const currentPartnerMeetupStatus = this.props.pairedUserMeetups && this.props.pairedUserMeeetups.partner;
-    
     if (prevMeetupId !== currentMeetupId) {
       socket.emit('leave-room', {
         room: prevProps.meetupId,
       });
-      if(currentUserMeetupStatus === 'matched'){
-        socket.emit('room', {
-          room: this.props.meetupId,
-          status: "matched"
-        });     
-      }
+      socket.emit('room', {
+        room: this.props.meetupId,
+      });     
     }
   }
 
@@ -78,7 +77,7 @@ class Chatroom extends React.Component {
       room: this.props.meetupId,
       user: this.props.user.authUser.firstName,
       text: this.state.message,
-      status: this.state.status,
+      // status: this.state.status,
     });
     this.setState({ message: '' });
   }
@@ -94,8 +93,6 @@ class Chatroom extends React.Component {
       room: this.props.meetupId,
       //include status on body as a check
     });
-    console.log('this.props.updateMeetupData{} in Chatroom: {}===', this.props.user.authUser.id,
-    this.props.meetupId);
     this.props.updateMeetupData(
       this.props.user.authUser.id,
       this.props.meetupId,
@@ -104,6 +101,9 @@ class Chatroom extends React.Component {
         partnerStatus: 'pending review',
       }
     );
+    //need to wipe meetups.singleMeetup off global state store /////////////////
+    this.props.removeSingleMeetupThunk();
+    this.props.removePairedUserMeetupsThunk();
     window.location = '/#/review'; //navigate to review component or to home
   }
 
@@ -113,7 +113,6 @@ class Chatroom extends React.Component {
     let partner;
     if (this.props.partnerAlt) partner = this.props.partnerAlt;
     else if (this.props.partner) partner = this.props.partner;
-
     return (
       <div>
         <div className="tile is-ancestor">
@@ -193,6 +192,8 @@ const mapDispatchToProps = dispatch => ({
   getUserMeetup: userid => dispatch(getUserMeetupDataThunked(userid)),
   updateMeetupData: (userId, meetupId, data) =>
     dispatch(updateMeetupDataThunked(userId, meetupId, data)),
+  removeSingleMeetupThunk: ()=> dispatch(removeSingleMeetupThunk()),
+  removePairedUserMeetupsThunk: () => dispatch(removePairedUserMeetupsThunk())
 });
 
 export default connect(

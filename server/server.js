@@ -44,11 +44,11 @@ io.on('connection', socket => {
   });
 
   socket.on('room', data => {
-    if(data.status === 'matched'){
+    // if(data.status === 'matched'){
       socket.join(data.room);
       console.log('in room creator:', data.room);
-      console.log('SOCKET OBJ', socket);
-    }
+      // console.log('SOCKET OBJ', socket);
+    // }
   });
 
   socket.on('leave-room', data => {

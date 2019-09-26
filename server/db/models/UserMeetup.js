@@ -63,7 +63,7 @@ UserMeetup.updatePartnerUserMeetup = async function(
   delete newPartnerInfo.partnerStatus;
   //User's status is updated
   const userUpdatedInfo = newPartnerInfo;
-  console.log('IN ROUTE, userUpdatedInfo >>>>> ', userUpdatedInfo);
+  // console.log('In UserMeetup.updatePartnerUserMeetup, userUpdatedInfo >>>>> ', userUpdatedInfo.userStatus);
   const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update(
     {...userUpdatedInfo,
     status: userUpdatedInfo.userStatus}

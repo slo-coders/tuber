@@ -89,10 +89,6 @@ class TopicSelect extends React.Component {
         </div>
       );
     } else {
-      console.log(
-        'No courseTopics (i.e., topics array) in courseWithTopics prop: ',
-        this.props.courseWithTopics,
-      );
       return (
         <div>
           <p>{'Fetching course topics...'}</p>

@@ -61,10 +61,6 @@ class RequestMatch extends Component {
   }
 
   async handleSubmit() {
-    console.log(
-      "RequestMatch's handleSubmit running UserSessionThunk with state: ",
-      this.state,
-    );
     await this.props.createUserSessionThunk(this.state);
     await this.props.singleTopicThunk(this.state.topicId);
     this.setState({
@@ -75,6 +71,7 @@ class RequestMatch extends Component {
       userId: '',
     });
     window.location = '/#/meetuproom';
+    //TODO: get userMeetup update after request ===> should say matched so that user can see meetuproom/chatroom
   }
 
   render() {

@@ -18,11 +18,13 @@ import Title from '../reusables/Title';
 import { singlePartnerThunk } from '../../actions/partnerActions';
 import { singleMeetupThunk } from '../../actions/meetupActions';
 import { singleTopicThunk } from '../../actions/topicActions';
+import {closeUserSession} from '../../actions/userSessionActions';
 
 class MeetupRoom extends React.Component {
   constructor(props) {
     super(props);
     // this.redirectToHome = this.redirectToHome.bind(this);
+    this.cancelRequest = this.cancelRequest.bind(this);
   }
 
   async componentDidMount() {
@@ -30,15 +32,17 @@ class MeetupRoom extends React.Component {
       this.props.pairedUserMeetups && this.props.pairedUserMeetups.partner;
     const currentMeetupId =
       this.props.userMeetup && this.props.userMeetup.meetupId;
+    const currentMeetupStatus = 
+      this.props.userMeetup && this.props.userMeetup.status;
     if (this.props.pairedUserMeetups && this.props.pairedUserMeetups.partner) {
-      console.log('firing from if, inside componentDidMount top');
+      // console.log('firing from if, inside componentDidMount top');
       await this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
       );
     }
-    if (currentMeetupId && !currentPairedPartner) {
-      console.log('firing from inside componentDidMount, second-if');
-      await this.props.getMeetupWithExtra(currentMeetupId); //sets meetups.singleMeetups in the store
+    if (currentMeetupId && currentMeetupStatus === 'matched' && !currentPairedPartner) {
+      // console.log('firing from inside componentDidMount, second-if');
+      await this.props.getMeetupWithExtra(currentMeetupId); //sets `meetups.singleMeetups` in the store
     }
   }
 
@@ -53,39 +57,42 @@ class MeetupRoom extends React.Component {
       this.props.pairedUserMeetups && this.props.pairedUserMeetups.partner;
     const currentMeetupId =
       this.props.userMeetup && this.props.userMeetup.meetupId;
+    const currentMeetupStatus =
+      this.props.userMeetup && this.props.userMeetup.status;
     const prevMeetupUsersArr =
       prevProps.meetupObjWithUsersArr && prevProps.meetupObjWithUsersArr.users;
     // const currentMeetupUsersArr = this.props.meetupObjWithUsersArr && this.props.meetupObjWithUsersArr.users;
 
-    this.props.singleTopicThunk(this.props.userMeetup.topicId);
+    if(this.props.userMeetup.topicId){////////////changed 
+      this.props.singleTopicThunk(this.props.userMeetup.topicId);
+    }
 
     if (prevPartnerId !== currentPartnerId) {
-      console.log('firing from inside componentDidUpdate (if)');
+      // console.log('firing from inside componentDidUpdate (if)');
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
       );
     } else if (
-      currentMeetupId &&
-      !currentPairedPartner &&
-      !prevMeetupUsersArr //(prevMeetupUsersArr !== currentMeetupUsersArr)// && !prevMeetupUsersArr
+      currentMeetupId && currentMeetupStatus === 'matched'
+      && !currentPairedPartner 
+      && !prevMeetupUsersArr //(prevMeetupUsersArr !== currentMeetupUsersArr)// && !prevMeetupUsersArr
     ) {
-      console.log(
+    /* console.log(
         'firing from inside componentDidUpdate, else-if',
         currentMeetupId,
-      );
+      ); */
       await this.props.getMeetupWithExtra(currentMeetupId); //sets meetups.singleMeetups in the store by using an independent GET call
     }
   }
 
-  /*   redirectToHome() {
-    console.log('Redirect to home triggered');
-    setTimeout(() => {
-      window.location = '/';
-    }, 2500);
-  } */
+  cancelRequest(){
+    this.props.closeUserSession(this.props.user.id);
+    window.location = '/#/profile';
+  }
+
 
   render() {
-    console.log('MEETUP-ROOM-PROPS', this.props);
+    // console.log('MEETUP-ROOM-PROPS', this.props);
     if (!this.props.meetupObjWithUsersArr) return null;
 
     let partner;
@@ -99,7 +106,7 @@ class MeetupRoom extends React.Component {
       const [user1, user2] = this.props.meetupObjWithUsersArr.users;
       meetupTopic = this.props.meetupObjWithUsersArr.topics[0].title;
 
-      console.log('user1 and user2', user1, user2);
+      // console.log('user1 and user2', user1, user2);
 
       if (user1.id !== this.props.user.id) {
         partner = user1;
@@ -111,7 +118,7 @@ class MeetupRoom extends React.Component {
         );
       }
 
-      console.log('MeetupRoom partner from render: ', partner);
+      // console.log('MeetupRoom partner from render: ', partner);
     }
 
     return (
@@ -128,13 +135,16 @@ class MeetupRoom extends React.Component {
               </div>
             </div>
           </div>
-        ) : (
-          <Title
+        ) : 
+          <div>
+            <button onClick = {this.cancelRequest}>Cancel Request</button>
+            <Title
             style={{ paddingTop: '80px' }}
-            smallText="Please wait for next available partner."
-            largeText="Meetup Pending"
-          />
-        )}
+              smallText="Please wait for the next available partner."
+              largeText="Meetup Pending"
+            />
+          </div>
+        }
       </div>
     );
   }
@@ -151,6 +161,7 @@ MeetupRoom.propTypes = {
   getMeetupWithExtra: PropTypes.func,
   singleTopic: PropTypes.object,
   singleTopicThunk: PropTypes.func,
+  closeUserSession: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -162,8 +173,9 @@ const mapStateToProps = state => ({
   meetupObjWithUsersArr: state.meetups.singleMeetup,
   singleTopic: state.topics.singleTopic,
 });
-
+  
 const mapDispatchToProps = dispatch => ({
+  closeUserSession: userId => dispatch(closeUserSession(userId)),
   singlePartnerThunk: partnerId => dispatch(singlePartnerThunk(partnerId)), //gets User instance for partner, given partner's userId
   getMeetupWithExtra: meetupId => dispatch(singleMeetupThunk(meetupId)),
   singleTopicThunk: topicId => dispatch(singleTopicThunk(topicId)),

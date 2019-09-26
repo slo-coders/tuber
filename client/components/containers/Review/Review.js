@@ -29,7 +29,10 @@ export class Review extends Component {
       this.props.user.authUser.id,
       this.props.userMeetup.meetupId,
       { proficiencyRating: this.state.proficiencyRating, userStatus: 'completed' },
+      
       //status becomes userStatus because of route /api/users/:userId/meetups/:meetupId
+      //TODO: clear and get new usermeetup of store
+      
     );
     window.location = '#/profile';
   }
@@ -53,7 +56,7 @@ export class Review extends Component {
                   <br />
                   <br />
                   <div className="level">
-                    <p>Topic name goes here:</p>
+                    <p>TOPIC TITLE:</p>
 
                     <StarRating
                       // pass in topicId here, it will get sent back to this state with score when user clicks on star
@@ -84,6 +87,7 @@ Review.propTypes = {
   partner: PropTypes.object,
   pairedUserMeetups: PropTypes.object,
   updatePartnerUserMeetup: PropTypes.func,
+  singleTopic: PropTypes.object
 };
 
 const mapStateToProps = state => ({
@@ -91,6 +95,7 @@ const mapStateToProps = state => ({
   userMeetup: state.userMeetup,
   partner: state.partner,
   pairedUserMeetups: state.pairedUserMeetups,
+  singleTopic: state.topics.singleTopic,
 });
 
 const mapDispatchToProps = dispatch => ({

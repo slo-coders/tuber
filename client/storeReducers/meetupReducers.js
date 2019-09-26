@@ -3,6 +3,7 @@ import {
   DELETE_MEETUP,
   POST_MEETUP,
   EDIT_MEETUP,
+  REMOVE_SINGLE_MEETUP,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -14,7 +15,10 @@ const meetupReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_MEETUP:
       return { ...state, singleMeetup: action.payload };
-
+    //removes singleMeetup instance from store state (to decouple and have not paired user)
+    case REMOVE_SINGLE_MEETUP:
+      return { ...state, singleMeetup: {} }; 
+      
     case POST_MEETUP:
       return { ...state, singleMeetup: [...state.meetups, action.payload] };
     case EDIT_MEETUP:
