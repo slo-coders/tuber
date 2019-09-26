@@ -10,6 +10,9 @@ p {
 .matchBackground {
   background-color: #e8e8e8; }
 
+.tileRadius {
+  border-radius: "0px"; }
+
 .tileColor {
   background-color: #F5F5F5; }
 

@@ -22,7 +22,6 @@ import { singleTopicThunk } from '../../actions/topicActions';
 class MeetupRoom extends React.Component {
   constructor(props) {
     super(props);
-    // this.redirectToHome = this.redirectToHome.bind(this);
   }
 
   async componentDidMount() {
@@ -77,15 +76,9 @@ class MeetupRoom extends React.Component {
     }
   }
 
-  /*   redirectToHome() {
-    console.log('Redirect to home triggered');
-    setTimeout(() => {
-      window.location = '/';
-    }, 2500);
-  } */
-
   render() {
-    console.log('MEETUP-ROOM-PROPS', this.props);
+    console.log('MEETUP-ROOM', this.props);
+
     if (!this.props.meetupObjWithUsersArr) return null;
 
     let partner;
