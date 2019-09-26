@@ -29,15 +29,19 @@ export class Review extends Component {
     await this.props.updatePartnerUserMeetup(
       this.props.user.authUser.id,
       this.props.userMeetup.meetupId,
-      { proficiencyRating: this.state.proficiencyRating, userStatus: 'completed' },
+      {
+        proficiencyRating: this.state.proficiencyRating,
+        userStatus: 'completed',
+      },
       //status becomes userStatus because of route /api/users/:userId/meetups/:meetupId
-      );
-      //TODO: clear and get new usermeetup of store
-      await this.props.updateUserMeetup(this.props.user.authUser.id),
-    window.location = '#/profile';
+    );
+    //TODO: clear and get new usermeetup of store
+    await this.props.updateUserMeetup(this.props.user.authUser.id),
+      (window.location = '#/profile');
   }
 
   render() {
+    console.log('Review form props', this.props);
     return (
       <div>
         <Title
@@ -49,14 +53,17 @@ export class Review extends Component {
             <div className="tile is-ancestor">
               <div className="tile is-parent">
                 <div className="tile is-child"></div>
-                <div className="tile is-child is-6 box tileColor" style={{borderRadius: "0px"}}>
+                <div
+                  className="tile is-child is-6 box tileColor"
+                  style={{ borderRadius: '0px' }}
+                >
                   <strong>
                     {`Please rate ${this.props.partner.firstName} proficiency in the folowing topic:`}
                   </strong>
                   <br />
                   <br />
                   <div className="level">
-                    <p>TOPIC TITLE:</p>
+                    <p>{this.props.singleTopic.title}:</p>
 
                     <StarRating
                       // pass in topicId here, it will get sent back to this state with score when user clicks on star
