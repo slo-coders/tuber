@@ -67,7 +67,7 @@ class MeetupRoom extends React.Component {
       this.props.singleTopicThunk(this.props.userMeetup.topicId);
     }
 
-    if (prevPartnerId !== currentPartnerId) {
+    if (prevPartnerId !== currentPartnerId && this.props.pairedUserMeetups.partner) {
       // console.log('firing from inside componentDidUpdate (if)');
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,

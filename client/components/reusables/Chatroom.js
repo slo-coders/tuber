@@ -104,6 +104,7 @@ class Chatroom extends React.Component {
     //need to wipe meetups.singleMeetup off global state store /////////////////
     this.props.removeSingleMeetupThunk();
     this.props.removePairedUserMeetupsThunk();
+    this.props.getUserMeetup(this.props.user.authUser.id);
     window.location = '/#/review'; //navigate to review component or to home
   }
 
