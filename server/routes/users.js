@@ -82,10 +82,16 @@ router.get('/:userId/meetups', async (req, res, next) => {
     const user = await User.findOne({
       where: { id: req.params.userId },
       include: [
-        { model: Meetup, attributes: ['id'], through: { model: UserMeetup } }, //status
+        {
+          model: Meetup,
+          attributes: ['id'],
+          through: {
+            model: UserMeetup,
+          },
+        }, //status
         { model: Topic, through: { model: UserTopic } }, //topic
       ],
-      order: ['createdAt'],
+      order: [[Meetup, UserMeetup, 'createdAt', 'DESC']], //Order by most recent UserMeetup
       limit: 1,
     });
     res.send(user);

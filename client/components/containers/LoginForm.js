@@ -7,7 +7,7 @@ import {
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import Input from '../reusables/Input';
-import Button from '../reusables/Button';
+import Button from '../reusables/Button-b';
 
 //save for sever restart
 
@@ -63,8 +63,8 @@ export class LoginForm extends Component {
         <div className="buttons" style={{ justifyContent: 'center' }}>
           <Button
             disabled={this.state.email && this.state.password ? false : true}
-            buttonStyle={'is-primary'}
             handleClick={this.onSubmit}
+            buttonStyle={'is-primary'}
             buttonText={'Log In'}
             customButtonStyle={{ marginRight: '5px', borderRadius: "25px" }}
           />

@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '../../reusables/Input';
 import { CSSTransitionGroup } from 'react-transition-group';
-import Button from '../../reusables/Button';
+import Button from '../../reusables/Button-b';
 import PropTypes from 'prop-types';
 import Title from '../../reusables/Title';
 
@@ -14,12 +14,12 @@ export default function SignUpSubmit(props) {
       transitionLeaveTimeout={9000}
       transitionEnterTimeout={9000}
     >
-    <Title
-    largeText='Personal Information'
-    smallText='Please enter some personal details in the fields below.'
-    center={true}
-    />
-      <div className="section" style={{paddingTop:"30px"}}>
+      <Title
+        largeText="Personal Information"
+        smallText="Please enter some personal details in the fields below."
+        center={true}
+      />
+      <div className="section" style={{ paddingTop: '30px' }}>
         <div className="container">
           <div className="tile is-ancestor">
             <div className="tile is-parent">

@@ -1,7 +1,4 @@
-import {
-  // UPDATE_MEETUP_DATA,
-  GET_USER_MEETUP_DATA,
-} from '../actions/actionTypes';
+import { GET_USER_MEETUP_DATA } from '../actions/actionTypes';
 
 const userMeetupReducer = (state = {}, action) => {
   switch (action.type) {
@@ -12,7 +9,6 @@ const userMeetupReducer = (state = {}, action) => {
       //else, action.payload === {}
       //When used with GET to /api/user/:userId/meetups:
       //action.payload === User.meetups[].user_meetup.meetupId||status
-      console.log('action.payload from GET_USER_MEETUP_DATA: ', action.payload);
       if (action.payload && action.payload.reqUser) {
         const {
           userMeetupId: id,
@@ -36,8 +32,6 @@ const userMeetupReducer = (state = {}, action) => {
       } else {
         return state;
       }
-    // case UPDATE_MEETUP_DATA:
-    //   return { ...state, userMeeupsArray: action.payload.meetups };
     default:
       return state;
   }

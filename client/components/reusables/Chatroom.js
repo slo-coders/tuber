@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
 import { updateMeetupDataThunked } from '../../actions/userMeetupActions';
@@ -13,13 +14,14 @@ class Chatroom extends React.Component {
     this.state = {
       messageList: [],
       message: '',
+      title: '',
     };
-    this.onHandle = this.onHandle.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
     this.closeMeetup = this.closeMeetup.bind(this);
 
-    //listening for incomming server data
+    //listening for incoming server data
     socket.on('message-data', data => {
       console.log('Info from SERVER: ', data);
       this.updateMessages(data);
@@ -31,10 +33,12 @@ class Chatroom extends React.Component {
       room: this.props.meetupId,
     });
     if (!this.props.partner && this.props.pairedUserMeetups) {
+      this.props.getUserMeetup(this.props.user.authUser.id);
       this.props.singlePartnerThunk(
         this.props.pairedUserMeetups.partner.userId,
       );
     }
+    this.setState({ title: this.props.singleTopic.title });
   }
 
   componentDidUpdate(prevProps) {
@@ -44,6 +48,7 @@ class Chatroom extends React.Component {
     const currentMeetupId =
       this.props.pairedUserMeetups.partner &&
       this.props.pairedUserMeetups.partner.meetupId;
+
     if (prevMeetupId !== currentMeetupId) {
       socket.emit('leave-room', {
         room: prevProps.meetupId,
@@ -54,7 +59,7 @@ class Chatroom extends React.Component {
     }
   }
 
-  onHandle(ev) {
+  handleTextChange(ev) {
     this.setState({ message: ev.target.value });
   }
 
@@ -78,20 +83,21 @@ class Chatroom extends React.Component {
     socket.emit('leave-room', {
       room: this.props.meetupId,
     });
-
-    //TODO: In Review component, add put/update partner's profeciencyRating and change UserMeetup status from 'pending review' to 'completed'
-
-    this.props.updateMeetupDataThunked(
+    this.props.updateMeetupData(
       this.props.user.authUser.id,
       this.props.meetupId,
       { status: 'pending review' },
     );
-    window.location = '/'; //navigate to review component or to home
+    window.location = '/#/review'; //navigate to review component or to home
   }
 
   render() {
     if (this.props.user.authUser.id === undefined) return null;
-    console.log('CHAT-ROOM PROPS', this.props);
+
+    let partner;
+    if (this.props.partnerAlt) partner = this.props.partnerAlt;
+    else if (this.props.partner) partner = this.props.partner;
+
     return (
       <div>
         <div className="tile is-ancestor">
@@ -99,28 +105,34 @@ class Chatroom extends React.Component {
             <div className="tile is-parent is-4">
               <div
                 className="tile is-child box tileColor"
-                style={{ textAlign: 'center', borderRadius: "0px" }}
+                style={{ textAlign: 'center', borderRadius: '0px' }}
               >
                 <div>
                   <div>
-                    <h5>
-                      {"Your partner's name is: " +
-                        this.props.partner.firstName}
-                    </h5>
-                    <h3>The topic of discussion is: {}</h3>
+                    <h5>{"Your partner's name is: " + partner.firstName}</h5>
+                    <h3>
+                      Let&apos;s talk about:{' '}
+                      {this.state.title
+                        ? this.state.title
+                        : this.props.meetupTopic
+                        ? this.props.meetupTopic
+                        : "why this isn't working!!!"}
+                    </h3>
                     <br />
-                    <img
-                      className="partnerImg"
-                      src={this.props.partner.imageUrl}
-                    />
+                    <img className="partnerImg" src={partner.imageUrl} />
                   </div>
                 </div>
               </div>
             </div>
             <div className="tile is-parent">
-              <div className="tile is-child box tileColor" style={{borderRadius: "0px"}}>
-                <div className="message-list" style={{overflowY: 'scroll',
-height: '200px'}}>
+              <div
+                className="tile is-child box tileColor"
+                style={{ borderRadius: '0px' }}
+              >
+                <div
+                  className="message-list"
+                  style={{ overflowY: 'scroll', height: '200px' }}
+                >
                   {this.state.messageList.map((item, idx) => (
                     <li
                       className="messages"
@@ -134,11 +146,11 @@ height: '200px'}}>
                   <input
                     type="text"
                     name="chatmessage"
-                    onChange={this.onHandle}
+                    onChange={this.handleTextChange}
                     value={this.state.message}
                   />
                   <button className="button" type="submit">
-                    Submit
+                    Send
                   </button>
                 </form>
               </div>
@@ -146,25 +158,32 @@ height: '200px'}}>
           </div>
         </div>
 
-        <a className="button" onClick={this.closeMeetup}>Close MeetupRoom</a>
+        <a className="button" onClick={this.closeMeetup}>
+          Close MeetupRoom
+        </a>
       </div>
     );
   }
 }
 
+Chatroom.propTypes = {
+  singleTopic: PropTypes.func,
+};
+
 const mapStateToProps = state => ({
   user: state.auth,
-  // userMeetup: state.userMeetup,
   meetupId: state.pairedUserMeetups.reqUser
     ? state.pairedUserMeetups.reqUser.meetupId
+    : state.userMeetup && state.userMeetup.meetupId
+    ? state.userMeetup.meetupId
     : null,
   partner: state.partner,
   pairedUserMeetups: state.pairedUserMeetups,
+  singleTopic: state.topics.singleTopic,
 });
 const mapDispatchToProps = dispatch => ({
-  getUserMeetupDataThunked: userid =>
-    dispatch(getUserMeetupDataThunked(userid)),
-  updateMeetupDataThunked: (userId, meetupId, data) =>
+  getUserMeetup: userid => dispatch(getUserMeetupDataThunked(userid)),
+  updateMeetupData: (userId, meetupId, data) =>
     dispatch(updateMeetupDataThunked(userId, meetupId, data)),
 });
 
