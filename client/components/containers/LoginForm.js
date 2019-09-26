@@ -61,15 +61,22 @@ export class LoginForm extends Component {
           </div>
         </div>
         <div className="buttons" style={{ justifyContent: 'center' }}>
-          <Button
+          <a
+            className="button is-primary"
             disabled={this.state.email && this.state.password ? false : true}
-            handleClick={this.onSubmit}
-            buttonStyle={'is-primary'}
-            buttonText={'Log In'}
-            customButtonStyle={{ marginRight: '5px', borderRadius: "25px" }}
-          />
+            onClick={this.onSubmit}
+            // buttonStyle={'is-primary'}
+            // buttonText={'Log In'}
+            style={{ marginRight: '5px', borderRadius: '25px' }}
+          >
+            Log In
+          </a>
 
-          <Link className="button" to="/signup" style={{ marginLeft: '5px', borderRadius: "25px" }}>
+          <Link
+            className="button"
+            to="/signup"
+            style={{ marginLeft: '5px', borderRadius: '25px' }}
+          >
             Sign Up
           </Link>
         </div>

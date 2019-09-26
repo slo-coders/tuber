@@ -1,10 +1,13 @@
 @charset "utf-8";
 
 $warning: hsl(51, 91%, 50%);;
-$primary: #C0C0C0;
-$link: #86C232; // link hover color
-$grey-dark: #a9a9a9; //normal link color
-$grey-darker: #a9a9a9;
+$primary: hsl(0, 45%, 63%);
+$link: hsl(0, 45%, 63%); // link hover color
+$grey-dark: #555555; //normal link color
+$grey-darker: #555555;
+$otherGrey: #222222;
+$navbar-item: $grey-darker;
+
 .navbar {
   &.is-transparent {
   background-color: transparent;

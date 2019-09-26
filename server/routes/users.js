@@ -117,7 +117,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
       newPartnerInfo,
     );
 
-    const { partnerMeetupInfo } = userMeetupUpdate;// {partnerMeetupInfo:,personalMeetupInfo:};
+    const { partnerMeetupInfo } = userMeetupUpdate; // {partnerMeetupInfo:,personalMeetupInfo:};
 
     if (newPartnerProfRating && partnerMeetupInfo.proficiencyRating) {
       //GET the meetup's topicId
@@ -158,9 +158,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
         },
       );
     } else {
-      console.log(
-        'NO previous average rating or new rating provided.',
-      );
+      console.log('NO previous average rating or new rating provided.');
     }
     res.send(userMeetupUpdate);
   } catch (err) {

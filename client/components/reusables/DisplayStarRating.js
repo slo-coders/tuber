@@ -5,7 +5,7 @@ export default function DisplayStarRating(props) {
   const { score } = props;
 
   return (
-    <span style={{paddingLeft: '10px', paddingRight: '7px'}}>
+    <span style={{ paddingLeft: '10px', paddingRight: '7px' }}>
       <i
         id="zero"
         className={
