@@ -33,6 +33,7 @@ class TopicSelect extends React.Component {
       // <div className="tile is-parent">
       // <div className="tile is-child box">
       return (
+        <div className="section" style={{textAlign:"center", paddingTop:'0px'}}>
         <div>
           <div>
             {userTopicsForCourse && userTopicsForCourse.length > 0 ? (
@@ -86,6 +87,7 @@ class TopicSelect extends React.Component {
                 : true
             }
           />
+        </div>
         </div>
       );
     } else {

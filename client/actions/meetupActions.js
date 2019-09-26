@@ -5,8 +5,7 @@ import {
   DELETE_MEETUP,
   POST_MEETUP,
   EDIT_MEETUP,
-  REMOVE_SINGLE_MEETUP
-
+  REMOVE_SINGLE_MEETUP,
 } from './actionTypes';
 
 //returns a meetupinstance including the users
@@ -23,9 +22,9 @@ export const singleMeetupThunk = meetupId => async dispatch => {
 };
 
 export const removeSingleMeetupThunk = () => dispatch => {
-  try{
-    dispatch({type: REMOVE_SINGLE_MEETUP});
-  } catch(err){
+  try {
+    dispatch({ type: REMOVE_SINGLE_MEETUP });
+  } catch (err) {
     console.log(err);
   }
 };

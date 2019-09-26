@@ -70,6 +70,7 @@ export default function SignUpSubmit(props) {
                           handleClick={props.handleContinue}
                           buttonStyle={'is-primary'}
                           buttonText={'Continue'}
+                          customButtonStyle={{borderRadius:"25px"}}
                         />
                       </div>
                     </div>

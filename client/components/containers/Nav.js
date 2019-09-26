@@ -37,9 +37,6 @@ export class Nav extends React.Component {
       prevProps.userMeetup && prevProps.userMeetup.status;
     const currentMeetupStatus =
       this.props.userMeetup && this.props.userMeetup.status;
-      
-      
-    
 
     if (prevUserId !== currentUserId) {
       this.props.getUserTopics(this.props.user.authUser.id);
@@ -68,6 +65,7 @@ export class Nav extends React.Component {
   render() {
     console.log('NAV-BAR', this.props);
     return (
+      
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
           <div
@@ -107,7 +105,7 @@ export class Nav extends React.Component {
                 Meetups
               </Link>
 
-            {/*   <Link className="navbar-item" to="/review">
+              {/*   <Link className="navbar-item" to="/review">
                 Review
               </Link> */}
 
@@ -129,7 +127,9 @@ export class Nav extends React.Component {
             </div>
           </div>
         )}
+        
       </nav>
+      
     );
   }
 }

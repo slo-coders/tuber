@@ -2,11 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUserMeetupDataThunked, updateMeetupDataThunked} from '../../actions/userMeetupActions';
-import { removeSingleMeetupThunk}  from '../../actions/meetupActions';
-import { removePairedUserMeetupsThunk}  from '../../actions/meetupRoomAction';
-
-
+import {
+  getUserMeetupDataThunked,
+  updateMeetupDataThunked,
+} from '../../actions/userMeetupActions';
+import { removeSingleMeetupThunk } from '../../actions/meetupActions';
+import { removePairedUserMeetupsThunk } from '../../actions/meetupRoomAction';
 
 import io from 'socket.io-client';
 const socket = io();
@@ -18,9 +19,9 @@ class Chatroom extends React.Component {
       messageList: [],
       message: '',
       title: '',
-      //need to have userMeetup status checked for update. 
+      //need to have userMeetup status checked for update.
       //Nessissary for terminating socket room?
-      status:'',
+      status: '',
     };
     this.handleTextChange = this.handleTextChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -54,7 +55,7 @@ class Chatroom extends React.Component {
     const currentMeetupId =
       this.props.pairedUserMeetups.partner &&
       this.props.pairedUserMeetups.partner.meetupId;
-      
+
     // const currentUserMeetupStatus = this.props.pairedUserMeetups &&this.props.pairedUserMeetups.reqUser;
     // const currentPartnerMeetupStatus = this.props.pairedUserMeetups && this.props.pairedUserMeeetups.partner;
     if (prevMeetupId !== currentMeetupId) {
@@ -63,7 +64,7 @@ class Chatroom extends React.Component {
       });
       socket.emit('room', {
         room: this.props.meetupId,
-      });     
+      });
     }
   }
 
@@ -96,10 +97,10 @@ class Chatroom extends React.Component {
     this.props.updateMeetupData(
       this.props.user.authUser.id,
       this.props.meetupId,
-      { 
+      {
         userStatus: 'pending review',
         partnerStatus: 'pending review',
-      }
+      },
     );
     //need to wipe meetups.singleMeetup off global state store /////////////////
     this.props.removeSingleMeetupThunk();
@@ -173,10 +174,11 @@ class Chatroom extends React.Component {
             </div>
           </div>
         </div>
-
-        <a className="button" onClick={this.closeMeetup}>
-          Close MeetupRoom
-        </a>
+        <div className="buttons" style={{ justifyContent: 'center' }}>
+          <a className="button" onClick={this.closeMeetup}>
+            Close MeetupRoom
+          </a>
+        </div>
       </div>
     );
   }
@@ -201,8 +203,8 @@ const mapDispatchToProps = dispatch => ({
   getUserMeetup: userid => dispatch(getUserMeetupDataThunked(userid)),
   updateMeetupData: (userId, meetupId, data) =>
     dispatch(updateMeetupDataThunked(userId, meetupId, data)),
-  removeSingleMeetupThunk: ()=> dispatch(removeSingleMeetupThunk()),
-  removePairedUserMeetupsThunk: () => dispatch(removePairedUserMeetupsThunk())
+  removeSingleMeetupThunk: () => dispatch(removeSingleMeetupThunk()),
+  removePairedUserMeetupsThunk: () => dispatch(removePairedUserMeetupsThunk()),
 });
 
 export default connect(
