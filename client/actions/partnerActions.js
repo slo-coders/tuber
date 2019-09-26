@@ -10,12 +10,17 @@ export const singlePartnerThunk = partnerId => async dispatch => {
   }
 };
 
+
+
+
+
 export const updatePartnerUserMeetupThunk = (
   userId,
   meetupId,
   data,
 ) => async dispatch => {
   try {
+    // console.log('sending axios req with data: ', data);
     const response = await axios.put(
       `/api/users/${userId}/meetups/${meetupId}`,
       data,

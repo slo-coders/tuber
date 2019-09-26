@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Title from '../../reusables/Title';
 import StarRating from '../../reusables/StarRating';
 import { updatePartnerUserMeetupThunk } from '../../../actions/partnerActions';
+import { getUserMeetupDataThunked } from '../../../actions/userMeetupActions';
 import PropTypes from 'prop-types';
 
 export class Review extends Component {
@@ -24,12 +25,15 @@ export class Review extends Component {
     });
   }
 
-  handleSubmit() {
-    this.props.updatePartnerUserMeetup(
+  async handleSubmit() {
+    await this.props.updatePartnerUserMeetup(
       this.props.user.authUser.id,
       this.props.userMeetup.meetupId,
-      { proficiencyRating: this.state.proficiencyRating, status: 'completed' },
-    );
+      { proficiencyRating: this.state.proficiencyRating, userStatus: 'completed' },
+      //status becomes userStatus because of route /api/users/:userId/meetups/:meetupId
+      );
+      //TODO: clear and get new usermeetup of store
+      await this.props.updateUserMeetup(this.props.user.authUser.id),
     window.location = '#/profile';
   }
 
@@ -52,7 +56,7 @@ export class Review extends Component {
                   <br />
                   <br />
                   <div className="level">
-                    <p>Topic name goes here:</p>
+                    <p>TOPIC TITLE:</p>
 
                     <StarRating
                       // pass in topicId here, it will get sent back to this state with score when user clicks on star
@@ -82,7 +86,9 @@ Review.propTypes = {
   userMeetup: PropTypes.object,
   partner: PropTypes.object,
   pairedUserMeetups: PropTypes.object,
+  singleTopic: PropTypes.object,
   updatePartnerUserMeetup: PropTypes.func,
+  updateUserMeetup: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -90,11 +96,13 @@ const mapStateToProps = state => ({
   userMeetup: state.userMeetup,
   partner: state.partner,
   pairedUserMeetups: state.pairedUserMeetups,
+  singleTopic: state.topics.singleTopic,
 });
 
 const mapDispatchToProps = dispatch => ({
   updatePartnerUserMeetup: (userId, meetupId, data) =>
     dispatch(updatePartnerUserMeetupThunk(userId, meetupId, data)),
+  updateUserMeetup: userId => dispatch(getUserMeetupDataThunked(userId)),
 });
 
 export default connect(

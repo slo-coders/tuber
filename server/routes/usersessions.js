@@ -172,16 +172,10 @@ router.delete('/:userId', async (req, res, next) => {
       res.sendStatus(401);
     }
 
-    //Check if user has submitted a review.
-    //This will require a form that will put to both the User profeciency on UserTopics model as well as to here for review status updates
-    //
-    // if (checkUserSession.reviewStatus === 'no review') {
-    //   res.send('Please review your partners profeciency').end();
-    // } else {
-    //   checkUserSession.destroy();
-    //   res.send('user-session closed');
-    // }
+    checkUserSession.destroy();
+    res.send('user-session closed');
   } catch (err) {
+    // console.log('');
     next(err);
   }
 });

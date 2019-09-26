@@ -13,6 +13,7 @@ export const getActiveSessionsThunk = () => async dispatch => {
 export const closeUserSession = userId => async dispatch => {
   try {
     await axios.delete(`/api/usersession/${userId}`);
+    console.log('CLOSING USER SESSION');
     dispatch({ type: actions.CLOSE_USER_SESSION, userId });
   } catch (err) {
     console.error(err);

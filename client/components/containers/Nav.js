@@ -37,6 +37,9 @@ export class Nav extends React.Component {
       prevProps.userMeetup && prevProps.userMeetup.status;
     const currentMeetupStatus =
       this.props.userMeetup && this.props.userMeetup.status;
+      
+      
+    
 
     if (prevUserId !== currentUserId) {
       this.props.getUserTopics(this.props.user.authUser.id);
@@ -104,9 +107,9 @@ export class Nav extends React.Component {
                 Meetups
               </Link>
 
-              <Link className="navbar-item" to="/review">
+            {/*   <Link className="navbar-item" to="/review">
                 Review
-              </Link>
+              </Link> */}
 
               <div className="navbar-item">
                 <Button

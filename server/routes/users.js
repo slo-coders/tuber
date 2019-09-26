@@ -108,13 +108,16 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
     //User submits req.body = {proficiencyRating:, status:} with PUT to get UserMeetup instances for both themeselves and partner
     const newPartnerInfo = req.body;
     const newPartnerProfRating = req.body.proficiencyRating;
+
+    // console.log('received axios req with body: ', newPartnerInfo);
+
     const userMeetupUpdate = await UserMeetup.updatePartnerUserMeetup(
       req.params.userId,
       req.params.meetupId,
       newPartnerInfo,
     );
 
-    const { partnerMeetupInfo } = userMeetupUpdate;
+    const { partnerMeetupInfo } = userMeetupUpdate;// {partnerMeetupInfo:,personalMeetupInfo:};
 
     if (newPartnerProfRating && partnerMeetupInfo.proficiencyRating) {
       //GET the meetup's topicId
@@ -156,7 +159,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
       );
     } else {
       console.log(
-        'Error; either could not find previous average rating or new rating could not be read correctly.',
+        'NO previous average rating or new rating provided.',
       );
     }
     res.send(userMeetupUpdate);
