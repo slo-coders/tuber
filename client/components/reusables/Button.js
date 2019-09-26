@@ -17,7 +17,7 @@ export default function Button(props) {
         style={
           props.customButtonStyle
             ? props.customButtonStyle
-            : { alignItems: 'center' }
+            : { borderRadius: '25px' }
         }
       >
         {props.buttonText}

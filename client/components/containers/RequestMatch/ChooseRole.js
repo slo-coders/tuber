@@ -43,19 +43,15 @@ export default function ChooseRole(props) {
             {buttons.map(info => (
               <div key={info.id} className="tile is-parent matchBackground">
                 <div
-                  className="tile is-child matchBackground box"
-                  style={{ textAlign: 'center' }}
+                  className="tile is-child matchBackground"
+                  style={{ textAlign: 'center', borderRadius: '0px' }}
                 >
-                  <img
-                    style={{ height: '200px', width: '175px' }}
-                    src="https://wolper.com.au/wp-content/uploads/2017/10/image-placeholder.jpg"
-                  />
                   <Button
                     customDivStyle={{ margin: '14px' }}
                     divStyle={'centerInDiv'}
                     key={info.id}
                     value={info.value}
-                    buttonStyle="is-medium is-primary centerItem"
+                    buttonStyle="is-medium is-primary is-outlined centerItem"
                     buttonText={info.buttonText}
                     handleClick={props.handleRoleChoice}
                   />

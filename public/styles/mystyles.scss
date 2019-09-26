@@ -2,13 +2,17 @@
 
 $warning: hsl(51, 91%, 50%);;
 $primary: #C0C0C0;
-
+$link: #86C232; // link hover color
+$grey-dark: #a9a9a9; //normal link color
+$grey-darker: #a9a9a9;
 .navbar {
   &.is-transparent {
   background-color: transparent;
   background-image: none;
   }
   }
-
+.title{
+  color: $primary
+}
 
 @import "../../node_modules/bulma/bulma.sass";

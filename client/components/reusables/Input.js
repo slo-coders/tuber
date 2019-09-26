@@ -12,6 +12,7 @@ export default function Input(props) {
           className="input"
           type={props.type}
           placeholder={props.placeholder}
+          style={{ borderRadius: '0px' }}
         />
         <span className="icon is-small is-left">
           <i className={'fas fa-' + props.icon}></i>

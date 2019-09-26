@@ -45,6 +45,7 @@ const User = db.define(
     },
     imageUrl: {
       type: db.Sequelize.STRING(800),
+      defaultValue: 'https://image.flaticon.com/icons/png/512/49/49944.png',
       validate: {
         isUrl: true,
       },
