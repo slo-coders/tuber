@@ -28,7 +28,7 @@ class TopicDisplay extends Component {
         <div className="tile is-parent">
           <div
             className="tile is-child box tileColor"
-            style={{ paddingBottom: '47px' }}
+            style={{ paddingBottom: '47px', borderRadius: '0px' }}
           >
             <CSSTransitionGroup
               transitionAppear={true}

@@ -21,6 +21,7 @@ export default function HomeTiles(props) {
             >
               <div className="tile is-parent">
                 <div className="tile is-child">
+
                   <div className="level">
                     <div className="level-left">
                       <h1
@@ -29,27 +30,31 @@ export default function HomeTiles(props) {
                       >
                         Tuber
                       </h1>
-                      <p>
+                      <p style={{marginLeft: '10px', paddingTop: '13px', flexWrap: 'wrap'}}>
                         {
-                          'Yeahhhh I know this text is too close to the title its gonna be okay'
+                          'Harness the power of the 33% Rule.'
                         }
                       </p>
                     </div>
                   </div>
+                
                 </div>
               </div>
 
               <div className="tile is-parent" style={{ padding: '0px' }}>
                 <div className="tile is-parent">
-                  <div className="tile is-child box tileColor">
+                  <div
+                    className="tile is-child box tileColor"
+                    style={{ borderRadius: '0px', color: '#000000' }}
+                  >
                     <p>
-                      Lorem ipsum dolor sit amet, pri quod inimicus disputando
-                      cu, sit facilisi abhorreant in. Lorem ipsum dolor sit
-                      amet, pri quod inimicus disputando cu, sit facilisi
-                      abhorreant in.Lorem ipsum dolor sit amet, pri quod
-                      inimicus disputando cu, sit facilisi abhorreant in.Lorem
-                      ipsum dolor sit amet, pri quod inimicus disputando cu, sit
-                      facilisi abhorreant in.
+                      What exactly is the <strong>33% Rule</strong>? It
+                      basically states that 33% of your time should be spent
+                      with mentors (people that challenge you), 33% with your
+                      peers (those on the same level as you), and 33% with
+                      people that you can mentor and guide. Tuber allows you to
+                      practice this philosophy with a community of people near
+                      you.
                     </p>
                   </div>
                 </div>
@@ -57,25 +62,31 @@ export default function HomeTiles(props) {
 
               <div className="tile is-parent" style={{ padding: '0px' }}>
                 <div className="tile is-parent">
-                  <div className="tile is-child box tileColor">
-                    <strong>Login form will go here if not logged in</strong>
+                  <div
+                    className="tile is-child box tileColor"
+                    style={{ borderRadius: '0px' }}
+                  >
+                    <h1 className="title">Teach</h1>
                     <p>
-                      Otherwise, we can display something else, like a picture
-                    </p>
-                    <p>
-                      {' '}
-                      Lorem ipsum dolor sit amet, pri quod inimicus disputando
-                      cu, sit facilisi abhorreant in.
+                      One of the best ways to learn is by teaching others. Tuber
+                      gives you the opportunity to{' '}
+                      <strong>share your knowledge</strong> by matching you to a
+                      network of learners.
                     </p>
                   </div>
                 </div>
 
                 <div className="tile is-parent">
-                  <div className="tile is-child box tileColor">
+                  <div
+                    className="tile is-child box tileColor"
+                    style={{ borderRadius: '0px' }}
+                  >
+                    <h1 className="title">Collaborate</h1>
                     <p>
-                      {' '}
-                      Lorem ipsum dolor sit amet, pri quod inimicus disputando
-                      cu, sit facilisi abhorreant in.
+                      You don't have to do it alone!{' '}
+                      <strong>Work with others</strong> on your level. Tuber
+                      connects you with a study buddy to turn your study time
+                      into quality time.
                     </p>
                   </div>
                 </div>
@@ -87,7 +98,10 @@ export default function HomeTiles(props) {
               style={{ paddingLeft: '0px' }}
             >
               <div className="tile is-parent">
-                <div className="tile is-child box tileColor">
+                <div
+                  className="tile is-child box tileColor"
+                  style={{ borderRadius: '0px' }}
+                >
                   {props.loggedin ? (
                     <strong>you are logged in</strong>
                   ) : (
@@ -103,11 +117,15 @@ export default function HomeTiles(props) {
               </div>
 
               <div className="tile is-parent">
-                <div className="tile is-child box tileColor">
+                <div
+                  className="tile is-child box tileColor"
+                  style={{ borderRadius: '0px' }}
+                >
+                  <h1 className="title">Learn</h1>
                   <p>
-                    {' '}
-                    Lorem ipsum dolor sit amet, pri quod inimicus disputando cu,
-                    sit facilisi abhorreant in.
+                    Everyone has to start somewhere! Achieve mastery in a topic
+                    by allowing Tuber to match you with a mentor that can help
+                    you <strong>sharpen your skills</strong>.
                   </p>
                 </div>
               </div>

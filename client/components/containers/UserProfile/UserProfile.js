@@ -13,12 +13,14 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    this.props.getUserTopics(this.props.user.authUser.id);
+    if(this.props.user.authUser.id){
+      this.props.getUserTopics(this.props.user.authUser.id);
+    }
   }
 
   componentDidUpdate(prevProps) {
     if (
-      !prevProps.user.authUser ||
+      // !prevProps.user.authUser ||
       prevProps.user.authUser.id !== this.props.user.authUser.id
     ) {
       this.props.getUserTopics(this.props.user.authUser.id);
@@ -26,9 +28,7 @@ class UserProfile extends Component {
   }
 
   render() {
-    console.log('PROFILE', this.props);
     const user = this.props.user;
-    console.log('userrrr', user);
     if (user) {
       return (
         <div>

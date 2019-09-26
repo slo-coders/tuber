@@ -5,11 +5,10 @@ import PropTypes from 'prop-types';
 
 export default function ChooseRole(props) {
   const buttons = [
-    { id: 1, value: 'mentor', buttonText: 'Mentor' },
-    { id: 2, value: 'mentee', buttonText: 'Mentee' },
-    { id: 3, value: 'peer', buttonText: 'Peer' },
+    { id: 1, value: 'mentor', buttonText: 'Teach' },
+    { id: 2, value: 'mentee', buttonText: 'Learn' },
+    { id: 3, value: 'peer', buttonText: 'Collaborate' },
   ];
-  console.log('CHOOSE ROLE:', props);
   return (
     <CSSTransitionGroup
       transitionAppear={true}
@@ -44,19 +43,15 @@ export default function ChooseRole(props) {
             {buttons.map(info => (
               <div key={info.id} className="tile is-parent matchBackground">
                 <div
-                  className="tile is-child matchBackground box"
-                  style={{ textAlign: 'center' }}
+                  className="tile is-child matchBackground"
+                  style={{ textAlign: 'center', borderRadius: '0px' }}
                 >
-                  <img
-                    style={{ height: '200px', width: '175px' }}
-                    src="https://wolper.com.au/wp-content/uploads/2017/10/image-placeholder.jpg"
-                  />
                   <Button
                     customDivStyle={{ margin: '14px' }}
                     divStyle={'centerInDiv'}
                     key={info.id}
                     value={info.value}
-                    buttonStyle="is-medium is-primary centerItem"
+                    buttonStyle="is-medium is-primary is-outlined centerItem"
                     buttonText={info.buttonText}
                     handleClick={props.handleRoleChoice}
                   />

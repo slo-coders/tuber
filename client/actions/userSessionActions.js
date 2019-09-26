@@ -13,6 +13,7 @@ export const getActiveSessionsThunk = () => async dispatch => {
 export const closeUserSession = userId => async dispatch => {
   try {
     await axios.delete(`/api/usersession/${userId}`);
+    console.log('CLOSING USER SESSION');
     dispatch({ type: actions.CLOSE_USER_SESSION, userId });
   } catch (err) {
     console.error(err);
@@ -24,10 +25,8 @@ export const createUserSessionThunk = userData => async dispatch => {
     const response = await axios.post('/api/usersessions', userData);
 
     if (response.data.partner) {
-      console.log(
-        'INSIDE createUserSessionThunk_PAIRED',
-        response.data.partner,
-      );
+      // backend returns "paired UserMeetups" if meetup can be created
+      // console.log('INSIDE createUserSessionThunk_PAIRED', response.data.partner,);
       dispatch({
         type: actions.GET_USER_MEETUP_DATA,
         payload: response.data.reqUser,
@@ -37,7 +36,7 @@ export const createUserSessionThunk = userData => async dispatch => {
         payload: response.data,
       });
     } else {
-      console.log('INSIDE createUserSessionThunk_USERSESSION', response.data);
+      // console.log('INSIDE createUserSessionThunk_USERSESSION', response.data);
       dispatch({
         type: actions.CREATE_USER_SESSION,
         payload: response.data,

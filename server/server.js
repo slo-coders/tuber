@@ -39,19 +39,21 @@ app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
 io.on('connection', socket => {
   console.log('User Socket made: ', socket.id);
-
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
 
   socket.on('room', data => {
-    socket.join(data.room);
-    console.log('in room creator:', data.room);
+    // if(data.status === 'matched'){
+      socket.join(data.room);
+      console.log('in room creator:', data.room);
+      // console.log('SOCKET OBJ', socket);
+    // }
   });
 
   socket.on('leave-room', data => {
-    console.log('chat-room closed');
-    socket.leave(data.room);
+    console.log('leaving chat room');
+    socket.leave(data.room);     
   });
 
   let halfstackResponse =

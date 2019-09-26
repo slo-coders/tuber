@@ -145,10 +145,8 @@ class SignUp extends Component {
       );
     }
 
-    if (this.state.redirect === true ) {
-      return (
-        <userProfile />
-      );
+    if (this.state.redirect === true) {
+      return <userProfile />;
     }
   }
 }

@@ -1,17 +1,15 @@
 import React from 'react';
 import { singleCourseTopicsThunk } from '../../../actions/courseActions';
 import { connect } from 'react-redux';
-import Button from '../../reusables/Button';
+import Button from '../../reusables/Button-b';
 import PropTypes from 'prop-types';
 
 class TopicSelect extends React.Component {
-/*   componentDidMount() {
-  this.props.singleCourseTopics(this.props.courseId);
-  //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
-  } */
-
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps.courseWithTopics) !== JSON.stringify(this.props.courseWithTopics)) {
+    if (
+      JSON.stringify(prevProps.courseWithTopics) !==
+      JSON.stringify(this.props.courseWithTopics)
+    ) {
       this.props.getSingleCourseTopics(this.props.courseId);
     }
   }
@@ -19,18 +17,15 @@ class TopicSelect extends React.Component {
   //TODO: Put stars next to topic names.
 
   render() {
-    const courseTopics = this.props.courseWithTopics && this.props.courseWithTopics.topics;
+    const courseTopics =
+      this.props.courseWithTopics && this.props.courseWithTopics.topics;
 
-    if (courseTopics && courseTopics.length && this.props.userTopics){
-      const selectedCourseTopicsIds = courseTopics.map(
-        topic => topic.id,
-        );
-
-      // console.log('Selected course\'s topics as determined by `singleCourseWithTopics` in state ', selectedCourseTopicsIds);
-      // console.log('UserTopics acquired by Nav and saved in state ', this.props.userTopics);
+    if (courseTopics && courseTopics.length && this.props.userTopics) {
+      const selectedCourseTopicsIds = courseTopics.map(topic => topic.id);
 
       const userTopicsForCourse = this.props.userTopics.filter(item =>
-        selectedCourseTopicsIds.includes(item.topicId));
+        selectedCourseTopicsIds.includes(item.topicId),
+      );
 
       // <div className="section" style={{paddingTop: "115px", paddingRight:'300px', paddingLeft:'300px'}}>
       // <div className="container">
@@ -40,39 +35,44 @@ class TopicSelect extends React.Component {
       return (
         <div>
           <div>
-            {
-              (userTopicsForCourse && userTopicsForCourse.length > 0) ?
-                <form>
+            {userTopicsForCourse && userTopicsForCourse.length > 0 ? (
+              <form>
+                {userTopicsForCourse.map(uTop => {
+                  const radioName = `${uTop.topicName
+                    .split(' ')
+                    .join('-')}-Radio`;
+                  return this.props.userType === 'mentor' ? (
+                    <div key={uTop.id}>
+                      <li key={uTop.id}>{uTop.topicName}</li>
+                    </div>
+                  ) : (
+                    //mentee/peer topics w/ radio buttons
+                    <div className="radio" key={uTop.id}>
+                      <label key={uTop.id} htmlFor={radioName}>
+                        <input
+                          key={uTop.id}
+                          name={radioName}
+                          type="radio"
+                          value={uTop.topicId}
+                          onChange={this.props.handleTopicChoice}
+                          checked={this.props.topicId === uTop.topicId}
+                        />
+                        {uTop.topicName}
+                      </label>
+                    </div>
+                  );
+                })}
+              </form>
+            ) : (
+              <div>
+                <p>
                   {
-                    userTopicsForCourse
-                    .map(uTop => {
-                      const radioName = `${uTop.topicName.split(' ').join('-')}-Radio`;
-                      return this.props.userType === 'mentor' ?
-                        <div key={uTop.id}>
-                          <li key={uTop.id}>{uTop.topicName}</li>
-                        </div>
-                      : //mentee/peer topics w/ radio buttons
-                        <div className="radio" key={uTop.id}>
-                          <label key={uTop.id}htmlFor={radioName}>
-                            <input
-                              key={uTop.id}
-                              name={radioName}
-                              type="radio"
-                              value={uTop.topicId}
-                              onChange={this.props.handleTopicChoice}
-                              checked={this.props.topicId === uTop.topicId}
-                            />
-                            {uTop.topicName}
-                          </label>
-                        </div>;
-                    })
+                    'You do not appear to have any proficiency ratings for the topics in this selected course.'
                   }
-                </form>
-            : <div>
-                <p>{'You do not appear to have any proficiency ratings for the topics in this selected course.'}</p>
+                </p>
                 <p>{'Please select another course.'}</p>
               </div>
-            }
+            )}
           </div>
           <Button
             handleClick={this.props.handleSubmit} //createUserSessionThunk
@@ -89,7 +89,6 @@ class TopicSelect extends React.Component {
         </div>
       );
     } else {
-      console.log('No courseTopics (i.e., topics array) in courseWithTopics prop: ', this.props.courseWithTopics);
       return (
         <div>
           <p>{'Fetching course topics...'}</p>
