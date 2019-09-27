@@ -27,15 +27,13 @@ export default function ChooseRole(props) {
               Request a Meetup
             </h1>
             <p>
-              Lorem ipsum dolor sit amet, pri quod inimicus disputando cu, sit
-              facilisi abhorreant in. Pri iudico euismod copiosae in, salutatus
-              democritum sit no.
+              Please select a meetup goal from the choices below:
             </p>
           </div>
         </div>
       </section>
 
-      <div className="section" style={{ paddingTop: '30px' }}>
+      <div className="section" style={{ paddingTop: '60px', paddingLeft: '150px', paddingRight: '150px' }}>
         <div className="container">
           <div className="tile is-ancestor matchBackground">
             <div className="tile is-parent is-1 matchBackground"></div>
@@ -54,6 +52,7 @@ export default function ChooseRole(props) {
                     buttonStyle="is-medium is-primary is-outlined centerItem"
                     buttonText={info.buttonText}
                     handleClick={props.handleRoleChoice}
+                    customButtonStyle={{borderRadius:"0px"}}
                   />
                 </div>
               </div>

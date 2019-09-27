@@ -6,14 +6,12 @@ export const createMeetupRoomThunk = info => dispatch => {
   //object with pairedUsersMeetups information.(keys are `reqUser` and `partner`)
 };
 
-
-
 //removed paired user meetup information from store after closing chatroom
 export const removePairedUserMeetupsThunk = () => dispatch => {
-  try{
+  try {
     console.log('removeParedUser meetup thunk in meetupRoom actions');
-    dispatch({type: action.REMOVE_PAIRED_USER_MEETUPS});
-  } catch(err){
+    dispatch({ type: action.REMOVE_PAIRED_USER_MEETUPS });
+  } catch (err) {
     console.log(err);
   }
 };

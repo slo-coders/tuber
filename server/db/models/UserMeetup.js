@@ -30,8 +30,6 @@ const UserMeetup = db.define('user_meetup', {
     values: ['pending confirmation', 'matched', 'pending review', 'completed'],
     defaultValue: 'pending confirmation',
   },
-
-
 });
 
 UserMeetup.updatePartnerUserMeetup = async function(
@@ -58,16 +56,16 @@ UserMeetup.updatePartnerUserMeetup = async function(
       status: newPartnerInfo.partnerStatus,
     });
   }
-  
+
   delete newPartnerInfo.proficiencyRating;
   delete newPartnerInfo.partnerStatus;
   //User's status is updated
   const userUpdatedInfo = newPartnerInfo;
   // console.log('In UserMeetup.updatePartnerUserMeetup, userUpdatedInfo >>>>> ', userUpdatedInfo.userStatus);
-  const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update(
-    {...userUpdatedInfo,
-    status: userUpdatedInfo.userStatus}
-  );
+  const updatedPersonalUserMeetup = await personalUserMeetupInst[0].update({
+    ...userUpdatedInfo,
+    status: userUpdatedInfo.userStatus,
+  });
 
   return {
     partnerMeetupInfo: updatedPartnerUserMeetup,

@@ -179,10 +179,11 @@ class Chatroom extends React.Component {
             </div>
           </div>
         </div>
-
-        <a className="button" onClick={this.closeMeetup}>
-          Close MeetupRoom
-        </a>
+        <div className="buttons" style={{ justifyContent: 'center' }}>
+          <a className="button" onClick={this.closeMeetup}>
+            Close MeetupRoom
+          </a>
+        </div>
       </div>
     );
   }

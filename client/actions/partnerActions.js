@@ -10,10 +10,6 @@ export const singlePartnerThunk = partnerId => async dispatch => {
   }
 };
 
-
-
-
-
 export const updatePartnerUserMeetupThunk = (
   userId,
   meetupId,
