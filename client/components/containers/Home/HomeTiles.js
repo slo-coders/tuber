@@ -21,7 +21,6 @@ export default function HomeTiles(props) {
             >
               <div className="tile is-parent">
                 <div className="tile is-child">
-
                   <div className="level">
                     <div className="level-left">
                       <h1
@@ -30,14 +29,17 @@ export default function HomeTiles(props) {
                       >
                         Tuber
                       </h1>
-                      <p style={{marginLeft: '10px', paddingTop: '13px', flexWrap: 'wrap'}}>
-                        {
-                          'Harness the power of the 33% Rule.'
-                        }
+                      <p
+                        style={{
+                          marginLeft: '10px',
+                          paddingTop: '13px',
+                          flexWrap: 'wrap',
+                        }}
+                      >
+                        {'Harness the power of the 33% Rule.'}
                       </p>
                     </div>
                   </div>
-                
                 </div>
               </div>
 
@@ -66,7 +68,8 @@ export default function HomeTiles(props) {
                     className="tile is-child box tileColor"
                     style={{ borderRadius: '0px' }}
                   >
-                    <h1 className="title">Teach</h1>
+                    <h1 className="title" style={{marginBottom:"0px"}}>Teach</h1>
+                    <hr/>
                     <p>
                       One of the best ways to learn is by teaching others. Tuber
                       gives you the opportunity to{' '}
@@ -81,7 +84,8 @@ export default function HomeTiles(props) {
                     className="tile is-child box tileColor"
                     style={{ borderRadius: '0px' }}
                   >
-                    <h1 className="title">Collaborate</h1>
+                    <h1 className="title" style={{marginBottom:"0px"}}>Collaborate</h1>
+                    <hr/>
                     <p>
                       You don't have to do it alone!{' '}
                       <strong>Work with others</strong> on your level. Tuber
@@ -103,7 +107,7 @@ export default function HomeTiles(props) {
                   style={{ borderRadius: '0px' }}
                 >
                   {props.loggedin ? (
-                    <strong>you are logged in</strong>
+                    <strong>you are logged in!</strong>
                   ) : (
                     <div>
                       {' '}
@@ -121,7 +125,8 @@ export default function HomeTiles(props) {
                   className="tile is-child box tileColor"
                   style={{ borderRadius: '0px' }}
                 >
-                  <h1 className="title">Learn</h1>
+                  <h1 className="title" style={{marginBottom:"0px"}}>Learn</h1>
+                  <hr/>
                   <p>
                     Everyone has to start somewhere! Achieve mastery in a topic
                     by allowing Tuber to match you with a mentor that can help

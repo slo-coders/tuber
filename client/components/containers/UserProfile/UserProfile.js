@@ -13,7 +13,7 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    if(this.props.user.authUser.id){
+    if (this.props.user.authUser.id) {
       this.props.getUserTopics(this.props.user.authUser.id);
     }
   }
@@ -42,9 +42,9 @@ class UserProfile extends Component {
                   {'Hello, ' + user.authUser.firstName + '!'}
                 </h1>
                 <p>
-                  Lorem ipsum dolor sit amet, pri quod inimicus disputando cu,
-                  sit facilisi abhorreant in. Pri iudico euismod copiosae in,
-                  salutatus democritum sit no.
+                  Below are your most current proficiency ratings, which have
+                  been calculated from the reviews of others you have worked
+                  with.
                 </p>
               </div>
             </div>

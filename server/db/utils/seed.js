@@ -107,15 +107,6 @@ const seed = async () => {
         ),
       );
 
-      /*       // Updated user with userSessionId
-      await Promise.all(
-        usersReturned.map((user, i) => 
-          user.update({
-            userSessionId: userSessionReturned[i].id
-          })
-        )
-      ); */
-
       console.log('Seeded DB.');
     } else {
       throw 'Error: Trying to seed in production environment.';

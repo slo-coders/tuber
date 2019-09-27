@@ -45,15 +45,15 @@ io.on('connection', socket => {
 
   socket.on('room', data => {
     // if(data.status === 'matched'){
-      socket.join(data.room);
-      console.log('in room creator:', data.room);
-      // console.log('SOCKET OBJ', socket);
+    socket.join(data.room);
+    console.log('in room creator:', data.room);
+    // console.log('SOCKET OBJ', socket);
     // }
   });
 
   socket.on('leave-room', data => {
     console.log('leaving chat room');
-    socket.leave(data.room);     
+    socket.leave(data.room);
   });
 
   let halfstackResponse =

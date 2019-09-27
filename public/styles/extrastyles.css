@@ -1,11 +1,21 @@
 /* saved colors */
 /* temporary theme */
 /* css classes */
+h1, h2, h3, h4, h5 {
+  color: #222222; }
+
+label.checkbox {
+  color: #555555; }
+
 html {
   background-color: #e8e8e8; }
 
 p {
+  color: #555555;
   font-family: 'Quicksand', sans-serif; }
+
+strong {
+  color: #cb7676; }
 
 .matchBackground {
   background-color: #e8e8e8; }
@@ -28,10 +38,17 @@ img#profile {
 
 body {
   background-color: #e8e8e8;
-  font-family: 'Chakra Petch', sans-serif; }
+  font-family: 'Quicksand', sans-serif;
+  color: #222222; }
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(194, 187, 187, 0), rgba(203, 202, 204, 0.75), rgba(109, 107, 107, 0));
+  margin: 10px; }
 
 a {
-  color: #a9a9a9; }
+  color: #555555; }
 
 a:hover {
   color: #cb7676; }
@@ -40,6 +57,9 @@ a > svg {
   width: 10px;
   height: 10px;
   pointer-events: none; }
+
+i {
+  color: #555555; }
 
 /* CSS Transition group animations */
 .componentFadeIn-appear {
