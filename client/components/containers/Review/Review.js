@@ -81,6 +81,8 @@ export class Review extends Component {
             <div className="tile is-ancestor">
               <div className="tile is-parent">
                 <div className="tile is-child"></div>
+               
+                
                 <div
                   className="tile is-child is-6 box tileColor"
                   style={{ borderRadius: '0px' }}
@@ -95,20 +97,25 @@ export class Review extends Component {
                       {this.props.singleTopic.length > 1
                         ? this.props.singleTopic[0].title
                         : this.props.singleTopic.title}
-                      :
                     </p>
-                    <div className="level" style={{ textAlign: 'center' }}>
-                      <div className="level-left">
-                        <p>TOPIC TITLE:</p>
-                      </div>
-                      <div className="level-right">
+                    
+                    <div className='column' style={{ textAlign: 'center' }}>
+
+                    {/* <div className="level" > */}
+                    <div style={{paddingBottom:"20px"}}>
+                  
                         <StarRating
                           // pass in topicId here, it will get sent back to this state with score when user clicks on star
                           topic={'topic id gets passed in here'}
                           handleStarClick={this.handleStarClick}
                         />
-                      </div>
+
+                       
+                     
+                    {/* </div> */}
                     </div>
+                    
+                    
                     <div
                       className="buttons"
                       style={{ justifyContent: 'center' }}
@@ -117,9 +124,11 @@ export class Review extends Component {
                         Submit
                       </button>
                     </div>
+                    </div>
                   </div>
                   <div className="tile is-child"></div>
                 </div>
+                <div className="tile is-child"></div>
               </div>
             </div>
           </div>
