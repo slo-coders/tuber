@@ -68,8 +68,10 @@ export default function HomeTiles(props) {
                     className="tile is-child box tileColor"
                     style={{ borderRadius: '0px' }}
                   >
-                    <h1 className="title" style={{marginBottom:"0px"}}>Teach</h1>
-                    <hr/>
+                    <h1 className="title" style={{ marginBottom: '0px' }}>
+                      Teach
+                    </h1>
+                    <hr />
                     <p>
                       One of the best ways to learn is by teaching others. Tuber
                       gives you the opportunity to{' '}
@@ -84,8 +86,10 @@ export default function HomeTiles(props) {
                     className="tile is-child box tileColor"
                     style={{ borderRadius: '0px' }}
                   >
-                    <h1 className="title" style={{marginBottom:"0px"}}>Collaborate</h1>
-                    <hr/>
+                    <h1 className="title" style={{ marginBottom: '0px' }}>
+                      Collaborate
+                    </h1>
+                    <hr />
                     <p>
                       You don't have to do it alone!{' '}
                       <strong>Work with others</strong> on your level. Tuber
@@ -125,8 +129,10 @@ export default function HomeTiles(props) {
                   className="tile is-child box tileColor"
                   style={{ borderRadius: '0px' }}
                 >
-                  <h1 className="title" style={{marginBottom:"0px"}}>Learn</h1>
-                  <hr/>
+                  <h1 className="title" style={{ marginBottom: '0px' }}>
+                    Learn
+                  </h1>
+                  <hr />
                   <p>
                     Everyone has to start somewhere! Achieve mastery in a topic
                     by allowing Tuber to match you with a mentor that can help

@@ -71,6 +71,7 @@ export class Review extends Component {
     console.log('Review form state', this.state);
 
     return (
+      
       <div>
         <Title
           largeText="Review Your Partner"
@@ -88,16 +89,18 @@ export class Review extends Component {
                   style={{ borderRadius: '0px' }}
                 >
                   <strong>
-                    {`Please rate ${this.props.partner.firstName}'s proficiency in the folowing topic:`}
+                    {`Please rate ${this.props.partner.firstName}'s proficiency in ${this.props.singleTopic.length > 1
+                        ? this.props.singleTopic[0].title
+                        : this.props.singleTopic.title}:`}
                   </strong>
-                  <br />
+                  {/* <br />
                   <br />
                   <div className="level">
-                    <p>
-                      {this.props.singleTopic.length > 1
+                    <p> */}
+                      {/* {this.props.singleTopic.length > 1
                         ? this.props.singleTopic[0].title
-                        : this.props.singleTopic.title}
-                    </p>
+                        : this.props.singleTopic.title} */}
+                    {/* </p> */}
                     
                     <div className='column' style={{ textAlign: 'center' }}>
 
@@ -124,7 +127,7 @@ export class Review extends Component {
                         Submit
                       </button>
                     </div>
-                    </div>
+                   
                   </div>
                   <div className="tile is-child"></div>
                 </div>
