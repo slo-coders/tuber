@@ -9,6 +9,7 @@ export default function CheckBox(props) {
         name={props.checkboxItem}
         type="checkbox"
         onChange={props.handleCheckboxChange}
+        style={{ borderRadius: '0px', marginRight: '8px' }}
       />
       {props.checkboxItem}
     </label>

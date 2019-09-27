@@ -25,26 +25,46 @@ class TopicDisplay extends Component {
 
     if (userTopics.length > 0) {
       return (
-        <CSSTransitionGroup
-          transitionAppear={true}
-          transitionName="componentFadeIn"
-          transitionAppearTimeout={9000}
-          transitionLeaveTimeout={9000}
-          transitionEnterTimeout={9000}
-        >
-          <div className="column is-two-thirds">
-            {userTopics.map((topic, idx) => (
-              <div key={idx} className="level">
-                <h5>{topic.topicName}</h5>
-                <span>
-                  {'  Current Rating: '}
-                  <DisplayStarRating score={topic.proficiencyRating} />
-                  {'  ' + this.ratingToDecimal(topic.proficiencyRating)}
-                </span>
+        <div className="tile is-parent">
+          <div
+            className="tile is-child box tileColor"
+            style={{ paddingBottom: '47px', borderRadius: '0px' }}
+          >
+            <CSSTransitionGroup
+              transitionAppear={true}
+              transitionName="componentFadeIn"
+              transitionAppearTimeout={9000}
+              transitionLeaveTimeout={9000}
+              transitionEnterTimeout={9000}
+            >
+              <div style={{ padding: '20px' }}>
+                <strong>Topics and Proficiencies:</strong>
               </div>
-            ))}
+              <div
+                style={{
+                  paddingRight: '80px',
+                  paddingLeft: '40px',
+                  paddingTop: '12px',
+                }}
+              >
+                {userTopics.map((topic, idx) => (
+                  <div key={idx} className="level">
+                    <h5>{topic.topicName}</h5>
+                    <div className="level-right">
+                      {'  Current Rating:'}
+                      {topic.proficiencyRating ? (
+                        <DisplayStarRating score={topic.proficiencyRating} />
+                      ) : (
+                        'loading...'
+                      )}
+                      {'  ' + this.ratingToDecimal(topic.proficiencyRating)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CSSTransitionGroup>
           </div>
-        </CSSTransitionGroup>
+        </div>
       );
     }
   }

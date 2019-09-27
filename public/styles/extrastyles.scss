@@ -9,25 +9,85 @@ $periwinkle: #6464c8;
 $limeGreen: #c7ea46;
 $lightGrey: #e8e8e8;
 $mediumGrey: #a9a9a9;
+$midLightGrey: #F5F5F5;
+$darkGrey: #222222;
+$otherGrey: #555555;
 
 /* temporary theme */
 $background: $lightGrey;
 $link: $mediumGrey;
-$linkHover: $rose;
+$linkHover: $limeGreen;
 
 /* css classes */
+h1, h2, h3, h4, h5{
+  color:$darkGrey
+}
+
+label.checkbox{
+  color: $otherGrey
+}
+
+html{
+  background-color: $background;
+}
+
+p{
+  color: $otherGrey;
+  font-family: 'Quicksand', sans-serif;
+}
+
+strong {
+  color: $rose;
+}
+
+.matchBackground{
+  background-color: $background;
+}
+
+.tileRadius {
+  border-radius: "0px";
+}
+
+.tileColor{
+  background-color: $midLightGrey;
+}
+
+.outline{
+  border: 1px solid;
+}
+
+.centerInDiv{
+  justify-content: center;
+}
+
+img#profile{
+  height: 165px;
+  width: 125px;
+}
+
 body {
   background-color: $background;
-  height: 100vh;
-  width: 100vw;
+  // height: 100%;
+  // width: 100%;
+  // background-size: auto;
+  font-family: 'Quicksand', sans-serif;
+  color: $darkGrey;
+  // font-size: 12px;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(194, 187, 187, 0), rgba(203, 202, 204, 0.75), rgba(109, 107, 107, 0));
+  margin: 10px;
 }
 
 a {
-  color: $link;
+  color: $otherGrey;
 }
 
 a:hover {
-  color: $linkHover;
+  color: $rose;
 }
 
 a > svg {
@@ -36,9 +96,8 @@ a > svg {
   pointer-events: none;
 }
 
-/* CSS className stylings */
-.tile {
-  background-color: #4a4a4a;
+i {
+  color: $otherGrey;
 }
 
 /* CSS Transition group animations */
@@ -119,11 +178,6 @@ a > svg {
   width: 10px;
   height: 10px;
   pointer-events: none;
-}
-
-/* CSS className stylings */
-.tile {
-  background-color: #4a4a4a;
 }
 
 /* CSS Transition group animations */

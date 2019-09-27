@@ -82,10 +82,16 @@ router.get('/:userId/meetups', async (req, res, next) => {
     const user = await User.findOne({
       where: { id: req.params.userId },
       include: [
-        { model: Meetup, attributes: ['id'], through: { model: UserMeetup } }, //status
+        {
+          model: Meetup,
+          attributes: ['id'],
+          through: {
+            model: UserMeetup,
+          },
+        }, //status
         { model: Topic, through: { model: UserTopic } }, //topic
       ],
-      order: ['createdAt'],
+      order: [[Meetup, UserMeetup, 'createdAt', 'DESC']], //Order by most recent UserMeetup
       limit: 1,
     });
     res.send(user);
@@ -99,15 +105,19 @@ router.get('/:userId/meetups', async (req, res, next) => {
  */
 router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
   try {
-    //User submits req.body = {proficiencyRating:} with PUT to get UserMeetup instances for both themeselves and partner
+    //User submits req.body = {proficiencyRating:, status:} with PUT to get UserMeetup instances for both themeselves and partner
+    const newPartnerInfo = req.body;
     const newPartnerProfRating = req.body.proficiencyRating;
-    const userMeetupUpdate = await UserMeetup.ratePartnerUserMeetup(
+
+    // console.log('received axios req with body: ', newPartnerInfo);
+
+    const userMeetupUpdate = await UserMeetup.updatePartnerUserMeetup(
       req.params.userId,
       req.params.meetupId,
-      newPartnerProfRating,
+      newPartnerInfo,
     );
 
-    const { partnerMeetupInfo } = userMeetupUpdate;
+    const { partnerMeetupInfo } = userMeetupUpdate; // {partnerMeetupInfo:,personalMeetupInfo:};
 
     if (newPartnerProfRating && partnerMeetupInfo.proficiencyRating) {
       //GET the meetup's topicId
@@ -148,9 +158,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
         },
       );
     } else {
-      console.log(
-        'Error; either could not find previous average rating or new rating could not be read correctly.',
-      );
+      console.log('NO previous average rating or new rating provided.');
     }
     res.send(userMeetupUpdate);
   } catch (err) {

@@ -6,7 +6,8 @@ import SignUpInput from './SignUpInput';
 import SignUpTopics from './SignUpTopics';
 import SignUpRateTopics from './SignUpRateTopics';
 import { postUserTopicsArrThunked } from '../../../actions/userTopicActions';
-import LoginForm from '../LoginForm';
+import { loginThunked } from '../../../actions/sessionActions';
+import { userProfile } from '../../containers/UserProfile/UserProfile';
 
 class SignUp extends Component {
   constructor(props) {
@@ -38,10 +39,15 @@ class SignUp extends Component {
     }
   }
 
-  //TODO: get userID and create UserTopics
   handleSubmit() {
     // Still needs to be set up to get new user ID
+    let userInfo = {
+      email: this.state.email,
+      password: this.state.password,
+    };
     this.props.postTopics(this.state.id, this.state.topicsWithRatings);
+    this.props.loginThunked(userInfo);
+    window.location = '#/profile';
     this.setState({
       showRatings: false,
       redirect: true,
@@ -51,7 +57,6 @@ class SignUp extends Component {
   handleContinue1() {
     //POSTS NEW USER, SETS IT IN STORE
     const { email, firstName, lastName, password } = this.state;
-
     this.props.sendUserInfo({
       email,
       password,
@@ -109,7 +114,6 @@ class SignUp extends Component {
   }
 
   render() {
-    console.log('SIGN UP LEVEL', this.state);
     const { topics } = this.props.topics;
     if (topics && this.state.showForm) {
       return (
@@ -141,8 +145,8 @@ class SignUp extends Component {
       );
     }
 
-    if (this.state.redirect) {
-      return <LoginForm />;
+    if (this.state.redirect === true) {
+      return <userProfile />;
     }
   }
 }
@@ -157,6 +161,7 @@ const mapDispatchToProps = dispatch => {
     sendUserInfo: userInfo => dispatch(postUserThunk(userInfo)),
     postTopics: (userId, userTopicsArr) =>
       dispatch(postUserTopicsArrThunked(userId, userTopicsArr)),
+    loginThunked: (email, password) => dispatch(loginThunked(email, password)),
   };
 };
 
@@ -168,6 +173,7 @@ SignUp.propTypes = {
   sendUserInfo: PropTypes.func,
   postTopics: PropTypes.func,
   newUser: PropTypes.object,
+  loginThunked: PropTypes.func,
 };
 
 export default connect(

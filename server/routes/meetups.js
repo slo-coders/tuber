@@ -15,6 +15,20 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+//get a topic for a specific meetup
+router.get('/:meetupId/topics', async (req, res, next) => {
+  try {
+    const meetupTopicInstance = await Meetup.findOne({
+      where: { id: req.params.meetupId },
+      include: [{ model: Topic, attributes: ['id', 'title'] }],
+      attributes: ['id'],
+    });
+    res.send(meetupTopicInstance);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get('/:meetupId', async (req, res, next) => {
   try {
     const meetupInstance = await Meetup.findOne({
@@ -24,6 +38,7 @@ router.get('/:meetupId', async (req, res, next) => {
         { model: Topic, through: { model: MeetupTopic } },
       ],
     });
+
     res.send(meetupInstance);
   } catch (err) {
     next(err);

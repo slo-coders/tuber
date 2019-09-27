@@ -1,15 +1,59 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutThunked } from '../../actions/sessionActions';
+import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
+import { getUserTopicsThunked } from '../../actions/userTopicActions';
 import PropTypes from 'prop-types';
 import Button from '../reusables/Button';
 
 export class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      status: '',
+    };
     this.logout = this.logout.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.user.authUser.id) {
+      this.props.getUserMeetup(this.props.user.authUser.id);
+      this.props.getUserTopics(this.props.user.authUser.id);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevUserId = prevProps.user.authUser && prevProps.user.authUser.id;
+    const currentUserId =
+      this.props.user.authUser && this.props.user.authUser.id;
+
+    const prevUserMeetupId = prevProps.userMeetup && prevProps.userMeetup.id;
+    const currentUserMeetupId =
+      this.props.userMeetup && this.props.userMeetup.id;
+
+    const prevMeetupStatus =
+      prevProps.userMeetup && prevProps.userMeetup.status;
+    const currentMeetupStatus =
+      this.props.userMeetup && this.props.userMeetup.status;
+
+    if (prevUserId !== currentUserId) {
+      this.props.getUserTopics(this.props.user.authUser.id);
+    }
+
+    if (
+      this.props.user.authUser.id &&
+      (!currentUserMeetupId ||
+        prevUserMeetupId !== currentUserMeetupId ||
+        prevMeetupStatus !== currentMeetupStatus)
+    ) {
+      this.props.getUserMeetup(this.props.user.authUser.id);
+    }
+
+    /* if(currentMeetupStatus === 'completed') {
+      //partner should be empty or userMeetup should be empty since mostRecentMeetup is complete
+    } */
   }
 
   logout(ev) {
@@ -19,7 +63,9 @@ export class Nav extends React.Component {
   }
 
   render() {
+    console.log('NAV-BAR', this.props);
     return (
+      
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
           <div
@@ -43,14 +89,26 @@ export class Nav extends React.Component {
               </Link>
               <Link
                 className="navbar-item"
-                to="/request_match" /* path will eventually depend on match status, this is a placeholder */
+                to={
+                  this.props.userMeetup &&
+                  this.props.userMeetup.status === 'pending confirmation'
+                    ? '/request_match' //"/confirm_match"
+                    : this.props.userMeetup &&
+                      this.props.userMeetup.status === 'pending review'
+                    ? '/review'
+                    : this.props.userMeetup &&
+                      this.props.userMeetup.status === 'matched'
+                    ? '/meetuproom'
+                    : '/request_match'
+                }
               >
                 Meetups
               </Link>
 
-              <Link className="navbar-item" to="/chatroom">
-                Chat Room
-              </Link>
+              {/*   <Link className="navbar-item" to="/review">
+                Review
+              </Link> */}
+
               <div className="navbar-item">
                 <Button
                   handleClick={this.logout}
@@ -69,30 +127,39 @@ export class Nav extends React.Component {
             </div>
           </div>
         )}
+        
       </nav>
+      
     );
   }
 }
 
 Nav.defaultProps = {
-  logoutThunked: PropTypes.func,
+  user: {},
+  authUser: {},
+  id: '',
+  logoutThunked: () => {},
+};
+Nav.propTypes = {
   user: PropTypes.object,
   authUser: PropTypes.object,
   id: PropTypes.string,
-};
-Nav.propTypes = {
+  status: PropTypes.string,
   logoutThunked: PropTypes.func,
-  user: PropTypes.object,
-  authUser: PropTypes.func,
-  id: PropTypes.func,
+  getUserMeetup: PropTypes.func,
+  getUserTopics: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
   user: state.auth,
+  userMeetup: state.userMeetup,
+  allState: state,
 });
 
 const mapDispatchToProps = dispatch => ({
   logoutThunked: () => dispatch(logoutThunked()),
+  getUserMeetup: userId => dispatch(getUserMeetupDataThunked(userId)),
+  getUserTopics: userId => dispatch(getUserTopicsThunked(userId)),
 });
 
 export default connect(

@@ -7,6 +7,7 @@ import {
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import Input from '../reusables/Input';
+import Button from '../reusables/Button-b';
 
 //save for sever restart
 
@@ -34,48 +35,52 @@ export class LoginForm extends Component {
 
   render() {
     return (
-      <div className="column is-half is-center">
-        <form className="LoginForm" onSubmit={this.onSubmit}>
-          <div className="field">
-            <div className="control">
-              <label> Email </label>
-              <Input
-                type={'email'}
-                handleInputChange={this.onHandle}
-                name={'email'}
-                value={this.state.email}
-                placeholder={'Email'}
-                icon={'envelope'}
-              />
-            </div>
+      <form className="LoginForm" onSubmit={this.onSubmit}>
+        <div className="field">
+          <div className="control">
+            <Input
+              type={'email'}
+              handleInputChange={this.onHandle}
+              name={'email'}
+              value={this.state.email}
+              placeholder={'Email'}
+              icon={'envelope'}
+            />
           </div>
-          <div className="field">
-            <div className="control">
-              <label> Password </label>
-              <Input
-                type={'password'}
-                handleInputChange={this.onHandle}
-                name={'password'}
-                value={this.state.password}
-                placeholder={'Password'}
-                icon={'key'}
-              />
-            </div>
+        </div>
+        <div className="field">
+          <div className="control">
+            <Input
+              type={'password'}
+              handleInputChange={this.onHandle}
+              name={'password'}
+              value={this.state.password}
+              placeholder={'Password'}
+              icon={'key'}
+            />
           </div>
-          <div className="button-box_login">
-            <button
-              disabled={this.state.email && this.state.password ? false : true}
-              className="button is-primary"
-            >
-              Log In
-            </button>
-            <hr />
-            <Link className="button" to="/signup">
-              Sign Up
-            </Link>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div className="buttons" style={{ justifyContent: 'center' }}>
+          <a
+            className="button is-primary"
+            disabled={this.state.email && this.state.password ? false : true}
+            onClick={this.onSubmit}
+            // buttonStyle={'is-primary'}
+            // buttonText={'Log In'}
+            style={{ marginRight: '5px', borderRadius: '25px' }}
+          >
+            Log In
+          </a>
+
+          <Link
+            className="button"
+            to="/signup"
+            style={{ marginLeft: '5px', borderRadius: '25px' }}
+          >
+            Sign Up
+          </Link>
+        </div>
+      </form>
     );
   }
 }

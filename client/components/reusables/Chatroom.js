@@ -1,77 +1,83 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import uuid from '../../../server/db/utils/uuid';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUserMeetupDataThunked } from '../../actions/userMeetupActions';
+import {
+  getUserMeetupDataThunked,
+  updateMeetupDataThunked,
+} from '../../actions/userMeetupActions';
+import { removeSingleMeetupThunk } from '../../actions/meetupActions';
+import { removePairedUserMeetupsThunk } from '../../actions/meetupRoomAction';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:3001');
+const socket = io();
 
 class Chatroom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // id: uuid(),
       messageList: [],
       message: '',
+      title: '',
+      //need to have userMeetup status checked for update.
+      //Nessissary for terminating socket room?
+      status: '',
     };
-    this.onHandle = this.onHandle.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
+    this.closeMeetup = this.closeMeetup.bind(this);
 
-    //listening for incomming server data
+    //listening for incoming server data
     socket.on('message-data', data => {
-      console.log('Info from SERVER: ', data);
       this.updateMessages(data);
     });
   }
 
-  //need to get meetupId
   componentDidMount() {
-    this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
+    socket.emit('room', {
+      room: this.props.meetupId,
+    });
+    if (!this.props.partner && this.props.pairedUserMeetups) {
+      this.props.getUserMeetup(this.props.user.authUser.id);
+      this.props.singlePartnerThunk(
+        this.props.pairedUserMeetups.partner.userId,
+      );
+    }
+    this.setState({ title: this.props.singleTopic.title });
   }
 
-  // else {
-  //   socket.emit('room', {
-  //     room: this.props.userMeetup.userMeetup[0].id,
-  //   });
-  // }
-
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.user.authUser &&
-      this.props.user.authUser &&
-      prevProps.user.authUser.id !== this.props.user.authUser.id
-    ) {
-      this.props.getUserMeetupDataThunked(this.props.user.authUser.id);
-    }
-    if (
-      prevProps.userMeetup &&
-      this.props.userMeetup &&
-      prevProps.userMeetup.id !== this.props.userMeetup.id
-    ) {
+    const prevMeetupId =
+      prevProps.pairedUserMeetups.partner &&
+      prevProps.pairedUserMeetups.partner.meetupId;
+    const currentMeetupId =
+      this.props.pairedUserMeetups.partner &&
+      this.props.pairedUserMeetups.partner.meetupId;
+
+    // const currentUserMeetupStatus = this.props.pairedUserMeetups &&this.props.pairedUserMeetups.reqUser;
+    // const currentPartnerMeetupStatus = this.props.pairedUserMeetups && this.props.pairedUserMeeetups.partner;
+    if (prevMeetupId !== currentMeetupId) {
+      socket.emit('leave-room', {
+        room: prevProps.meetupId,
+      });
       socket.emit('room', {
-        room: this.props.userMeetup.id,
+        room: this.props.meetupId,
       });
     }
   }
 
-  componentWillUnmount() {
-    socket.emit('leave-room', {
-      room: this.props.userMeetup.id,
-    });
-  }
-
-  onHandle(ev) {
+  handleTextChange(ev) {
     this.setState({ message: ev.target.value });
   }
 
   onSubmit(ev) {
     ev.preventDefault();
     socket.emit('chat-message', {
-      room: this.props.userMeetup.id,
+      room: this.props.meetupId,
       user: this.props.user.authUser.firstName,
       text: this.state.message,
+      // status: this.state.status,
     });
     this.setState({ message: '' });
   }
@@ -82,35 +88,102 @@ class Chatroom extends React.Component {
     });
   }
 
+  closeMeetup() {
+    socket.emit('leave-room', {
+      room: this.props.meetupId,
+      //include status on body as a check
+    });
+    this.props.updateMeetupData(
+      this.props.user.authUser.id,
+      this.props.meetupId,
+      {
+        userStatus: 'pending review',
+        partnerStatus: 'pending review',
+      },
+    );
+    //need to wipe meetups.singleMeetup off global state store /////////////////
+    this.props.removeSingleMeetupThunk();
+    this.props.removePairedUserMeetupsThunk();
+    this.props.getUserMeetup(this.props.user.authUser.id);
+    window.location = '/#/review'; //navigate to review component or to home
+  }
+
   render() {
     if (this.props.user.authUser.id === undefined) return null;
+
+    let partner;
+    if (this.props.partnerAlt) partner = this.props.partnerAlt;
+    else if (this.props.partner) partner = this.props.partner;
+
+    let newTopicTitle;
+    if (this.props.mentorTopic && this.props.mentorTopic[0]) {
+      newTopicTitle = this.props.mentorTopic[0].title;
+    }
+
     return (
       <div>
-        <div>
-          <h3>Welcome! The topic of discussion is:</h3>
-        </div>
+        <div className="tile is-ancestor">
+          <div className="tile is-parent">
+            <div className="tile is-parent is-4">
+              <div
+                className="tile is-child box tileColor"
+                style={{ textAlign: 'center', borderRadius: '0px' }}
+              >
+                <div>
+                  <div>
+                    <h5>{"Your partner's name is: " + partner.firstName}</h5>
+                    <h3>
+                      Let&apos;s talk about:{' '}
+                      {this.state.title
+                        ? this.state.title
+                        : this.props.meetupTopic
+                        ? this.props.meetupTopic
+                        : newTopicTitle}
+                    </h3>
+                    <br />
+                    <img className="partnerImg" src={partner.imageUrl} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tile is-parent">
+              <div
+                className="tile is-child box tileColor"
+                style={{ borderRadius: '0px' }}
+              >
+                <div
+                  className="message-list"
+                  style={{ overflowY: 'scroll', height: '200px' }}
+                >
+                  {this.state.messageList.map((item, idx) => (
+                    <li
+                      className="messages"
+                      key={idx}
+                    >{`${item.user}: ${item.text}`}</li>
+                  ))}
+                </div>
 
-        <div className="message-list">
-          {this.state.messageList.map((item, idx) => (
-            <li
-              className="messages"
-              key={idx}
-            >{`${item.user}: ${item.text}`}</li>
-          ))}
+                <form onSubmit={this.onSubmit}>
+                  <label htmlFor="chatmessage">Message</label>
+                  <input
+                    type="text"
+                    name="chatmessage"
+                    onChange={this.handleTextChange}
+                    value={this.state.message}
+                  />
+                  <button className="button" type="submit">
+                    Send
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <form classNames="chatForm" onSubmit={this.onSubmit}>
-          <label htmlFor="chatmessage">Message</label>
-          <input
-            type="text"
-            name="chatmessage"
-            onChange={this.onHandle}
-            value={this.state.message}
-          />
-          <button className="button" type="submit">
-            Submit
-          </button>
-        </form>
+        <div className="buttons" style={{ justifyContent: 'center' }}>
+          <a className="button" onClick={this.closeMeetup}>
+            Close MeetupRoom
+          </a>
+        </div>
       </div>
     );
   }
@@ -118,11 +191,21 @@ class Chatroom extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.auth,
-  userMeetup: state.userMeetup.mostRecentUserMeetup,
+  meetupId: state.pairedUserMeetups.reqUser
+    ? state.pairedUserMeetups.reqUser.meetupId
+    : state.userMeetup && state.userMeetup.meetupId
+    ? state.userMeetup.meetupId
+    : null,
+  partner: state.partner,
+  pairedUserMeetups: state.pairedUserMeetups,
+  singleTopic: state.topics.singleTopic,
 });
 const mapDispatchToProps = dispatch => ({
-  getUserMeetupDataThunked: userid =>
-    dispatch(getUserMeetupDataThunked(userid)),
+  getUserMeetup: userid => dispatch(getUserMeetupDataThunked(userid)),
+  updateMeetupData: (userId, meetupId, data) =>
+    dispatch(updateMeetupDataThunked(userId, meetupId, data)),
+  removeSingleMeetupThunk: () => dispatch(removeSingleMeetupThunk()),
+  removePairedUserMeetupsThunk: () => dispatch(removePairedUserMeetupsThunk()),
 });
 
 export default connect(

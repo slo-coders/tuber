@@ -1,13 +1,54 @@
 /* saved colors */
 /* temporary theme */
 /* css classes */
+h1, h2, h3, h4, h5 {
+  color: #222222; }
+
+label.checkbox {
+  color: #555555; }
+
+html {
+  background-color: #e8e8e8; }
+
+p {
+  color: #555555;
+  font-family: 'Quicksand', sans-serif; }
+
+strong {
+  color: #cb7676; }
+
+.matchBackground {
+  background-color: #e8e8e8; }
+
+.tileRadius {
+  border-radius: "0px"; }
+
+.tileColor {
+  background-color: #F5F5F5; }
+
+.outline {
+  border: 1px solid; }
+
+.centerInDiv {
+  justify-content: center; }
+
+img#profile {
+  height: 165px;
+  width: 125px; }
+
 body {
   background-color: #e8e8e8;
-  height: 100vh;
-  width: 100vw; }
+  font-family: 'Quicksand', sans-serif;
+  color: #222222; }
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(194, 187, 187, 0), rgba(203, 202, 204, 0.75), rgba(109, 107, 107, 0));
+  margin: 10px; }
 
 a {
-  color: #a9a9a9; }
+  color: #555555; }
 
 a:hover {
   color: #cb7676; }
@@ -17,9 +58,8 @@ a > svg {
   height: 10px;
   pointer-events: none; }
 
-/* CSS className stylings */
-.tile {
-  background-color: #4a4a4a; }
+i {
+  color: #555555; }
 
 /* CSS Transition group animations */
 .componentFadeIn-appear {
@@ -77,10 +117,6 @@ a > svg {
   width: 10px;
   height: 10px;
   pointer-events: none; }
-
-/* CSS className stylings */
-.tile {
-  background-color: #4a4a4a; }
 
 /* CSS Transition group animations */
 .componentFadeIn-appear {

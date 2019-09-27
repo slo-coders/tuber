@@ -3,14 +3,18 @@ import { connect } from 'react-redux';
 import ChooseRole from './ChooseRole';
 import CourseSelect from './CourseSelect';
 import TopicSelect from './TopicSelect';
-import { listCoursesThunk } from '../../../actions/courseActions';
+import {
+  listCoursesThunk,
+  singleCourseTopicsThunk,
+} from '../../../actions/courseActions';
 import { createUserSessionThunk } from '../../../actions/userSessionActions';
-import { fetchLoggedInThunked } from '../../../actions/sessionActions';
+import { getUserTopicsThunked } from '../../../actions/userTopicActions';
+import { singleTopicThunk } from '../../../actions/topicActions';
 import PropTypes from 'prop-types';
 
 class RequestMatch extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       userType: '',
       courseId: '',
@@ -24,56 +28,86 @@ class RequestMatch extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getCourses();
+    //TODO: Check 'status' of UserMeetup instance
+
+    //TODO: On mount of RequestMatch component, check all UserMeetups are 'completed', else redirect to Chatroom (if status === 'matched'), Review (if status === 'pending review'), or "Confirm [reach goal]" (if status === 'pending confirmation')
+    //TODO: In RequestMatch component, if partner is key in response in "pairedUserMeetup", change UserMeetup statuses to 'matched'.
+  }
+
   handleRoleChoice(e) {
     this.setState({
       userType: e.target.getAttribute('value'),
-    });
-  }
-  handleCourseChoice(e) {
-    this.setState({
-      courseId: e.target.getAttribute('value'),
-    });
-  }
-
-  handleTopicChoice(e) {
-    this.setState({
-      topicId: e.target.getAttribute('value'),
       userId: this.props.user.authUser.id,
     });
   }
 
-  handleSubmit() {
-    this.props.createUserSessionThunk(this.state);
+  async handleCourseChoice(e) {
+    await this.setState({
+      courseId: e.target.getAttribute('value'),
+    });
+    await this.props.getUserTopics(this.state.userId);
+    await this.props.setCourseTopics(this.state.courseId); //courses.singleCourseWithTopics ==== {id:, topics: [{title:, id:, }]}
+    this.setState({
+      topicId: '',
+    });
   }
 
-  componentDidMount() {
-    this.props.getLoggedInUser();
-    this.props.getCourses();
+  handleTopicChoice(e) {
+    const newTopicId =
+      this.state.topicId === e.target.getAttribute('value')
+        ? ''
+        : e.target.getAttribute('value');
+    this.setState({
+      topicId: newTopicId,
+    });
+  }
+
+  async handleSubmit() {
+    await this.props.createUserSessionThunk(this.state);
+    await this.props.singleTopicThunk(this.state.topicId);
+    this.setState({
+      userType: '',
+      courseId: '',
+      topicId: '',
+      location: 'library',
+      userId: '',
+    });
+    window.location = '/#/meetuproom';
+    //TODO: get userMeetup update after request ===> should say matched so that user can see meetuproom/chatroom
   }
 
   render() {
     if (!this.state.userType) {
+      return <ChooseRole handleRoleChoice={this.handleRoleChoice} />;
+    }
+
+    if (this.state.userType && this.state.courseId) {
       return (
-        <div className="section">
-          <ChooseRole handleRoleChoice={this.handleRoleChoice} />
+        <div>
+          <CourseSelect
+            userType={this.state.userType}
+            courseOptions={this.props.courses}
+            handleCourseChoice={this.handleCourseChoice}
+          />
+          <TopicSelect
+            userType={this.state.userType}
+            courseId={this.state.courseId} //not updated by handleCourseChoice
+            topicId={this.state.topicId}
+            handleSubmit={this.handleSubmit}
+            handleTopicChoice={this.handleTopicChoice}
+          />
         </div>
       );
     }
-    if (this.state.userType && this.state.courseId) {
-      return (
-        <TopicSelect
-          courseId={this.state.courseId}
-          handleSubmit={this.handleSubmit}
-          handleTopicChoice={this.handleTopicChoice}
-          {...this.state}
-        />
-      );
-    }
-    if (this.state.userType) {
+
+    if (this.state.userType && !this.state.courseId) {
       return (
         <div className="section">
           <CourseSelect
-            courses={this.props.courses}
+            userType={this.state.userType}
+            courseOptions={this.props.courses} //from list courses
             handleCourseChoice={this.handleCourseChoice}
           />
         </div>
@@ -83,26 +117,32 @@ class RequestMatch extends Component {
 }
 
 RequestMatch.defaultProps = {
-  getCourses: PropTypes.func,
-  courses: PropTypes.array,
+  getCourses: () => {},
+  setCourseTopics: () => {},
+  courses: [],
 };
 RequestMatch.propTypes = {
-  getLoggedInUser: PropTypes.func,
-  createUserSessionThunk: PropTypes.func,
-  user: PropTypes.object,
-  getCourses: PropTypes.func,
   courses: PropTypes.array,
+  user: PropTypes.object,
+  createUserSessionThunk: PropTypes.func,
+  getCourses: PropTypes.func,
+  setCourseTopics: PropTypes.func,
+  getUserTopics: PropTypes.func,
+  singleTopicThunk: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
-  courses: state.courses.courses,
+  courses: state.courses.allCoursesArr,
   user: state.auth,
 });
+
 const mapDispatchToProps = dispatch => ({
   getCourses: () => dispatch(listCoursesThunk()),
-  getLoggedInUser: () => dispatch(fetchLoggedInThunked()),
   createUserSessionThunk: userData =>
     dispatch(createUserSessionThunk(userData)),
+  setCourseTopics: courseId => dispatch(singleCourseTopicsThunk(courseId)),
+  getUserTopics: courseId => dispatch(getUserTopicsThunked(courseId)),
+  singleTopicThunk: topicId => dispatch(singleTopicThunk(topicId)),
 });
 
 export default connect(

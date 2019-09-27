@@ -1,9 +1,9 @@
 const express = require('express');
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 const router = express.Router();
 
 // Model
-const { UserTopic, Topic, User } = require('../db/index');
+const { UserTopic, Topic } = require('../db/index');
 
 // Routes
 //`/api/users/:userId/topics

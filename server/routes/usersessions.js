@@ -31,8 +31,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
-  const { io } = require('../server');
+router.post('/', async (req, res) => {
   try {
     const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
@@ -75,6 +74,7 @@ router.post('/', async (req, res, next) => {
     }
 
     const userSession = await UserSession.create(newSessionInfo);
+    // console.log('USERSESSION ROUTE', userSession);
 
     let matchedUserMeetupInfo;
 
@@ -93,39 +93,6 @@ router.post('/', async (req, res, next) => {
           location,
           userSession.selectedTopics,
         );
-        // console.log(' >>>>>>>>>>>>  ', userSession);
-        // if (userSession) {
-        //   ////////////////////????????????????
-        //   console.log("I'm inside POST, at linek 98!!!!!!!!!!!!!!!!!!");
-
-        //   //origin here
-        //   io.on('connection', socket => {
-        //     //ReqUser has a new socket Id
-        //     console.log('In the usersession with socket:', socket);
-
-        //will listen for input from the client for instance of 'send-chat-message'
-        // socket.on('chat-message', message => {
-        //   console.log('Message from client: ' + message);
-        //will send message to everyone on server except for the sender
-        //Will want to make this more specific for user and partner. possibly need to set up a room
-        // socket.broadcast.emit('chat-message', message);
-        // if (matchedUserMeetupInfo && userSession) {
-        //   socket.emit('matched-notification', () => {
-        //     console.log('A match has been made');
-        //   });
-        //   // socket.on('room', data => {
-        //   //   //verify meetup connection/meetupId
-        //   //   //grab the users usermeetup /meetup
-        //   //   //want to join the meetup id room
-
-        //   //   socket.join(matchedUserMeetupInfo.reqUser.meetupId);
-        //   //   console.log('in room creator:', data.room);
-
-        //   //   //origin of notification (server)
-        //   // });
-        // }
-        //   });
-        // }
 
         /* //TODO:
         CONFIRM MEETUP BTWN MENTEE AND MENTOR BEFORE DESTROYING USERSESSION
@@ -205,16 +172,10 @@ router.delete('/:userId', async (req, res, next) => {
       res.sendStatus(401);
     }
 
-    //Check if user has submitted a review.
-    //This will require a form that will put to both the User profeciency on UserTopics model as well as to here for review status updates
-    //
-    // if (checkUserSession.reviewStatus === 'no review') {
-    //   res.send('Please review your partners profeciency').end();
-    // } else {
-    //   checkUserSession.destroy();
-    //   res.send('user-session closed');
-    // }
+    checkUserSession.destroy();
+    res.send('user-session closed');
   } catch (err) {
+    // console.log('');
     next(err);
   }
 });

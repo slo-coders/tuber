@@ -44,6 +44,7 @@ const findAMatch = async (
         userId: reqUserId,
         userType: reqUserType,
         meetupId: meetup.id,
+        status: 'matched',
         //UserMeetup should NOT include 'aveProfRating' from UserTopic
         //proficiencyRating: requetorsUserTopicInstance.proficiencyRating,
       });
@@ -66,6 +67,7 @@ const findAMatch = async (
         userId: partnerId,
         userType: partnerType,
         meetupId: meetup.id,
+        status: 'matched',
         //UserMeetup should NOT include 'aveProfRating' from UserTopic
         //proficiencyRating: partnerProfRating,
       });

@@ -1,22 +1,37 @@
-import {
-  GET_MEETUP_DATA,
-  UPDATE_MEETUP_DATA,
-  GET_USER_MEETUP_DATA,
-} from '../actions/actionTypes';
+import { GET_USER_MEETUP_DATA } from '../actions/actionTypes';
 
-const initialState = {
-  userMeetupsArray: [],
-  mostRecentUserMeetup: {}, //mostRecentUserMeetup.id
-};
-
-const userMeetupReducer = (state = initialState, action) => {
+const userMeetupReducer = (state = {}, action) => {
   switch (action.type) {
-    // case GET_MEETUP_DATA: //GETs all meeup data with a userId
-    //   return { ...state, userMeetupsArray: action.payload.meetups };
-    case GET_USER_MEETUP_DATA: //Gets one meetup with a userId and meetupId
-      return { ...state, mostRecentUserMeetup: action.payload.meetups[0] };
-    case UPDATE_MEETUP_DATA:
-      return { ...state, userMeeupsArray: action.payload.meetups };
+    case GET_USER_MEETUP_DATA:
+      //TODO: rewrite the routes to avoid this
+      //When used with POST to /api/usersessions:
+      //If matched, action.payload === {reqUser:{userId:, meetupId:}, partner:}
+      //else, action.payload === {}
+      //When used with GET to /api/user/:userId/meetups:
+      //action.payload === User.meetups[].user_meetup.meetupId||status
+      if (action.payload && action.payload.reqUser) {
+        const {
+          userMeetupId: id,
+          status,
+          userId,
+          userType,
+          meetupId,
+          proficiencyRating,
+        } = action.payload.reqUser;
+        return { id, userId, userType, status, proficiencyRating, meetupId };
+      } else if (action.payload && action.payload.meetups) {
+        const {
+          userMeetupId: id,
+          userType,
+          proficiencyRating,
+          status,
+          userId,
+          meetupId,
+        } = action.payload.meetups[0].user_meetup;
+        return { id, userId, userType, status, proficiencyRating, meetupId };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
