@@ -86,20 +86,20 @@ export class Review extends Component {
                   style={{ borderRadius: '0px' }}
                 >
                   <strong>
-                    {`Please rate ${this.props.partner.firstName}'s proficiency in the folowing topic:`}
+                    {`Please rate ${this.props.partner.firstName}'s proficiency in the following topic:`}
                   </strong>
                   <br />
                   <br />
                   <div className="level">
-                    <p>
-                      {this.props.singleTopic.length > 1
-                        ? this.props.singleTopic[0].title
-                        : this.props.singleTopic.title}
-                      :
-                    </p>
                     <div className="level" style={{ textAlign: 'center' }}>
                       <div className="level-left">
-                        <p>TOPIC TITLE:</p>
+                        <p>
+                          {' '}
+                          {this.props.singleTopic.length > 1
+                            ? this.props.singleTopic[0].title
+                            : this.props.singleTopic.title}{' '}
+                          :
+                        </p>
                       </div>
                       <div className="level-right">
                         <StarRating
