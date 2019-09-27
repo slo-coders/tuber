@@ -153,7 +153,7 @@ class Chatroom extends React.Component {
               >
                 <div
                   className="message-list"
-                  style={{ overflowY: 'scroll', height: '200px' }}
+                  style={{ overflowY: 'scroll', height: '200px', backgroundColor: "white" }}
                 >
                   {this.state.messageList.map((item, idx) => (
                     <li
