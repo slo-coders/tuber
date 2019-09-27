@@ -67,11 +67,6 @@ export class Review extends Component {
   }
 
   render() {
-    // const selectedMentorTopic =
-    //   this.props.userMeetup.userType === 'mentor'
-    //     ? 'Limits'
-    //     : this.props.singleTopic.title;
-
     console.log('Review form props', this.props);
     console.log('Review form state', this.state);
 
@@ -102,37 +97,32 @@ export class Review extends Component {
                         : this.props.singleTopic.title}
                       :
                     </p>
-
-                  <div className="level" style={{textAlign:"center"}}>
-                  <div className="level-left">
-                    <p>TOPIC TITLE:</p>
+                    <div className="level" style={{ textAlign: 'center' }}>
+                      <div className="level-left">
+                        <p>TOPIC TITLE:</p>
+                      </div>
+                      <div className="level-right">
+                        <StarRating
+                          // pass in topicId here, it will get sent back to this state with score when user clicks on star
+                          topic={'topic id gets passed in here'}
+                          handleStarClick={this.handleStarClick}
+                        />
+                      </div>
                     </div>
-                    <div className="level-right">
-                    <StarRating
-                      // pass in topicId here, it will get sent back to this state with score when user clicks on star
-                      topic={'topic id gets passed in here'}
-                      handleStarClick={this.handleStarClick}
-                    />
+                    <div
+                      className="buttons"
+                      style={{ justifyContent: 'center' }}
+                    >
+                      <button onClick={this.handleSubmit} className="button">
+                        Submit
+                      </button>
                     </div>
-
-                    </div>
-                    <div className="buttons" style={{justifyContent:"center"}}>
-                    <button onClick={this.handleSubmit} className="button">
-                      Submit
-                    </button>
-                    </div>
-
+                  </div>
+                  <div className="tile is-child"></div>
                 </div>
-                <div className="tile is-child"></div>
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          {' '}
-          {/* <button onClick={this.handleSubmit} className="button">
-            Submit
-          </button> */}
         </div>
       </div>
     );
