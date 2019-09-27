@@ -30,7 +30,6 @@ class Chatroom extends React.Component {
 
     //listening for incoming server data
     socket.on('message-data', data => {
-      // console.log('Info from SERVER: ', data);
       this.updateMessages(data);
     });
   }
@@ -115,6 +114,12 @@ class Chatroom extends React.Component {
     let partner;
     if (this.props.partnerAlt) partner = this.props.partnerAlt;
     else if (this.props.partner) partner = this.props.partner;
+
+    let newTopicTitle;
+    if (this.props.mentorTopic && this.props.mentorTopic[0]) {
+      newTopicTitle = this.props.mentorTopic[0].title;
+    }
+
     return (
       <div>
         <div className="tile is-ancestor">
@@ -133,7 +138,7 @@ class Chatroom extends React.Component {
                         ? this.state.title
                         : this.props.meetupTopic
                         ? this.props.meetupTopic
-                        : "why this isn't working!!!"}
+                        : newTopicTitle}
                     </h3>
                     <br />
                     <img className="partnerImg" src={partner.imageUrl} />
@@ -183,10 +188,6 @@ class Chatroom extends React.Component {
     );
   }
 }
-
-Chatroom.propTypes = {
-  singleTopic: PropTypes.func,
-};
 
 const mapStateToProps = state => ({
   user: state.auth,

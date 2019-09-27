@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 //COMPONET: meetup-room
 //TODO After submitting a meetuprequest, navigate to meetup-page
 //match, (i.e., response from createUserSessionThunk in userSessionActions.js will be set
@@ -16,7 +17,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Title from '../reusables/Title';
 import { singlePartnerThunk } from '../../actions/partnerActions';
-import { singleMeetupThunk } from '../../actions/meetupActions';
+import {
+  singleMeetupThunk,
+  getMeetupSelectedTopic,
+} from '../../actions/meetupActions';
 import { singleTopicThunk } from '../../actions/topicActions';
 import { closeUserSession } from '../../actions/userSessionActions';
 
@@ -48,6 +52,9 @@ class MeetupRoom extends React.Component {
       // console.log('firing from inside componentDidMount, second-if');
       await this.props.getMeetupWithExtra(currentMeetupId); //sets `meetups.singleMeetups` in the store
     }
+
+    //fetches the single topic for the overall meetup
+    this.props.getMeetupSelectedTopic(this.props.userMeetup.meetupId);
   }
 
   async componentDidUpdate(prevProps) {
@@ -128,6 +135,33 @@ class MeetupRoom extends React.Component {
 
       // console.log('MeetupRoom partner from render: ', partner);
     }
+    console.log('MEETUP ROOM', this.props);
+
+    //Get meetup topics ID --> userSession.singleUserSessionInfo.selectedTopics[0]
+
+    //could also get information off of the courses property on state: --> courses.singleCourseWithTopics
+
+    let topicId;
+
+    if (
+      this.props.userSession.singleUserSessionInfo &&
+      this.props.userSession.singleUserSessionInfo.selectedTopics
+    ) {
+      topicId = this.props.userSession.singleUserSessionInfo.selectedTopics[0];
+    }
+
+    let mentorTopic;
+    if (
+      this.props.userMeetup.userType === 'mentor' &&
+      this.props.courses.singleCourseWithTopics.length > 1
+    ) {
+      console.log(
+        'meetupRoom courses',
+        this.props.courses.singleUserSessionInfo,
+      );
+    }
+
+    console.log('meetuproom state courses', this.props.courses);
 
     return (
       <div>
@@ -139,7 +173,11 @@ class MeetupRoom extends React.Component {
             />
             <div className="section">
               <div className="container">
-                <Chatroom meetupTopic={meetupTopic} partnerAlt={partner} />
+                <Chatroom
+                  mentorTopic={mentorTopic}
+                  meetupTopic={meetupTopic}
+                  partnerAlt={partner}
+                />
               </div>
             </div>
           </div>
@@ -167,9 +205,9 @@ MeetupRoom.propTypes = {
   meetupObjWithUsersArr: PropTypes.object,
   singlePartnerThunk: PropTypes.func,
   getMeetupWithExtra: PropTypes.func,
-  singleTopic: PropTypes.object,
   singleTopicThunk: PropTypes.func,
   closeUserSession: PropTypes.func,
+  getMeetupSelectedTopic: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -180,6 +218,7 @@ const mapStateToProps = state => ({
   userMeetup: state.userMeetup,
   meetupObjWithUsersArr: state.meetups.singleMeetup,
   singleTopic: state.topics.singleTopic,
+  courses: state.courses,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -187,6 +226,8 @@ const mapDispatchToProps = dispatch => ({
   singlePartnerThunk: partnerId => dispatch(singlePartnerThunk(partnerId)), //gets User instance for partner, given partner's userId
   getMeetupWithExtra: meetupId => dispatch(singleMeetupThunk(meetupId)),
   singleTopicThunk: topicId => dispatch(singleTopicThunk(topicId)),
+  getMeetupSelectedTopic: meetupId =>
+    dispatch(getMeetupSelectedTopic(meetupId)),
 });
 
 export default connect(

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {
+  GET_MEETUP_TOPIC,
   FETCH_MEETUP,
   DELETE_MEETUP,
   POST_MEETUP,
@@ -24,6 +25,16 @@ export const singleMeetupThunk = meetupId => async dispatch => {
 export const removeSingleMeetupThunk = () => dispatch => {
   try {
     dispatch({ type: REMOVE_SINGLE_MEETUP });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//meetup action that returns the topic of the meetup instance
+export const getMeetupSelectedTopic = meetupId => async dispatch => {
+  try {
+    const response = await axios.get(`/api/meetups/${meetupId}/topics`);
+    dispatch({ type: GET_MEETUP_TOPIC, payload: response.data });
   } catch (err) {
     console.log(err);
   }

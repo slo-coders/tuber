@@ -19,6 +19,8 @@ Meetup.belongsToMany(Topic, {
   otherKey: 'topicId',
 });
 
+MeetupTopic.belongsTo(Topic);
+
 // CourseTopic associations
 Course.belongsToMany(Topic, {
   through: 'course_topic',

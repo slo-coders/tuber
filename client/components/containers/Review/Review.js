@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Title from '../../reusables/Title';
@@ -5,6 +6,7 @@ import StarRating from '../../reusables/StarRating';
 import { updatePartnerUserMeetupThunk } from '../../../actions/partnerActions';
 import { getUserMeetupDataThunked } from '../../../actions/userMeetupActions';
 import PropTypes from 'prop-types';
+import { getMeetupSelectedTopic } from '../../../actions/meetupActions';
 
 export class Review extends Component {
   constructor(props) {
@@ -12,10 +14,34 @@ export class Review extends Component {
     this.state = {
       proficiencyRating: 0,
       topicId: '',
+      topidName: '',
     };
     this.handleStarClick = this.handleStarClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  componentDidMount() {
+    this.props.updateUserMeetup(this.props.user.authUser.id);
+  }
+
+  // componentDidUpdate(prevP`rops) {
+  //   // eslint-disable-next-line react/prop-types
+  //   const theKeys =
+  //     (this.props.singleMeetupTopic &&
+  //       Object.keys(this.props.singleMeetupTopic)) ||
+  //     [];
+  //   if (this.props.userMeetup && theKeys.length === 0) {
+  //     this.props.getMeetupSelectedTopic(this.props.userMeetup.meetupId);
+  //   }
+  //   if (
+  //     JSON.stringify(prevProps.singleMeetupTopic) !==
+  //     JSON.stringify(this.props.singleMeetupTopic)
+  //   ) {
+  //     this.setState({
+  //       topicName: this.props.singleMeetupTopic.topics[0].title,
+  //     });
+  //   }
+  // }
 
   handleStarClick(e, topicId) {
     const rating = e.target.getAttribute('value');
@@ -41,6 +67,9 @@ export class Review extends Component {
   }
 
   render() {
+    console.log('Review form props', this.props);
+    console.log('Review form state', this.state);
+
     return (
       <div>
         <Title
@@ -61,37 +90,39 @@ export class Review extends Component {
                   </strong>
                   <br />
                   <br />
-
-                  <div className="level" style={{textAlign:"center"}}>
-                  <div className="level-left">
-                    <p>TOPIC TITLE:</p>
+                  <div className="level">
+                    <p>
+                      {this.props.singleTopic.length > 1
+                        ? this.props.singleTopic[0].title
+                        : this.props.singleTopic.title}
+                      :
+                    </p>
+                    <div className="level" style={{ textAlign: 'center' }}>
+                      <div className="level-left">
+                        <p>TOPIC TITLE:</p>
+                      </div>
+                      <div className="level-right">
+                        <StarRating
+                          // pass in topicId here, it will get sent back to this state with score when user clicks on star
+                          topic={'topic id gets passed in here'}
+                          handleStarClick={this.handleStarClick}
+                        />
+                      </div>
                     </div>
-                    <div className="level-right">
-                    <StarRating
-                      // pass in topicId here, it will get sent back to this state with score when user clicks on star
-                      topic={'topic id gets passed in here'}
-                      handleStarClick={this.handleStarClick}
-                    />
+                    <div
+                      className="buttons"
+                      style={{ justifyContent: 'center' }}
+                    >
+                      <button onClick={this.handleSubmit} className="button">
+                        Submit
+                      </button>
                     </div>
-                
-                    </div>
-                    <div className="buttons" style={{justifyContent:"center"}}>
-                    <button onClick={this.handleSubmit} className="button">
-                      Submit
-                    </button>
-                    </div>
-                
+                  </div>
+                  <div className="tile is-child"></div>
                 </div>
-                <div className="tile is-child"></div>
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          {' '}
-          {/* <button onClick={this.handleSubmit} className="button">
-            Submit
-          </button> */}
         </div>
       </div>
     );
@@ -103,9 +134,9 @@ Review.propTypes = {
   userMeetup: PropTypes.object,
   partner: PropTypes.object,
   pairedUserMeetups: PropTypes.object,
-  singleTopic: PropTypes.object,
   updatePartnerUserMeetup: PropTypes.func,
   updateUserMeetup: PropTypes.func,
+  getMeetupSelectedTopic: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -114,12 +145,15 @@ const mapStateToProps = state => ({
   partner: state.partner,
   pairedUserMeetups: state.pairedUserMeetups,
   singleTopic: state.topics.singleTopic,
+  singleMeetupTopic: state.meetups.singleMeetupTopic,
 });
 
 const mapDispatchToProps = dispatch => ({
   updatePartnerUserMeetup: (userId, meetupId, data) =>
     dispatch(updatePartnerUserMeetupThunk(userId, meetupId, data)),
   updateUserMeetup: userId => dispatch(getUserMeetupDataThunked(userId)),
+  getMeetupSelectedTopic: meetupId =>
+    dispatch(getMeetupSelectedTopic(meetupId)),
 });
 
 export default connect(

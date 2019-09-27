@@ -31,6 +31,9 @@ export const POST_MEETUP = 'POST_MEETUP';
 export const EDIT_MEETUP = 'EDIT_MEETUP';
 export const REMOVE_SINGLE_MEETUP = 'REMOVE_SINGLE_MEETUP';
 
+export const GET_MEETUP_TOPIC = 'GET_MEETUP_TOPIC';
+export const REMOVE_MEETUP_TOPIC = 'REMOVE_MEETUP_TOPIC';
+
 //Special MeetupRoom actions
 export const CREATE_MEETUP_ROOM = 'CREATE_MEETUP_ROOM';
 
