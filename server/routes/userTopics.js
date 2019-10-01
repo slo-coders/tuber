@@ -79,19 +79,7 @@ router
     } catch (err) {
       next(err);
     }
-  })
-  .delete(async (req, res, next) => {
-    try {
-      await UserTopic.destroy({
-        where: {
-          userId: req.userId,
-          topicId: req.params.topicId,
-        },
-      });
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
-    }
   });
+
 
 module.exports = router;

@@ -34,11 +34,7 @@ const meetupReducer = (state = initialState, action) => {
         ),
       };
 
-    case DELETE_MEETUP:
-      return {
-        ...state,
-        meetups: state.meetups.filter(el => el.id !== action.payload),
-      };
+
 
     default:
       return state;

@@ -16,13 +16,6 @@ export const getUserTopicsThunked = userId => async dispatch => {
   }
 };
 
-export const getMeetupTopicThunked = meetupId => async dispatch => {
-  try {
-    const resoponse = await axios.get();
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 /* export const getUserTopicThunked = (userId, topicId) => async dispatch => {
   try {
@@ -40,24 +33,18 @@ export const postUserTopicsArrThunked = (
   userTopicsArr,
 ) => async dispatch => {
   try {
+
     const response = await axios.post(
       `/api/users/${userId}/topics`,
       userTopicsArr,
     );
+
     dispatch({ type: POST_USER_TOPICS_ARR, userTopicsArr: response.data });
   } catch (err) {
     console.error(err);
   }
 };
 
-export const deleteUserTopicThunked = (userId, topicId) => async dispatch => {
-  try {
-    await axios.delete(`/api/users/${userId}/topics/${topicId}`);
-    dispatch({ type: DELETE_USER_TOPIC, deletedTopicId: topicId });
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 export const updateUserTopicThunked = (
   userId,
