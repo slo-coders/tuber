@@ -26,14 +26,14 @@ const Topic = db.define('topic', {
 });
 
 // Class Methods
-Topic.updateInfo = async function(id, updatesObj) {
-  const topic = await this.findByPk(id);
-  const updatedTopic = { ...topic, ...updatesObj };
-  return await Topic.update(updatedTopic, {
-    fields: ['title', 'description', 'dueDateRequired', 'dueAt', 'htmlURL'],
-  });
-};
-Topic.remove = async function(id) {
+// Topic.updateInfo = async function(id, updatesObj) {
+//   const topic = await this.findByPk(id);
+//   const updatedTopic = { ...topic, ...updatesObj };
+//   return await Topic.update(updatedTopic, {
+//     fields: ['title', 'description', 'dueDateRequired', 'dueAt', 'htmlURL'],
+//   });
+// };
+Topic.remove = async function (id) {
   const targetTopic = await this.findByPk(id);
   await targetTopic.destroy();
 };

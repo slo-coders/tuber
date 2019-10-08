@@ -1,6 +1,6 @@
 const { db, User, Topic, UserTopic } = require('../server/db/index');
 const randIntBtwn = require('../server/db/utils/randIntBtwn');
-const app = require('../server/server');
+const { app } = require('../server/server');
 const request = require('supertest'); //client
 
 const fauxios = request(app); //supertest both ports and makes HTTP requests to app

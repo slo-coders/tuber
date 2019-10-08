@@ -1,6 +1,5 @@
 import {
   FETCH_MEETUP,
-  DELETE_MEETUP,
   POST_MEETUP,
   EDIT_MEETUP,
   REMOVE_SINGLE_MEETUP,
@@ -34,11 +33,7 @@ const meetupReducer = (state = initialState, action) => {
         ),
       };
 
-    case DELETE_MEETUP:
-      return {
-        ...state,
-        meetups: state.meetups.filter(el => el.id !== action.payload),
-      };
+
 
     default:
       return state;

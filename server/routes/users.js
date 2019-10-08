@@ -13,9 +13,14 @@ const {
 
 // Routes
 // `/api/users/:userId/topics/:topicId?`
-const passUserId = (req, _res, next) => {
-  req.userId = req.params.userId;
-  next();
+const passUserId = (req, res, next) => {
+  console.log('req.params', req.params);
+  if (req.params.userId === "undefined") {
+    res.end();
+  } else {
+    req.userId = req.params.userId;
+    next();
+  }
 };
 router.use('/:userId/topics', passUserId, require('./userTopics'));
 
@@ -58,28 +63,13 @@ router
     } catch (err) {
       next(err);
     }
-  })
-  .put(async (req, res, next) => {
-    try {
-      const updatedUser = await User.updateInfo(req.params.userId, req.body);
-      res.status(202).send(updatedUser);
-    } catch (err) {
-      next(err);
-    }
-  })
-  .delete(async (req, res, next) => {
-    try {
-      await User.remove(req.params.userId);
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
-    }
   });
+
 
 //Gets all most recent meetup data for a user
 router.get('/:userId/meetups', async (req, res, next) => {
   try {
-    const user = await User.findOne({
+    const user = await User.scope('withoutPassword').findOne({
       where: { id: req.params.userId },
       include: [
         {
@@ -142,7 +132,7 @@ router.put('/:userId/meetups/:meetupId', async (req, res, next) => {
       //Calculate new running average
       const newAveProfRating = Math.round(
         alpha * newPartnerProfRating +
-          (1 - alpha) * prevRunningAveTopicProfeciency,
+        (1 - alpha) * prevRunningAveTopicProfeciency,
       );
 
       //Update newAveProfRating in UserTopic table

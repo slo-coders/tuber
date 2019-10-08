@@ -113,14 +113,14 @@ export default function HomeTiles(props) {
                   {props.loggedin ? (
                     <strong>you are logged in!</strong>
                   ) : (
-                    <div>
-                      {' '}
-                      <div style={{ paddingBottom: '8px' }}>
-                        <strong>Log in to get started!</strong>
+                      <div>
+                        {' '}
+                        <div style={{ paddingBottom: '8px' }}>
+                          <strong>Log in to get started!</strong>
+                        </div>
+                        <LoginForm />{' '}
                       </div>
-                      <LoginForm />{' '}
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
 
@@ -149,5 +149,5 @@ export default function HomeTiles(props) {
 }
 
 HomeTiles.propTypes = {
-  loggedin: PropTypes.boolean,
+  loggedin: PropTypes.bool
 };

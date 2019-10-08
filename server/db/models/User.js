@@ -67,44 +67,39 @@ User.beforeCreate(user => {
   user.salt = data.salt;
 });
 
+
 User.beforeUpdate(user => {
   const data = hash(user.password);
   user.password = data.hash;
   user.salt = data.salt;
 });
 
-User.beforeValidate(studentSubmitted => {
-  if (studentSubmitted.schoolId === '') {
-    studentSubmitted.schoolId = null;
-  }
-});
-
 // Class Methods
-User.updateInfo = async function(userId, updatesObj) {
-  const user = await this.findByPk(userId);
-  const updatedStudent = { ...user, ...updatesObj };
-  const result = await user.update(updatedStudent, {
-    fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
-  });
-  // console.log(result);
-  delete result.password; ///////////how to remove password from instance
-  delete result.salt;
-  // console.log(result);
-  return result;
-};
+// User.updateInfo = async function (userId, updatesObj) {
+//   const user = await this.findByPk(userId);
+//   const updatedStudent = { ...user, ...updatesObj };
+//   const result = await user.update(updatedStudent, {
+//     fields: ['firstName', 'lastName', 'password', 'email', 'imageUrl'],
+//   });
+//   // console.log(result);
+//   delete result.password; ///////////how to remove password from instance
+//   delete result.salt;
+//   // console.log(result);
+//   return result;
+// };
 
-User.createNew = async function(userObj) {
+User.createNew = async function (userObj) {
   return await this.create(userObj, {
     fields: ['firstName', 'lastName', 'password', 'salt', 'email', 'imageUrl'],
   });
 };
 
-User.remove = async function(userId) {
+User.remove = async function (userId) {
   const user = await this.findByPk(userId);
   await user.destroy();
 };
 
-User.login = async function(email, password) {
+User.login = async function (email, password) {
   return await this.findOne({
     where: {
       email,

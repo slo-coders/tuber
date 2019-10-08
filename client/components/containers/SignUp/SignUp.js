@@ -45,6 +45,7 @@ class SignUp extends Component {
       email: this.state.email,
       password: this.state.password,
     };
+    console.log('local state ID: ', this.state.id);
     this.props.postTopics(this.state.id, this.state.topicsWithRatings);
     this.props.loginThunked(userInfo);
     window.location = '#/profile';
