@@ -61,7 +61,7 @@ io.on('connection', socket => {
 
   const dataFail = { user: 'Half-Stack', text: halfstackResponse };
 
-  socket.on('chat-message', function(data) {
+  socket.on('chat-message', function (data) {
     if (data.room === null) {
       io.to(`${socket.id}`).emit('message-data', dataFail);
     }
@@ -71,4 +71,4 @@ io.on('connection', socket => {
 app.use('/api/sessions', require('./routes/sessions'));
 app.use('/api', routes);
 
-module.exports = { http, io };
+module.exports = { app, http, io };

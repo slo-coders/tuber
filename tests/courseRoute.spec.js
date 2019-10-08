@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server/server');
+const { app } = require('../server/server');
 const { Course, db } = require('../server/db/index');
 
 beforeAll(async () => {
