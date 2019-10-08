@@ -68,7 +68,9 @@ export default function HomeTiles(props) {
                     className="tile is-child box tileColor"
                     style={{ borderRadius: '0px' }}
                   >
-                    <h1 className="title" style={{ marginBottom: "0px" }}>Teach</h1>
+                    <h1 className="title" style={{ marginBottom: '0px' }}>
+                      Teach
+                    </h1>
                     <hr />
                     <p>
                       One of the best ways to learn is by teaching others. Tuber
@@ -84,7 +86,9 @@ export default function HomeTiles(props) {
                     className="tile is-child box tileColor"
                     style={{ borderRadius: '0px' }}
                   >
-                    <h1 className="title" style={{ marginBottom: "0px" }}>Collaborate</h1>
+                    <h1 className="title" style={{ marginBottom: '0px' }}>
+                      Collaborate
+                    </h1>
                     <hr />
                     <p>
                       You don't have to do it alone!{' '}
@@ -125,7 +129,9 @@ export default function HomeTiles(props) {
                   className="tile is-child box tileColor"
                   style={{ borderRadius: '0px' }}
                 >
-                  <h1 className="title" style={{ marginBottom: "0px" }}>Learn</h1>
+                  <h1 className="title" style={{ marginBottom: '0px' }}>
+                    Learn
+                  </h1>
                   <hr />
                   <p>
                     Everyone has to start somewhere! Achieve mastery in a topic
