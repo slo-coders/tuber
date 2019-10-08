@@ -1,6 +1,6 @@
 const { db, UserMeetup } = require('../server/db/index');
 // const seed = require('../server/db/utils/seed');
-const app = require('../server/server'); //does not start server
+const { app } = require('../server/server'); //does not start server
 const request = require('supertest'); //client
 // const { verifyPassword } = require('../server/db/utils/hash');
 

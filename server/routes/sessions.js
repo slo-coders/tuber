@@ -5,10 +5,16 @@ const { User } = require('../db/models/index');
 router.get('/login', async (req, res, next) => {
   //BEHAVIOR: takes req.session.userId returns user data w/o password and salt
   try {
-    const loggedUser = await User.scope('withoutPassword').findOne({
-      where: { id: req.session.userId },
-    });
-    res.send(loggedUser);
+
+    if (req.session.userId === undefined) {
+      res.end();
+    } else {
+      const loggedUser = await User.scope('withoutPassword').findOne({
+        where: { id: req.session.userId },
+      });
+
+      res.send(loggedUser);
+    }
   } catch (err) {
     res.send('please sign in or register');
     next(err);

@@ -7,10 +7,11 @@ const session = require('express-session');
 const createSequelizeStore = require('connect-session-sequelize');
 const SequelizeStore = createSequelizeStore(session.Store);
 const app = express();
-require('dotenv').config();
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+
+require('dotenv').config();
 
 app.use(morgan('dev'));
 
@@ -38,17 +39,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
 io.on('connection', socket => {
-  console.log('User Socket made: ', socket.id);
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
 
   socket.on('room', data => {
-    // if(data.status === 'matched'){
     socket.join(data.room);
-    console.log('in room creator:', data.room);
-    // console.log('SOCKET OBJ', socket);
-    // }
+    console.log('Room created:', data.room);
   });
 
   socket.on('leave-room', data => {
@@ -61,7 +58,7 @@ io.on('connection', socket => {
 
   const dataFail = { user: 'Half-Stack', text: halfstackResponse };
 
-  socket.on('chat-message', function(data) {
+  socket.on('chat-message', function (data) {
     if (data.room === null) {
       io.to(`${socket.id}`).emit('message-data', dataFail);
     }
@@ -71,4 +68,4 @@ io.on('connection', socket => {
 app.use('/api/sessions', require('./routes/sessions'));
 app.use('/api', routes);
 
-module.exports = { http, io };
+module.exports = { app, http, io };

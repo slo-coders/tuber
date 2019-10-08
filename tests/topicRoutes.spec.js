@@ -1,5 +1,5 @@
 const { db, Topic } = require('../server/db/index');
-const app = require('../server/server'); //does not start server
+const { app } = require('../server/server'); //does not start server
 const request = require('supertest'); //client
 
 const fauxios = request(app);  //supertest both ports and makes HTTP requests to app

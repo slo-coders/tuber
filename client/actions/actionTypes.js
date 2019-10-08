@@ -14,11 +14,9 @@ export const FETCH_COURSE_ALL = 'FETCH_COURSE_ALL';
 export const FETCH_COURSE = 'FETCH_COURSE';
 export const FETCH_COURSE_TOPICS = 'FETCH_COURSE_TOPICS';
 
-
 //Topic actions
 export const FETCH_TOPIC_ALL = 'FETCH_TOPIC_ALL';
 export const FETCH_TOPIC = 'FETCH_TOPIC';
-
 
 //Meetup actions
 export const FETCH_MEETUP = 'FETCH_MEETUP';
@@ -42,7 +40,6 @@ export const REMOVE_PAIRED_USER_MEETUPS = 'REMOVE_PAIRED_USER_MEETUPS';
 export const FETCH_ALL_USERS = 'FETCH_ALL_USERS';
 export const FETCH_USER = 'FETCH_USER';
 export const POST_USER = 'POST_USER';
-
 
 //User-meetup actions
 export const GET_MEETUP_DATA = 'GET_MEETUP_DATA';

@@ -11,28 +11,33 @@ router
   .route('/') //NOTE: req.params does not include userId here w/ req.uesrId
   .get(async (req, res, next) => {
     try {
-      const userTopics = await UserTopic.findAll({
-        where: { userId: req.userId },
-      });
-
-      const topicNames = await Promise.all(
-        userTopics.map(uTop =>
-          Topic.findOne({
-            where: { id: uTop.topicId },
-          }),
-        ),
-      );
-
-      const returnObj = userTopics.map((uTop, i) => ({
-        topicName: topicNames[i].title,
-        topicId: uTop.topicId,
-        proficiencyRating: uTop.proficiencyRating,
-      }));
-
-      if (returnObj) {
-        res.send(returnObj);
+      if (req.userId === undefined) {
+        res.end();
       } else {
-        res.sendStatus(404);
+        const userTopics = await UserTopic.findAll({
+          where: { userId: req.userId },
+        });
+        // console.log('userTopics speedbump');
+
+        const topicNames = await Promise.all(
+          userTopics.map(uTop =>
+            Topic.findOne({
+              where: { id: uTop.topicId },
+            }),
+          ),
+        );
+
+        const returnObj = userTopics.map((uTop, i) => ({
+          topicName: topicNames[i].title,
+          topicId: uTop.topicId,
+          proficiencyRating: uTop.proficiencyRating,
+        }));
+
+        if (returnObj) {
+          res.send(returnObj);
+        } else {
+          res.sendStatus(404);
+        }
       }
     } catch (err) {
       next(err);

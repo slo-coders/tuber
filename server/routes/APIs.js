@@ -5,7 +5,7 @@ const checkUser = async (req, res, next) => {
   if (process.env.NODE_ENV !== 'test') {
     try {
       if (req.session && req.session.userId) {
-        const sessionUser = await User.findOne({
+        const sessionUser = await User.scope('withoutPassword').findOne({
           where: {
             id: req.session.userId,
           },

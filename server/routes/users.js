@@ -13,9 +13,14 @@ const {
 
 // Routes
 // `/api/users/:userId/topics/:topicId?`
-const passUserId = (req, _res, next) => {
-  req.userId = req.params.userId;
-  next();
+const passUserId = (req, res, next) => {
+  console.log('req.params', req.params);
+  if (req.params.userId === "undefined") {
+    res.end();
+  } else {
+    req.userId = req.params.userId;
+    next();
+  }
 };
 router.use('/:userId/topics', passUserId, require('./userTopics'));
 
@@ -64,7 +69,7 @@ router
 //Gets all most recent meetup data for a user
 router.get('/:userId/meetups', async (req, res, next) => {
   try {
-    const user = await User.findOne({
+    const user = await User.scope('withoutPassword').findOne({
       where: { id: req.params.userId },
       include: [
         {

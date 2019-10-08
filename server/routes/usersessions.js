@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   try {
     const { userId, userType, location, courseId, topicId } = req.body;
     /* GET User instance with Topic info for topicsId from UserTopic*/
-    const userInstance = await User.findOne({
+    const userInstance = await User.scope('withoutPassword').findOne({
       where: {
         id: userId,
       },
