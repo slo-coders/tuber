@@ -33,61 +33,64 @@ class TopicSelect extends React.Component {
       // <div className="tile is-parent">
       // <div className="tile is-child box">
       return (
-        <div className="section" style={{textAlign:"center", paddingTop:'0px'}}>
-        <div>
+        <div
+          className="section"
+          style={{ textAlign: 'center', paddingTop: '0px' }}
+        >
           <div>
-            {userTopicsForCourse && userTopicsForCourse.length > 0 ? (
-              <form>
-                {userTopicsForCourse.map(uTop => {
-                  const radioName = `${uTop.topicName
-                    .split(' ')
-                    .join('-')}-Radio`;
-                  return this.props.userType === 'mentor' ? (
-                    <div key={uTop.id}>
-                      <li key={uTop.id}>{uTop.topicName}</li>
-                    </div>
-                  ) : (
-                    //mentee/peer topics w/ radio buttons
-                    <div className="radio" key={uTop.id}>
-                      <label key={uTop.id} htmlFor={radioName}>
-                        <input
-                          key={uTop.id}
-                          name={radioName}
-                          type="radio"
-                          value={uTop.topicId}
-                          onChange={this.props.handleTopicChoice}
-                          checked={this.props.topicId === uTop.topicId}
-                        />
-                        {uTop.topicName}
-                      </label>
-                    </div>
-                  );
-                })}
-              </form>
-            ) : (
-              <div>
-                <p>
-                  {
-                    'You do not appear to have any proficiency ratings for the topics in this selected course.'
-                  }
-                </p>
-                <p>{'Please select another course.'}</p>
-              </div>
-            )}
+            <div>
+              {userTopicsForCourse && userTopicsForCourse.length > 0 ? (
+                <form>
+                  {userTopicsForCourse.map(uTop => {
+                    const radioName = `${uTop.topicName
+                      .split(' ')
+                      .join('-')}-Radio`;
+                    return this.props.userType === 'mentor' ? (
+                      <div key={uTop.id}>
+                        <li key={uTop.id}>{uTop.topicName}</li>
+                      </div>
+                    ) : (
+                      //mentee/peer topics w/ radio buttons
+                      <div className="radio" key={uTop.id}>
+                        <label key={uTop.id} htmlFor={radioName}>
+                          <input
+                            key={uTop.id}
+                            name={radioName}
+                            type="radio"
+                            value={uTop.topicId}
+                            onChange={this.props.handleTopicChoice}
+                            checked={this.props.topicId === uTop.topicId}
+                          />
+                          {uTop.topicName}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </form>
+              ) : (
+                <div>
+                  <p>
+                    {
+                      'You do not appear to have any proficiency ratings for the topics in this selected course.'
+                    }
+                  </p>
+                  <p>{'Please select another course.'}</p>
+                </div>
+              )}
+            </div>
+            <Button
+              handleClick={this.props.handleSubmit} //createUserSessionThunk
+              buttonText={'Request Meetup'}
+              value={'Request Meetup'}
+              disabled={
+                this.props.topicId ||
+                (this.props.userType === 'mentor' &&
+                  selectedCourseTopicsIds.length > 0)
+                  ? false
+                  : true
+              }
+            />
           </div>
-          <Button
-            handleClick={this.props.handleSubmit} //createUserSessionThunk
-            buttonText={'Request Meetup'}
-            value={'Request Meetup'}
-            disabled={
-              this.props.topicId ||
-              (this.props.userType === 'mentor' &&
-                selectedCourseTopicsIds.length > 0)
-                ? false
-                : true
-            }
-          />
-        </div>
         </div>
       );
     } else {

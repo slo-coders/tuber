@@ -65,7 +65,6 @@ export class Nav extends React.Component {
   render() {
     console.log('NAV-BAR', this.props);
     return (
-      
       <nav className="navbar is-transparent">
         <div className="navbar-brand">
           <div
@@ -127,9 +126,7 @@ export class Nav extends React.Component {
             </div>
           </div>
         )}
-        
       </nav>
-      
     );
   }
 }
