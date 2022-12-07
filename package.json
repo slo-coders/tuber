@@ -107,7 +107,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "heroku": "^7.29.0",
-    "lint": "^0.7.0",
+    "lint": "^0.8.8",
     "pg": "^7.12.1",
     "react-transition-group": "^1.2.1",
     "request": "^2.88.0",
